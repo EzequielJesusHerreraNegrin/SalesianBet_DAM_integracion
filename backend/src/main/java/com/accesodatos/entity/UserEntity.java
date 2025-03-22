@@ -2,9 +2,11 @@ package com.accesodatos.entity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -31,21 +33,21 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"roles","apuestas"})
-@EqualsAndHashCode(exclude = {"roles","apuestas"})
-@Table(name = "usuarios")
-public class Usuario {
+@ToString(exclude = "products")
+@EqualsAndHashCode(exclude = "products")
+@Table(name = "users")
+public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usuario_id")
-	private Long id;
+	@Column(name = "user_id")
+	private Long userId;
 	
 	@Column(length = 30, nullable = false)
-	private String nombre;
+	private String userName;
 	
 	@Column(length = 30, nullable = false)
-	private String contraseña;
+	private String password;
 	
 	@Column(length = 30, nullable = false)
 	private String email;
@@ -53,7 +55,9 @@ public class Usuario {
 	@Column(length = 30, nullable = false)
 	private String dni;
 	
-	private int puntos;
+	private int points;
+	
+	private String Country;
 	
 	
 	@ManyToMany(
@@ -62,28 +66,35 @@ public class Usuario {
 	)
 	@JoinTable(
 			name = "user_roles", 
-			joinColumns = @JoinColumn(name = "user_id"), 
-			inverseJoinColumns = @JoinColumn(name = "role_id")
+			joinColumns = @JoinColumn(name = "fk_user_id"), 
+			inverseJoinColumns = @JoinColumn(name = "fk_role_id")
 	)
 	@Builder.Default
-	private Set<Rol> roles = new HashSet<>();
+	private Set<Role> roles = new HashSet<>();
 	
 	@OneToMany(
-			mappedBy = "usuario",
+			mappedBy = "user",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
 	@JsonManagedReference
 	@Builder.Default
-	private List<Apuesta> apuestas = new ArrayList<>();
+	private List<Bet> bets = new ArrayList<>();
 	
-	public void addRole(Rol rol) {
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "users_products", joinColumns = @JoinColumn(name = "fk_user_id"),
+	inverseJoinColumns = @JoinColumn(name = "fk_product_id"))
+	@JsonBackReference
+	@Builder.Default
+	private Set<Product> products = new LinkedHashSet<>();
+	
+	public void addRole(Role rol) {
 		this.roles.add(rol);
 		this.getRoles().add(rol);
 	}
 	
 	
-	public void removeRole(Rol rol) {
+	public void removeRole(Role rol) {
 		this.roles.remove(rol);
 		this.getRoles().remove(rol);
 	}

@@ -23,29 +23,29 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "partidos")
-@EqualsAndHashCode(exclude = "partidos")
-@Table(name = "equipos")
-public class Equipo {
+@ToString(exclude = "matches")
+@EqualsAndHashCode(exclude = "matches")
+@Table(name = "teams")
+public class Team {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "equipo_id")
-	private Long id;
+	@Column(name = "team_id")
+	private Long teamId;
 	
 	@Column(length = 20, nullable = false)
-	private String pais;
+	private String country;
 	
 	@Column(length = 20, nullable = false)
-	private String nombre;
+	private String teamName;
 	
 	@Column(length = 20, nullable = false)
-	private String deporte;
+	private String sport;
 	
 	@ManyToMany(
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			mappedBy = "equipos"
+			mappedBy = "teams"
 			)
 	@JsonManagedReference
-	private Set<Partido> partidos = new LinkedHashSet<>();
+	private Set<Match> matches = new LinkedHashSet<>();
 }

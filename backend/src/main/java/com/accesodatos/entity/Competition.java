@@ -23,24 +23,22 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Table(name = "competiciones")
-public class Competicion {
+@Table(name = "competitions")
+public class Competition {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "competicion_id")
-	private Long id;
+	@Column(name = "competition_id")
+	private Long competitionId;
 	
 	@Column(length = 30, nullable = false)
-	private String nombre;
+	private String competitionName;
 	
 	@OneToMany(
-			mappedBy = "competicion",
+			mappedBy = "competition",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
 	@JsonManagedReference
-	private List<Partido> partidos = new ArrayList<>();
+	private List<Match> matches = new ArrayList<>();
 }

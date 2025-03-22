@@ -34,50 +34,47 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"equipos", "apuestas"})
-@EqualsAndHashCode(exclude = {"equipos", "apuestas"})
-@Table(name = "partidos")
-public class Partido {
+@ToString(exclude = "teams")
+@EqualsAndHashCode(exclude = "teams")
+@Table(name = "matches")
+public class Match {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "partido_id")
-	private Long id;
+	@Column(name = "match_id")
+	private Long matchId;
 	
 	@CreationTimestamp
-	private Date fecha;
+	private Date date;
 	
 	@Column(nullable = false)
-	private Boolean ha_comenzado;
-	
-	@Column(nullable = false)
-	private Boolean ha_terminado;
+	private Boolean is_playing;
 	
 	@Column(length = 40, nullable = false)
-	private String resultado;
+	private String result;
 	
 	@ManyToMany(
 			fetch = FetchType.LAZY,
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE}
 			)
 	@JoinTable(
-			name = "equipo_partido",
-			joinColumns = @JoinColumn(name = "partido_id"),
-			inverseJoinColumns = @JoinColumn(name = "equipo_id")
+			name = "teams_matches",
+			joinColumns = @JoinColumn(name = "fk_match_id"),
+			inverseJoinColumns = @JoinColumn(name = "fk_team_id")
 			)
 	@JsonBackReference
-	private Set<Equipo> equipos = new LinkedHashSet<>();
+	private Set<Team> teams = new LinkedHashSet<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "competicion_id", nullable = false)
+	@JoinColumn(name = "competition_id", nullable = false)
 	@JsonBackReference
-	private Competicion competicion;
+	private Competition competition;
 	
 	@OneToMany(
-			mappedBy = "partido",
+			mappedBy = "match",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
 	@JsonManagedReference
-	private List<Apuesta> apuestas = new ArrayList<>();
+	private List<Bet> bets = new ArrayList<>();
 }

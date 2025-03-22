@@ -18,26 +18,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "apuestas")
-public class Apuesta {
+@AllArgsConstructor 
+@Table(name = "bets")
+public class Bet {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "apuesta_id")
-	private Long id;
-	private int puntos;
-	private String tipo;
-	private String prediccion;
-	private String multiplicador;
+	@Column(name = "bet_id")
+	private Long betId;
+	private int points;
+	private String type;
+	private String prediction;
+	private String multiplier;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "partido_id", nullable = false)
+	@JoinColumn(name = "match_id", nullable = false)
 	@JsonBackReference
-	private Partido partido;
+	private Match match;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "usuario_id", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	@JsonBackReference
-	private Usuario usuario;
+	private UserEntity user;
 }

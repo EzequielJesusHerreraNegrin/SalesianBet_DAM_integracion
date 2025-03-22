@@ -1,5 +1,6 @@
 package com.accesodatos.entity;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,16 +14,20 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "roles")
-public class Rol {
+@Builder
+@Table(name = "products")
+public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "product_id")
+	private Long productId;
 	
-	@Column(name = "role_name", nullable = false, unique = true)
-	private String nombre;
+	private String productName;
+	
+	private double price;
+	
+	
 }
