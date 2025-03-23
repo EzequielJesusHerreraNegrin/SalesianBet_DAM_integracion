@@ -62,7 +62,6 @@ public class TeamServiceImpl implements TeamService {
 	public void deleteTeam(Long teamId) {
 		Team team = validateAndGetTeam(teamId);
 		teamRepository.delete(team);
-
 	}
 
 }
