@@ -29,7 +29,6 @@ public class Bet {
 	private int points;
 	private String type;
 	private String prediction;
-	private String multiplier;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "match_id", nullable = false)
