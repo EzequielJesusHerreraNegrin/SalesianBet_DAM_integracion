@@ -57,7 +57,7 @@ public class UserEntity {
 	
 	private int points;
 	
-	private String Country;
+	private String country;
 	
 	
 	@ManyToMany(

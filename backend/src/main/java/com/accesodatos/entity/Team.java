@@ -36,7 +36,7 @@ public class Team {
 	@Column(length = 20, nullable = false)
 	private String country;
 	
-	@Column(length = 20, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String teamName;
 	
 	@Column(length = 20, nullable = false)
