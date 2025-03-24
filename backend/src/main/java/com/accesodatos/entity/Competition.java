@@ -32,7 +32,9 @@ public class Competition {
 	private Long competitionId;
 	
 	@Column(length = 30, nullable = false)
-	private String competitionName;
+	private String name;
+	
+	private String country;
 	
 	@OneToMany(
 			mappedBy = "competition",

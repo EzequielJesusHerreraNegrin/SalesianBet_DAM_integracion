@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 public class TeamRequestDto {
 
 	private String teamName;
-	private String country;
 	private String sport;	
 }

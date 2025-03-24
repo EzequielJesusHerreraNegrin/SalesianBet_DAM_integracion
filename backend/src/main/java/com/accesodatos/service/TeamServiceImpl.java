@@ -52,7 +52,6 @@ public class TeamServiceImpl implements TeamService {
 	@Override
 	public TeamResponseDto updateTeam(Long teamId, TeamRequestDto teamRequestDto) {
 		Team team = validateAndGetTeam(teamId);
-		team.setCountry(teamRequestDto.getCountry());
 		team.setSport(teamRequestDto.getSport());
 		team.setTeamName(teamRequestDto.getTeamName());
 		return teamMapper.toTeamResponseDto(team);

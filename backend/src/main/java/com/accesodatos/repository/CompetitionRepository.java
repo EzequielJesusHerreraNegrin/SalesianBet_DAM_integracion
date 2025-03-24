@@ -7,5 +7,6 @@ import com.accesodatos.entity.Competition;
 
 @Repository
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
-
+	
+	Competition findByCountry(String country);
 }
