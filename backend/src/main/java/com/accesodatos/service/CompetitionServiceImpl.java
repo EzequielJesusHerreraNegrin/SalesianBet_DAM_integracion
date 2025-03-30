@@ -49,6 +49,8 @@ public class CompetitionServiceImpl implements CompetitionService {
 		Competition updatedCompetition = validateAndGetCompetition(competitionId);
 		updatedCompetition.setName(competitionRequestDto.getName());
 		updatedCompetition.setCountry(competitionRequestDto.getCountry());
+		
+		competitionRepository.save(updatedCompetition);
 		return updatedCompetition;
 	}
 

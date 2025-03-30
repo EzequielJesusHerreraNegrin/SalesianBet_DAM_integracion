@@ -54,6 +54,8 @@ public class TeamServiceImpl implements TeamService {
 		Team team = validateAndGetTeam(teamId);
 		team.setSport(teamRequestDto.getSport());
 		team.setTeamName(teamRequestDto.getTeamName());
+		
+		teamRepository.save(team);
 		return teamMapper.toTeamResponseDto(team);
 	}
 
