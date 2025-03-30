@@ -33,10 +33,7 @@ public class Team {
 	@Column(name = "team_id")
 	private Long teamId;
 	
-	@Column(length = 20, nullable = false)
-	private String country;
-	
-	@Column(length = 20, nullable = false)
+	@Column(length = 30, nullable = false)
 	private String teamName;
 	
 	@Column(length = 20, nullable = false)
