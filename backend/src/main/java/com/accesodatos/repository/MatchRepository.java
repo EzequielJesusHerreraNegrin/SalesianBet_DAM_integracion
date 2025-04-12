@@ -1,5 +1,6 @@
 package com.accesodatos.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ import com.accesodatos.entity.Match;
 public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	List<Match> findByCompetition(Competition competition);
+	
+	List<Match> findByDateBetweenOrderByDateAsc(LocalDateTime startTime, LocalDateTime endTime);
 }

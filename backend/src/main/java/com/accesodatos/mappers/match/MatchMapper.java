@@ -13,6 +13,7 @@ public interface MatchMapper {
 	@Mapping(target = "matchId", ignore = true)
 	@Mapping(target = "result", ignore = true)
 	@Mapping(target = "bets", ignore = true)
+	@Mapping(target = "is_playing", ignore = true)
 	Match toMatch(MatchRequestDto matchRequestDto);
 	
 	MatchResponseDto toMatchResponseDto(Match match);

@@ -1,5 +1,7 @@
 package com.accesodatos.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.accesodatos.dto.match.MatchRequestDto;
@@ -15,5 +17,6 @@ public interface MatchService {
 	MatchResponseDto updateMatch(Long matchId, MatchRequestUpdateDto matchRequestUpdateDto);
 	void deleteMatch(Long matchId);
 	List<MatchResponseDto> getMatchesByCompetition(Long competitionId);
+	List<MatchResponseDto> getMatchesByDate(LocalDate date);
 	
 }

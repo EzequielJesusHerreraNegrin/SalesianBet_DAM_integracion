@@ -55,15 +55,7 @@ public class CompetitionController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-//	@GetMapping(value = COMPETITION_RESOURCE , produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<ApiResponseDto<Competition>> getCompetitionById(@RequestParam String country) {
-//		Competition competition = competitionService.getCompetitionByCountry(country);
-//		
-//		ApiResponseDto<Competition> response = new ApiResponseDto<>("Competition fetched by country successfully",
-//				HttpStatus.OK.value(), competition);
-//		
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
+
 	
 	@PostMapping(value = COMPETITION_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Competition>> creteTeam(@RequestBody CompetitionRequestDto competitionRequestDto) {
