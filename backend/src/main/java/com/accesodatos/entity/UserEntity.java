@@ -98,4 +98,16 @@ public class UserEntity {
 		this.roles.remove(rol);
 		this.getRoles().remove(rol);
 	}
+	
+	public void addBet(Bet bet) {
+		this.bets.add(bet);
+		this.setPoints(this.points - bet.getPoints());
+		this.getBets().add(bet);
+	}
+	
+	public void removeBet(Bet bet) {
+		this.bets.remove(bet);
+		this.setPoints(this.points + bet.getPoints());
+		this.getBets().remove(bet);
+	}
 }
