@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 import com.accesodatos.dto.bet.BetRequestDto;
 import com.accesodatos.dto.bet.BetResponseDto;
 import com.accesodatos.entity.Bet;
+import com.accesodatos.entity.Match;
+import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.bet.BetMapper;
 import com.accesodatos.mappers.match.MatchMapper;
 import com.accesodatos.repository.BetRepository;
+import com.accesodatos.repository.MatchRepository;
+import com.accesodatos.repository.UserEntityRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +27,8 @@ public class BetServiceImpl implements BetService{
 	@Autowired BetRepository betRepository;
 	@Autowired BetMapper betMapper;
 	@Autowired MatchMapper matchMapper;
+	@Autowired MatchRepository matchRepository;
+	@Autowired UserEntityRepository userEntityRepository;
 	
 	@Override
 	public List<BetResponseDto> getAllBets() {
@@ -41,10 +47,19 @@ public class BetServiceImpl implements BetService{
 
 	@Override
 	public boolean createBet(BetRequestDto dto) {
+		Match match = matchRepository.findById(dto.getMatchId()).
+				orElseThrow(() -> 
+				new ResourceNotFoundException(
+						String.format("The bet with the id %d was not found.", dto.getMatchId())));
+		
+		UserEntity user = userEntityRepository.findById(dto.getUserId())
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getUserId()));
 		Bet bet = new Bet();
 		bet.setPrediction(dto.getPrediction());
 		bet.setPoints(dto.getPoints());
-		bet.setMatch(matchMapper.toMatch(dto.getMatch()));
+		bet.setMatch(match);
+		bet.setUser(user);
+		
 		
 		bet = betRepository.save(bet);
 		return bet != null;
@@ -59,7 +74,6 @@ public class BetServiceImpl implements BetService{
 		
 		bet.setPrediction(dto.getPrediction());
 		bet.setPoints(dto.getPoints());
-		bet.setMatch(matchMapper.toMatch(dto.getMatch()));
 		bet = betRepository.save(bet);
 		return bet != null;
 	}

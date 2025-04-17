@@ -10,7 +10,6 @@ public class BetResponseDto {
 
 	private Long betId;
 	private int points;
-	private String type;
 	private String prediction;
 	private MatchResponseDto match;
 	private UserEntityResponseDto user;
