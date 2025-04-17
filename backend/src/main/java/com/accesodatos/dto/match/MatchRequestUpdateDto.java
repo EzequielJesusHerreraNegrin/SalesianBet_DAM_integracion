@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class MatchRequestUpdateDto {
 
 	private Date date;
-	private Competition competition;
-	private Set<Team> teams;
+	private Long competitionId;
+	private Set<Long> teamIds;
 	private String result;
 	
 }
