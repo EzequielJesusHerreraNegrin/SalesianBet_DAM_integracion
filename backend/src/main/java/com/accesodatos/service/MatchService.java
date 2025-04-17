@@ -6,7 +6,6 @@ import java.util.List;
 import com.accesodatos.dto.match.MatchRequestDto;
 import com.accesodatos.dto.match.MatchRequestUpdateDto;
 import com.accesodatos.dto.match.MatchResponseDto;
-import com.accesodatos.entity.Match;
 
 public interface MatchService {
 
