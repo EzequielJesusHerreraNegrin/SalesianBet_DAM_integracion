@@ -48,10 +48,9 @@ public class Match {
 	@CreationTimestamp
 	private LocalDateTime date;
 	
-	@Column(nullable = false)
 	private Boolean is_playing;
 	
-	@Column(length = 40, nullable = false)
+	@Column(length = 40)
 	private String result;
 	
 	@ManyToMany(

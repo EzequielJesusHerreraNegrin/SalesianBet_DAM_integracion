@@ -78,6 +78,11 @@ public class MatchServiceImpl implements MatchService {
 		createdMatch.setDate(matchRequestDto.getDate());
 		createdMatch.setTeams(teams);
 		
+		if (createdMatch.getIs_playing() == null && createdMatch.getResult() == null) {
+			createdMatch.setIs_playing(false);
+			createdMatch.setResult("");
+		}
+		
 		Match savedMatch = matchRepository.save(createdMatch);
 		
 		return matchMapper.toMatchResponseDto(savedMatch);
