@@ -30,26 +30,26 @@ INSERT INTO teams (team_name, sport) VALUES
 ('Leganés', 'Fútbol'),
 ('RCD Espanyol', 'Fútbol'),
 -- Premier League --
-('Arsenal', 'Football'),
-('Aston Villa', 'Football'),
-('Bournemouth', 'Football'),
-('Brentford', 'Football'),
-('Brighton', 'Football'),
-('Chelsea', 'Football'),
-('Crystal Palace', 'Football'),
-('Everton', 'Football'),
-('Fulham', 'Football'),
-('Ipswich', 'Football'),
-('Leicester City', 'Football'),
-('Liverpool', 'Football'),
-('Manchester City', 'Football'),
-('Manchester United', 'Football'),
-('Newcastle', 'Football'),
-('Nottingham Forest', 'Football'),
-('Southampton', 'Football'),
-('Tottenham', 'Football'),
-('West Ham', 'Football'),
-('Wolves', 'Football'),
+('Arsenal', 'Fútbol'),
+('Aston Villa', 'Fútbol'),
+('Bournemouth', 'Fútbol'),
+('Brentford', 'Fútbol'),
+('Brighton', 'Fútbol'),
+('Chelsea', 'Fútbol'),
+('Crystal Palace', 'Fútbol'),
+('Everton', 'Fútbol'),
+('Fulham', 'Fútbol'),
+('Ipswich', 'Fútbol'),
+('Leicester City', 'Fútbol'),
+('Liverpool', 'Fútbol'),
+('Manchester City', 'Fútbol'),
+('Manchester United', 'Fútbol'),
+('Newcastle', 'Fútbol'),
+('Nottingham Forest', 'Fútbol'),
+('Southampton', 'Fútbol'),
+('Tottenham', 'Fútbol'),
+('West Ham', 'Fútbol'),
+('Wolves', 'Fútbol'),
 -- Serie A --
 ('Atalanta', 'Fútbol'),
 ('Bolonia', 'Fútbol'),
@@ -124,3 +124,41 @@ INSERT INTO teams (team_name, sport) VALUES
 ('Dinamo Zagreb', 'Fútbol'),
 ('Estrella Roja', 'Fútbol'),
 ('Slovan Bratislava', 'Fútbol');
+
+-- matches --
+INSERT INTO matches (date, is_playing, result, competition_id) VALUES  
+-- Cuartos de champions
+('2025-04-08 20:00:00', FALSE, '3 - 0', 6),  -- 1 Arsenal vs. Real Madrid
+('2025-04-08 20:00:00', FALSE, '1 - 2', 6), -- 2 Bayern Munchen vs Inter Milan
+('2025-04-09 20:00:00', FALSE, '3 - 1', 6), -- 3 PSG vs Aston Villa
+('2025-04-09 20:00:00', FALSE, '4 - 0', 6), -- 4 F.C. Barcelona vs Borussia Dortmund
+('2025-04-15 20:00:00', FALSE, '', 6), -- 5 Aston Villa vs PSG
+('2025-04-15 20:00:00', FALSE, '', 6), -- 6 Borussia Dortmund vs F.C. Barcelona 
+('2025-04-16 20:00:00', FALSE, '', 6), -- 7 Real Madrid vs Arsenal
+('2025-04-16 20:00:00', FALSE, '', 6), -- 8 Inter Milan vs Bayern Munchen  
+
+-- Jornada 31 de la liga 
+
+('2025-04-11 21:00:00', FALSE, '1 - 0', 1), -- Valencia vs Sevilla
+('2025-04-12 14:00:00', FALSE, '0 - 2', 1), -- Real Sociedad vs Mallorca
+('2025-04-12 16:15:00', FALSE, '1 - 3', 1), -- Getafe vs Las Palmas
+('2025-04-12 18:30:00', FALSE, '', 1),      -- Betis vs Villarreal
+('2025-04-12 21:00:00', FALSE, '', 1),      -- Leganés vs Barcelona
+('2025-04-13 14:00:00', FALSE, '', 1),      -- Osasuna vs Girona
+('2025-04-13 16:15:00', FALSE, '', 1),      -- Athletic Club vs Rayo Vallecano
+('2025-04-13 18:30:00', FALSE, '', 1),      -- Celta de Vigo vs Espanyol
+('2025-04-13 21:00:00', FALSE, '', 1),      -- Real Madrid vs Alavés
+('2025-04-14 21:00:00', FALSE, '', 1); 
+
+
+INSERT teams_matches (fk_match_id, fk_team_id) VALUES
+(1, 21), (1, 3),
+(2, 63), (2, 49), 
+(3, 90), (3, 22),
+(4, 1), (4, 65),
+(5, 22), (5, 90),
+(6, 65), (6, 1),
+(7, 3), (7, 21),
+(8, 49), (8, 63);
+
+
