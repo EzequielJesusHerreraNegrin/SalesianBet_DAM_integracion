@@ -27,7 +27,6 @@ public class Bet {
 	@Column(name = "bet_id")
 	private Long betId;
 	private int points;
-	private String type;
 	private String prediction;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

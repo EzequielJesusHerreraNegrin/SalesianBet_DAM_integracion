@@ -160,5 +160,3 @@ INSERT teams_matches (fk_match_id, fk_team_id) VALUES
 (6, 65), (6, 1),
 (7, 3), (7, 21),
 (8, 49), (8, 63);
-
-
