@@ -1,6 +1,7 @@
 package com.accesodatos.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,12 +46,11 @@ public class Match {
 	private Long matchId;
 	
 	@CreationTimestamp
-	private Date date;
+	private LocalDateTime date;
 	
-	@Column(nullable = false)
 	private Boolean is_playing;
 	
-	@Column(length = 40, nullable = false)
+	@Column(length = 40)
 	private String result;
 	
 	@ManyToMany(

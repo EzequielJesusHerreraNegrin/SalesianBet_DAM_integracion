@@ -1,10 +1,8 @@
 package com.accesodatos.dto.match;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
-
-import com.accesodatos.dto.competitiondto.CompetitionRequestDto;
-import com.accesodatos.dto.teamdto.TeamRequestDto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MatchRequestDto {
 
-	private Date date;
-	private CompetitionRequestDto competition;
-	private Set<TeamRequestDto> teams;
+	private LocalDateTime date;
+	private Long competitionId;
+	private Set<Long> teamIds;
 }
