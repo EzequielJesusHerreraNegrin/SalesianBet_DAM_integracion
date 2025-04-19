@@ -33,8 +33,8 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "products")
-@EqualsAndHashCode(exclude = "products")
+@ToString(exclude = {"products", "roles"})
+@EqualsAndHashCode(exclude = {"products", "roles"})
 @Table(name = "users")
 public class UserEntity {
 
@@ -93,7 +93,6 @@ public class UserEntity {
 		this.getRoles().add(rol);
 	}
 	
-	
 	public void removeRole(Role rol) {
 		this.roles.remove(rol);
 		this.getRoles().remove(rol);
@@ -110,4 +109,11 @@ public class UserEntity {
 		this.setPoints(this.points + bet.getPoints());
 		this.getBets().remove(bet);
 	}
+	
+	public void addProduct(Product product) {
+		this.products.add(product);
+		this.setPoints(this.points - product.getPrice());
+		this.getProducts().add(product);
+	}
+	
 }
