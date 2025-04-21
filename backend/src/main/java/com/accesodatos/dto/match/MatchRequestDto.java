@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class MatchRequestDto {
 
 	private LocalDateTime date;
+	private String result;
 	private Long competitionId;
-	private Set<Long> teamIds;
+	private Long homeTeamId;
+	private Long awayTeamId;
 }

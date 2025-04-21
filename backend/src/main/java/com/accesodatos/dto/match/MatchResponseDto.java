@@ -25,6 +25,7 @@ public class MatchResponseDto {
 	private LocalDateTime date;
 	private String result;
 	private CompetitionResponseDto competition;
-	private Set<TeamResponseDto> teams;
+	private TeamResponseDto homeTeam;
+	private TeamResponseDto awayTeam;
 //	private Set<Bet> bets;
 }
