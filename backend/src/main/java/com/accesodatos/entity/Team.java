@@ -46,6 +46,7 @@ public class Team {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
+	@JsonManagedReference
 	private List<Match> homeMatches = new ArrayList<>();
 	
 	@OneToMany(
@@ -53,5 +54,6 @@ public class Team {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
+	@JsonManagedReference
 	private List<Match> awayMatches = new ArrayList<>();
 }
