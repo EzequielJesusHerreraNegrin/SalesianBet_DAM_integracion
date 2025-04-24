@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "./components/navbar/Navbar";
-import Schedulebar from "./components/Schedulebar/Schedulebar";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import MatchesPage from "./pages/MatchesPage";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -9,10 +9,9 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <Schedulebar />
       <Routes>
         <Route path="/" element={<Navigate to="/matchesPage" replace/>} />
-        <Route path="/matchesPage" /* element={<MatchesPage />} */ />
+        <Route path="/matchesPage" element={<MatchesPage />} />
       </Routes>
     </Router>
   );
