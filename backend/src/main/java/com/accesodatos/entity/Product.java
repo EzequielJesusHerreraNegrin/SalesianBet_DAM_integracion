@@ -45,5 +45,4 @@ public class Product {
 			)
 	@JsonManagedReference
 	private Set<UserEntity> users = new LinkedHashSet<>();	
-	
 }

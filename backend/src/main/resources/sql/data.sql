@@ -160,3 +160,11 @@ INSERT teams_matches (fk_match_id, fk_team_id) VALUES
 (6, 65), (6, 1),
 (7, 3), (7, 21),
 (8, 49), (8, 63);
+
+-- Inserta productos en la tabla 'products'
+INSERT INTO products (product_name, product_image, price) VALUES
+('Teclado Mecánico', 'keyboard.jpg', 59),
+('Monitor 27 pulgadas', 'monitor.jpg', 199),
+('Ratón Gamer', 'mouse.jpg', 29),
+('Silla Ergonómica', 'chair.jpg', 149),
+('Auriculares Inalámbricos', 'headphones.jpg', 89);

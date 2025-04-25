@@ -5,13 +5,14 @@ import java.util.Set;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ProductResponseDto {
 
 	private String productId;
 	private String productName;
-	private String imageImage;
+	private String productImage;
 	private int price;
-	private Set<UserEntityResponseDto> user;
 }

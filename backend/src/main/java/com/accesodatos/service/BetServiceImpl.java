@@ -60,9 +60,8 @@ public class BetServiceImpl implements BetService{
 		bet.setMatch(match);
 		bet.setUser(user);
 		
-		
-		bet = betRepository.save(bet);
-		return bet != null;
+		betRepository.save(bet);
+		return true;
 	}
 
 	@Override
