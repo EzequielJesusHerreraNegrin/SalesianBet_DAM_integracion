@@ -1,0 +1,31 @@
+.table-container{
+    background-color: white;
+    width: 80%;
+    margin: auto;
+    
+}
+  
+  .competition-separator {
+    margin-top: 2rem; /* espacio entre competiciones */
+  }
+  
+  .table-competition {
+    background-color: #4caf50;
+    padding: 1.2rem 1rem;
+    color: black;
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .table-header {
+    margin: 0;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  .table-row {
+    border: 1px solid black;
+    text-align: center;
+    color: black;
+    padding: 0.75rem 1rem;
+    background-color: white;
+  }

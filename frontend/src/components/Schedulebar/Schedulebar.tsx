@@ -1,37 +1,13 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
-const Schedulebar = () => {
+interface ScheduleProps {
+  setSelectedDate: (date: string) => void;
+  formatDate: (isoDate: string) => { date: string; time: string };
+}
+
+const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
   const tabsUseRef = useRef<(HTMLDivElement | null)[]>([]);
-  let selectedDate: string;
-  const formatDate = (isoDate: string) => {
-    if (!isoDate || typeof isoDate !== "string" || !isoDate.includes("T")) {
-      return { date: "Fecha inválida", time: "Hora inválida" };
-    }
-
-    const [year, month, day] = isoDate.split("T")[0].split("-").map(Number);
-    const date: Date = new Date(year, month - 1, day);
-
-    const localDate = new Date(isoDate);
-
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    };
-
-    const formatted = date.toLocaleDateString("es-ES", options);
-    const time = localDate.toLocaleTimeString("es-ES", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-    return {
-      date: formatted.replace(".", ""),
-      time,
-    };
-  };
 
   const generateDates = () => {
     const dates = [];
@@ -58,6 +34,9 @@ const Schedulebar = () => {
 
   const handleChange = (_event: any, newValue: number) => {
     setValue(newValue);
+    const response = filterDates[newValue].isoDate
+    setSelectedDate(filterDates[newValue].isoDate);
+    console.log(response)
   };
 
   useEffect(() => {
@@ -74,16 +53,16 @@ const Schedulebar = () => {
     <div
       style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}
     >
-      <Box sx={{ maxWidth: "62.6%", display: "flex", color: "black"}}>
+      <Box sx={{ maxWidth: "62.6%", display: "flex", color: "black" }}>
         <Tabs value={value} onChange={handleChange} variant="scrollable">
           {filterDates.map((day, index) => (
             <Tab
               key={index}
-              label={ day.label }
+              label={day.label}
               sx={{
                 border: "1px solid black",
                 color: "black",
-                backgroundColor: "#f08c00"
+                backgroundColor: "#f08c00",
               }}
               ref={(tab) => {
                 tabsUseRef.current[index] = tab;

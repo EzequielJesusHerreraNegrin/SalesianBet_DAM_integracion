@@ -35,7 +35,7 @@ public class Team {
 	@Column(name = "team_id")
 	private Long teamId;
 	
-	@Column(length = 30, nullable = false)
+	@Column(length = 30, nullable = false, unique = true)
 	private String teamName;
 	
 	@Column(length = 20, nullable = false)
