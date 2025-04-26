@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService{
 	public ProductResponseDto gestProductById(Long id) {
 		Product product = productRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %id was not found.", id)));
+						"The product with id %d was not found.", id)));
 		
 		return productMapper.toProductResponseDto(product);
 	}
@@ -53,19 +53,26 @@ public class ProductServiceImpl implements ProductService{
 	public Boolean updateProduct(ProductRequestDto dto, Long id) {
 		Product product = productRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %id was not found.", id)));
+						"The product with id %d was not found.", id)));
 		
-		product.setPrice(0);
+		product.setPrice(dto.getPrice());
 		product.setProductImage(dto.getImageImage());
 		product.setProductName(dto.getProductName());
 		
-		return null;
+		productRepository.save(product);
+		
+		return true;
 	}
 
 	@Override
 	public Boolean deleteProduct(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = productRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(
+						"The product with id %d was not found.", id)));
+		
+			productRepository.deleteById(id);			
+		
+		return true;
 	}
 
 	@Override
