@@ -28,7 +28,7 @@ public class ProductController {
 
 	private static final String PRODUCT_RESOURCE = "/products";
 	private static final String PRODUCT_PATH_ID = PRODUCT_RESOURCE + "/{productId}";
-	private static final String PRODUCT_AND_USER_PATH_ID = PRODUCT_PATH_ID +"/users/{userId}";
+	private static final String PRODUCT_AND_USER_PATH_ID = PRODUCT_PATH_ID +"/users/{userId}/cart";
 	
 	@Autowired ProductServiceImpl productServiceImpl;
 	
@@ -84,8 +84,8 @@ public class ProductController {
 	@PostMapping(value = PRODUCT_AND_USER_PATH_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> buyProduct(@PathVariable Long productId, @PathVariable Long userId) {
-		Boolean added = productServiceImpl.addProductToUser(productId, userId);
+	public ResponseEntity<ApiResponseDto<Boolean>> addProductToTheCart(@PathVariable Long productId, @PathVariable Long userId) {
+		Boolean added = productServiceImpl.addProductToUserCart(productId, userId);
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
 				"Product addes to user successfuly.", HttpStatus.OK.value(), added);

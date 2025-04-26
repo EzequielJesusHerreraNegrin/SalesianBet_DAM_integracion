@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
+import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
@@ -78,19 +79,21 @@ public class ProductServiceImpl implements ProductService{
 		return true;
 	}
 
-	@Override
-	public Boolean addProductToUser(Long productId, Long userId) {
-		UserEntity user = userRepository.findById(userId).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", userId)));
-		Product product = productRepository.findById(productId).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", productId)));
-		
-		user.buyProduct(product);
-		userRepository.save(user);
-		
-		return true;
-	}
+	
+//	public Boolean addProductToUserCart(Long productId, Long userId) {
+//		UserEntity user = userRepository.findById(userId).
+//				orElseThrow(() -> new ResourceNotFoundException(String.format(
+//						"The product with id %d was not found.", userId)));
+//		Product product = productRepository.findById(productId).
+//				orElseThrow(() -> new ResourceNotFoundException(String.format(
+//						"The product with id %d was not found.", productId)));
+//		CartItem cartItem = new CartItem();
+//		cartItem.setProduct(product);
+//		cartItem.setUser(user);
+//		user.getBasket().add(cartItem);
+//		userRepository.save(user);
+//		
+//		return true;
+//	}
 
 }

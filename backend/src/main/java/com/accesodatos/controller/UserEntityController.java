@@ -53,7 +53,7 @@ public class UserEntityController {
 	public ResponseEntity<ApiResponseDto<Boolean>> createUser(@RequestBody UserEntityRegisterRequestDto dto) {
 		boolean user = userEntityServiceImpl.createUser(dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("All users fetched successfuly.", HttpStatus.CREATED.value(), user);
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("User created successfuly.", HttpStatus.CREATED.value(), user);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 	

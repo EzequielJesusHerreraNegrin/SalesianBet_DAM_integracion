@@ -59,6 +59,14 @@ public class UserEntity {
 	
 	private String Country;
 	
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	@JsonManagedReference
+	@Builder.Default
+	private List<CartItem> basket = new ArrayList<>();
 	
 	@ManyToMany(
 			fetch = FetchType.EAGER,
@@ -90,12 +98,10 @@ public class UserEntity {
 	
 	public void addRole(Role rol) {
 		this.roles.add(rol);
-		this.getRoles().add(rol);
 	}
 	
 	public void removeRole(Role rol) {
 		this.roles.remove(rol);
-		this.getRoles().remove(rol);
 	}
 	
 	public void addBet(Bet bet) {

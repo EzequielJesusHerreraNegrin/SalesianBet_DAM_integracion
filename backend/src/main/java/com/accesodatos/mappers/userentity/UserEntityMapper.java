@@ -1,6 +1,7 @@
 package com.accesodatos.mappers.userentity;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
@@ -11,6 +12,8 @@ public interface UserEntityMapper {
 
 	UserEntityResponseDto toUserEntityResponseDto (UserEntity userEntity);
 	
-	//para el registro de usuario
+	
+	@Mapping(target = "userId", ignore = true)
+	@Mapping(target = "basket", ignore = true)
 	UserEntity toUserEntity (UserEntityRegisterRequestDto dto);
 }

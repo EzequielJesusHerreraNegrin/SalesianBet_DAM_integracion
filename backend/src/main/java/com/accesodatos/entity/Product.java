@@ -3,6 +3,9 @@ package com.accesodatos.entity;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
+import com.accesodatos.entity.enums.ProductState;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +41,8 @@ public class Product {
 	private String productImage;
 	
 	private int price;
+	
+	private Enum<ProductState> state;
 	
 	@ManyToMany(
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
