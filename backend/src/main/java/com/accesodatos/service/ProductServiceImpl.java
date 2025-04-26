@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
 import com.accesodatos.entity.Product;
+import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.product.ProductMapper;
 import com.accesodatos.repository.ProductRepository;
+import com.accesodatos.repository.UserEntityRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements ProductService{
 
 	@Autowired ProductRepository productRepository;
+	@Autowired UserEntityRepository userRepository;
 	@Autowired ProductMapper productMapper;
 	
 	@Override
@@ -77,8 +80,17 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Boolean addProductToUser(Long productId, Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+		UserEntity user = userRepository.findById(userId).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(
+						"The product with id %d was not found.", userId)));
+		Product product = productRepository.findById(productId).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(
+						"The product with id %d was not found.", productId)));
+		
+		user.buyProduct(product);
+		userRepository.save(user);
+		
+		return true;
 	}
 
 }

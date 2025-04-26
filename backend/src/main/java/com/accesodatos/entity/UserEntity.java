@@ -101,19 +101,16 @@ public class UserEntity {
 	public void addBet(Bet bet) {
 		this.bets.add(bet);
 		this.setPoints(this.points - bet.getPoints());
-		this.getBets().add(bet);
 	}
 	
 	public void removeBet(Bet bet) {
 		this.bets.remove(bet);
 		this.setPoints(this.points + bet.getPoints());
-		this.getBets().remove(bet);
 	}
 	
-	public void addProduct(Product product) {
+	public void buyProduct(Product product) {
 		this.products.add(product);
 		this.setPoints(this.points - product.getPrice());
-		this.getProducts().add(product);
 	}
 	
 }

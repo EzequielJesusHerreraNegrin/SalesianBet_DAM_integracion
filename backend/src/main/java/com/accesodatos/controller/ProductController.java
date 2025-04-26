@@ -28,6 +28,7 @@ public class ProductController {
 
 	private static final String PRODUCT_RESOURCE = "/products";
 	private static final String PRODUCT_PATH_ID = PRODUCT_RESOURCE + "/{productId}";
+	private static final String PRODUCT_AND_USER_PATH_ID = PRODUCT_PATH_ID +"/users/{userId}";
 	
 	@Autowired ProductServiceImpl productServiceImpl;
 	
@@ -77,6 +78,17 @@ public class ProductController {
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
 				"Product deleted successfuly.", HttpStatus.OK.value(), deleted);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = PRODUCT_AND_USER_PATH_ID, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Boolean>> buyProduct(@PathVariable Long productId, @PathVariable Long userId) {
+		Boolean added = productServiceImpl.addProductToUser(productId, userId);
+		
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
+				"Product addes to user successfuly.", HttpStatus.OK.value(), added);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
