@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.match.MatchRequestDto;
@@ -129,6 +130,29 @@ public class MatchServiceImpl implements MatchService {
 				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
 		
 		return matches;
+	}
+
+	@Override
+	@Scheduled(fixedRate = 60000) // cada minuto
+	public void updateIsPlayingMatch() {
+		List<Match> matches = matchRepository.findAll();
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		for (Match match : matches) {
+			LocalDateTime start =  match.getDate();
+			LocalDateTime end = start.plusMinutes(90);
+			
+			if (!match.getIs_playing() && now.isAfter(start) && now.isBefore(end)) {
+				match.setIs_playing(true);
+			}
+			
+			if (match.getIs_playing() && now.isAfter(end)) {
+				match.setIs_playing(false);
+			}
+		}
+		matchRepository.saveAll(matches);
+		
 	}
 
 }

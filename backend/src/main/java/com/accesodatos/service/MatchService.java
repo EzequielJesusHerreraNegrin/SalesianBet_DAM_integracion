@@ -14,5 +14,5 @@ public interface MatchService {
 	MatchResponseDto updateMatch(Long matchId, MatchRequestDto matchRequestDto);
 	void deleteMatch(Long matchId);
 	List<MatchResponseDto> getMatchesByDateOrderByCompetition(LocalDate date);
-	
+	void updateIsPlayingMatch();
 }

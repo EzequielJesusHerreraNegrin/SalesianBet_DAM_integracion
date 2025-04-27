@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface ScheduleProps {
   setSelectedDate: (date: string) => void;
@@ -34,19 +34,26 @@ const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
 
   const handleChange = (_event: any, newValue: number) => {
     setValue(newValue);
-    const response = filterDates[newValue].isoDate
+    const response = filterDates[newValue].isoDate;
     setSelectedDate(filterDates[newValue].isoDate);
-    console.log(response)
+    console.log(response);
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      tabsUseRef.current[value]?.scrollIntoView({
-        behavior: "smooth",
+    setSelectedDate(filterDates[value].isoDate);
+  }, []);
+
+  useLayoutEffect(() => {
+    const tab = tabsUseRef.current[value]
+    if (tab) {
+      // Espera a que todo esté montado correctamente
+
+      tab.scrollIntoView({
+        behavior: "instant",
         block: "nearest",
         inline: "center",
       });
-    }, 0);
+    }
   }, [value]);
 
   return (
