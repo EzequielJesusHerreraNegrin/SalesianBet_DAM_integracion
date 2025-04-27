@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accesodatos.dto.api.ApiResponseDto;
@@ -28,7 +29,7 @@ public class ProductController {
 
 	private static final String PRODUCT_RESOURCE = "/products";
 	private static final String PRODUCT_PATH_ID = PRODUCT_RESOURCE + "/{productId}";
-	private static final String PRODUCT_AND_USER_PATH_ID = PRODUCT_PATH_ID +"/users/{userId}/cart";
+	private static final String PRODUCT_STATE = PRODUCT_PATH_ID +"/state";
 	
 	@Autowired ProductServiceImpl productServiceImpl;
 	
@@ -81,14 +82,25 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = PRODUCT_AND_USER_PATH_ID, 
+	@PutMapping(value = PRODUCT_STATE, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> addProductToTheCart(@PathVariable Long productId, @PathVariable Long userId) {
-		Boolean added = productServiceImpl.addProductToUserCart(productId, userId);
+	public ResponseEntity<ApiResponseDto<Boolean>> manageProductSate(@PathVariable long productId, @RequestParam String state) {
+		Boolean changed = productServiceImpl.manageProductSate(productId, state);
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
-				"Product addes to user successfuly.", HttpStatus.OK.value(), added);
+				"Product state updated successfuly.", HttpStatus.OK.value(), changed);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+//	@PostMapping(value = PRODUCT_AND_USER_PATH_ID, 
+//			consumes = MediaType.APPLICATION_JSON_VALUE, 
+//			produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<ApiResponseDto<Boolean>> addProductToTheCart(@PathVariable Long productId, @PathVariable Long userId) {
+//		Boolean added = productServiceImpl.addProductToUserCart(productId, userId);
+//		
+//		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
+//				"Product addes to user successfuly.", HttpStatus.OK.value(), added);
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
 }

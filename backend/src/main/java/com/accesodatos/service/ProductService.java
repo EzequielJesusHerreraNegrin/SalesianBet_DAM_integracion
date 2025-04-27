@@ -12,5 +12,5 @@ public interface ProductService {
 	Boolean createProduct(ProductRequestDto dto);
 	Boolean updateProduct(ProductRequestDto dto, Long id);
 	Boolean deleteProduct(Long id);
-	//Boolean addProductToUserCart(Long productId, Long userId);
+	Boolean manageProductSate(Long productId, String state);
 }

@@ -11,6 +11,7 @@ import com.accesodatos.dto.product.ProductResponseDto;
 import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
 import com.accesodatos.entity.UserEntity;
+import com.accesodatos.entity.enums.ProductState;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.product.ProductMapper;
 import com.accesodatos.repository.ProductRepository;
@@ -75,6 +76,24 @@ public class ProductServiceImpl implements ProductService{
 						"The product with id %d was not found.", id)));
 		
 			productRepository.deleteById(id);			
+		
+		return true;
+	}
+
+	@Override
+	public Boolean manageProductSate(Long productId, String state) {
+		Product product = productRepository.findById(productId).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(
+						"The product with id %d was not found.", productId)));
+		
+		String dinamicState = ProductState.valueOf(state).toString();
+		if ( product.getState() == ProductState.valueOf(state)) {
+			throw new IllegalArgumentException(String.format("The product has already asigned the state %s.", dinamicState));
+			
+		} else {
+			product.setState(ProductState.valueOf(state));
+			productRepository.save(product);
+		}
 		
 		return true;
 	}
