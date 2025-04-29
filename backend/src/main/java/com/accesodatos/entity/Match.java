@@ -43,7 +43,6 @@ public class Match {
 	@Column(name = "match_id")
 	private Long matchId;
 	
-	@CreationTimestamp
 	private LocalDateTime date;
 	
 	private Boolean is_playing;

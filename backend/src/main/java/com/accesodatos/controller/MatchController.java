@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.match.MatchRequestDto;
 import com.accesodatos.dto.match.MatchResponseDto;
+import com.accesodatos.dto.match.MatchResultRequestDto;
 import com.accesodatos.service.MatchServiceImpl;
 
 @RestController
@@ -91,5 +92,25 @@ public class MatchController {
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@GetMapping(value = MATCH_RESOURCE + "/ready", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<MatchResponseDto>>> getAllMatchesReadyToValidate() {
+		List<MatchResponseDto> matches = matchService.getMatchesReadyToValidate();
+		
+		ApiResponseDto<List<MatchResponseDto>> response = new ApiResponseDto<>("Matches ready to validate fetched successfully",
+				HttpStatus.OK.value(), matches);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PutMapping(value = MATCH_PATH_ID + "/validate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<MatchResponseDto>> validateMatch(@PathVariable Long matchId, @RequestBody MatchResultRequestDto matchResultRequestDto) {
+		MatchResponseDto validatedMatch = matchService.validateMatch(matchId, matchResultRequestDto);
+		
+		ApiResponseDto<MatchResponseDto> response= new ApiResponseDto<>("Match validation successfully",
+				HttpStatus.OK.value(), validatedMatch);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}	
 
 }

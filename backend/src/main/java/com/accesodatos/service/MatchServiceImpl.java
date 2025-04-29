@@ -12,14 +12,19 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.match.MatchRequestDto;
 import com.accesodatos.dto.match.MatchResponseDto;
+import com.accesodatos.dto.match.MatchResultRequestDto;
+import com.accesodatos.entity.Bet;
 import com.accesodatos.entity.Competition;
 import com.accesodatos.entity.Match;
 import com.accesodatos.entity.Team;
+import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.match.MatchMapper;
+import com.accesodatos.repository.BetRepository;
 import com.accesodatos.repository.CompetitionRepository;
 import com.accesodatos.repository.MatchRepository;
 import com.accesodatos.repository.TeamRepository;
+import com.accesodatos.repository.UserEntityRepository;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -36,9 +41,15 @@ public class MatchServiceImpl implements MatchService {
 
 	@Autowired
 	CompetitionRepository competitionRepository;
-	
+
 	@Autowired
 	TeamRepository teamRepository;
+	
+	@Autowired
+	BetRepository betRepository;
+	
+	@Autowired
+	UserEntityRepository userRepository;
 
 	private Match validateAndGetMatch(Long id) {
 		return matchRepository.findById(id)
@@ -55,7 +66,19 @@ public class MatchServiceImpl implements MatchService {
 				.orElseThrow(() -> new ResourceNotFoundException(String.format(TEAM_NOT_FOUND, id)));
 	}
 	
-	
+	private String calculatePrediction(String result) {
+		String[] goals = result.trim().split("-");
+		int homeGoals = Integer.parseInt(goals[0]);
+		int awayGoals = Integer.parseInt(goals[1]);
+		
+		if (homeGoals > awayGoals) {
+			return "LOCAL";
+		} else if (awayGoals > homeGoals) {
+			return "VISITANTE";
+		} else {
+			return "EMPATE";
+		}
+	}
 
 	@Override
 	public List<MatchResponseDto> getAllMatches() {
@@ -73,36 +96,36 @@ public class MatchServiceImpl implements MatchService {
 	@Override
 	public MatchResponseDto createMatch(MatchRequestDto matchRequestDto) {
 		Competition competition = validateAndGetCompetition(matchRequestDto.getCompetitionId());
-		
+
 		Team homeTeam = validateAndGetTeam(matchRequestDto.getHomeTeamId());
 
 		Team awayTeam = validateAndGetTeam(matchRequestDto.getAwayTeamId());
-		
+
 		Match createdMatch = new Match();
-		
+
 		createdMatch.setCompetition(competition);
 		createdMatch.setDate(matchRequestDto.getDate());
 		createdMatch.setHomeTeam(homeTeam);
 		createdMatch.setAwayTeam(awayTeam);
-		
+
 		if (createdMatch.getIs_playing() == null && createdMatch.getResult() == null) {
 			createdMatch.setIs_playing(false);
 			createdMatch.setResult("");
 		}
-		
+
 		Match savedMatch = matchRepository.save(createdMatch);
-		
+
 		return matchMapper.toMatchResponseDto(savedMatch);
 	}
 
 	@Override
 	public MatchResponseDto updateMatch(Long matchId, MatchRequestDto matchRequestDto) {
 		Competition competition = validateAndGetCompetition(matchRequestDto.getCompetitionId());
-		
+
 		Team homeTeam = validateAndGetTeam(matchRequestDto.getHomeTeamId());
 
 		Team awayTeam = validateAndGetTeam(matchRequestDto.getAwayTeamId());
-		 
+
 		Match updatedMatch = validateAndGetMatch(matchId);
 		updatedMatch.setDate(matchRequestDto.getDate());
 		updatedMatch.setCompetition(competition);
@@ -121,14 +144,14 @@ public class MatchServiceImpl implements MatchService {
 		matchRepository.delete(match);
 	}
 
-
 	@Override
 	public List<MatchResponseDto> getMatchesByDateOrderByCompetition(LocalDate date) {
 		LocalDateTime start = date.atStartOfDay();
 		LocalDateTime end = date.atTime(LocalTime.MAX);
-		List<MatchResponseDto> matches = matchRepository.findByDateBetweenOrderByCompetitionNameAscDateAsc(start, end).stream()
+		List<MatchResponseDto> matches = matchRepository.findByDateBetweenOrderByCompetitionNameAscDateAsc(start, end)
+				.stream()
 				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
-		
+
 		return matches;
 	}
 
@@ -136,23 +159,66 @@ public class MatchServiceImpl implements MatchService {
 	@Scheduled(fixedRate = 60000) // cada minuto
 	public void updateIsPlayingMatch() {
 		List<Match> matches = matchRepository.findAll();
-		
+
 		LocalDateTime now = LocalDateTime.now();
-		
+
 		for (Match match : matches) {
-			LocalDateTime start =  match.getDate();
+			LocalDateTime start = match.getDate();
 			LocalDateTime end = start.plusMinutes(90);
-			
+
 			if (!match.getIs_playing() && now.isAfter(start) && now.isBefore(end)) {
 				match.setIs_playing(true);
 			}
-			
+
 			if (match.getIs_playing() && now.isAfter(end)) {
 				match.setIs_playing(false);
 			}
 		}
 		matchRepository.saveAll(matches);
-		
+
 	}
+
+	@Override
+	public List<MatchResponseDto> getMatchesReadyToValidate() {
+		return matchRepository.findReadyToValidate(LocalDateTime.now().plusMinutes(90)).stream()
+				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
+	}
+
+	@Override
+	public MatchResponseDto validateMatch(Long matchId, MatchResultRequestDto matchResult) {
+		
+		Match match = validateAndGetMatch(matchId);
+		
+		if (match.getIs_playing()) {
+			throw new IllegalStateException("Cannot set result while match is still playing!");
+		}
+		
+		if (match.getResult() != null && !match.getResult().isBlank()) {
+			throw new IllegalStateException("Match already have a result");
+		}
+		
+		match.setResult(matchResult.getResult());
+		matchRepository.save(match);
+		
+		List<Bet> bets = betRepository.findAll();
+		
+		for (Bet bet : bets) {
+			UserEntity user = bet.getUser();
+			
+			String realPrediction = calculatePrediction(matchResult.getResult());
+			
+			if (bet.getPrediction().equalsIgnoreCase(realPrediction)) {
+				int earnings = bet.getPoints() * 2;
+				user.setPoints(user.getPoints() + earnings);
+				userRepository.save(user);
+			}
+		}
+		
+		return matchMapper.toMatchResponseDto(match);
+	}
+
+	
+	
+	
 
 }
