@@ -1,5 +1,5 @@
-import { Competition } from "./Competition";
-import { Team } from "./Team";
+import initialCompetition, { Competition } from "./Competition";
+import initialTeam, { Team } from "./Team";
 
 export type Match = {
   idMatch: number;
@@ -9,3 +9,32 @@ export type Match = {
   homeTeam: Team;
   awayTeam: Team;
 };
+
+const initialMatch: Match = {
+  idMatch: 0,
+  date: "",
+  result: "",
+  competition: initialCompetition,
+  homeTeam: initialTeam,
+  awayTeam: initialTeam,
+};
+
+export type MatchRequest = {
+  date: string;
+  result?: string;
+  competitionId: number;
+  homeTeamId: number;
+  awayTeamId: number;
+};
+
+export const initialMatchRequest: MatchRequest = {
+  date: "",
+  result: "",
+  competitionId: 0,
+  homeTeamId: 0,
+  awayTeamId: 0,
+};
+
+export default initialMatch;
+
+  

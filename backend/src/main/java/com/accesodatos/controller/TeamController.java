@@ -14,6 +14,7 @@ import com.accesodatos.dto.teamdto.TeamRequestDto;
 import com.accesodatos.dto.teamdto.TeamResponseDto;
 import com.accesodatos.service.TeamServiceImpl;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TeamController {
 
 	private static final String TEAM_RESOURCE = "/teams";

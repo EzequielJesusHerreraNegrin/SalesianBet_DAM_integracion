@@ -1,4 +1,11 @@
 export type Team = {
-  idTeam: number;
+  teamId: number;
   teamName: string;
 };
+
+const initialTeam: Team = {
+  teamId: 0,
+  teamName: "",
+};
+
+export default initialTeam;

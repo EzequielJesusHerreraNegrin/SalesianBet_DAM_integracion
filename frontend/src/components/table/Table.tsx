@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
-import { Match } from "../../type/Match";
+import initialMatch, { Match } from "../../type/Match";
 import MatchService from "../../service/match.service";
 import Loader from "../loader/Loader";
 import Message from "../message/Message";
 import "./Table.css";
+import { Link } from "react-router-dom";
 
 interface TableProps {
   selectedDate: string;
   formatDate: (isoDate: string) => { date: string; time: string };
+  setCurrentMatch: (match: Match) => void;
 }
-const Table = ({ selectedDate, formatDate }: TableProps) => {
+const Table = ({ selectedDate, formatDate, setCurrentMatch }: TableProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  let lastCompetition = "";
+
+  const handleAddMatch = () => {
+    setCurrentMatch(initialMatch);
+  };
 
   const fetchMatchesByDate = async (isoDate: String) => {
     try {
@@ -40,6 +45,11 @@ const Table = ({ selectedDate, formatDate }: TableProps) => {
 
   return (
     <div className="table-container">
+      <div className="table-button-container">
+        <Link to={"/form"} onClick={handleAddMatch} className="table-button">
+          + Crear partido
+        </Link>
+      </div>
       {(() => {
         let lastCompetition = "";
 

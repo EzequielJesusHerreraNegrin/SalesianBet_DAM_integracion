@@ -1,8 +1,13 @@
 import { useState } from "react";
 import Schedulebar from "../components/Schedulebar/Schedulebar";
 import Table from "../components/table/Table";
+import { Match } from "../type/Match";
 
-const MatchesPage = () => {
+interface matchProp {
+  setCurrentMatch: (match: Match) => void;
+}
+
+const MatchesPage = ({ setCurrentMatch }: matchProp) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const formatDate = (isoDate: string) => {
@@ -37,7 +42,11 @@ const MatchesPage = () => {
   return (
     <>
       <Schedulebar setSelectedDate={setSelectedDate} formatDate={formatDate} />
-      <Table selectedDate={selectedDate} formatDate={formatDate}/>
+      <Table
+        selectedDate={selectedDate}
+        formatDate={formatDate}
+        setCurrentMatch={setCurrentMatch}
+      />
     </>
   );
 };
