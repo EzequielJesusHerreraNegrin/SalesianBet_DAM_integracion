@@ -87,6 +87,7 @@ public class ProductServiceImpl implements ProductService{
 						"The product with id %d was not found.", productId)));
 		
 		String dinamicState = ProductState.valueOf(state).toString();
+		System.out.println("AÑAKSDÑLKAJSDÑLKJASDÑLKJAS :"+dinamicState);
 		if ( product.getState() == ProductState.valueOf(state)) {
 			throw new IllegalArgumentException(String.format("The product has already asigned the state %s.", dinamicState));
 			

@@ -83,11 +83,10 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = PRODUCT_STATE, 
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> manageProductSate(@PathVariable long productId, @RequestParam String state) {
-		Boolean changed = productServiceImpl.manageProductSate(productId, state);
-		
+	public ResponseEntity<ApiResponseDto<Boolean>> manageProductSate(@PathVariable long productId, @RequestParam String value) {
+		System.out.println("AÑAKSDÑLKAJSDÑLKJASDÑLKJAS :"+value);
+		Boolean changed = productServiceImpl.manageProductSate(productId, value);
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
 				"Product state updated successfuly.", HttpStatus.OK.value(), changed);
 		return new ResponseEntity<>(response, HttpStatus.OK);
