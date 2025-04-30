@@ -14,7 +14,7 @@ public class ProductRequestDto {
 
 	private String productName;
 	private String imageImage;
-	private Enum<ProductState> state;
+	private ProductState state;
 	private int price;
 	private Long userId;
 }

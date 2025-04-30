@@ -161,10 +161,17 @@ INSERT teams_matches (fk_match_id, fk_team_id) VALUES
 (7, 3), (7, 21),
 (8, 49), (8, 63);
 
+INSERT INTO users (user_id, user_name, password, email, dni, points, country) VALUES
+(1, 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
+(2, 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
+(3, 'lucasfernandez', 'pass123', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
+(4, 'analopez', 'qwerty', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
+(5, 'carlossanchez', 'admin123', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
+
 -- Inserta productos en la tabla 'products'
-INSERT INTO products (product_name, product_image, price) VALUES
-('Teclado Mecánico', 'keyboard.jpg', 59),
-('Monitor 27 pulgadas', 'monitor.jpg', 199),
-('Ratón Gamer', 'mouse.jpg', 29),
-('Silla Ergonómica', 'chair.jpg', 149),
-('Auriculares Inalámbricos', 'headphones.jpg', 89);
+INSERT INTO products (product_name, product_image, price, state) VALUES
+('Teclado Mecánico', 'keyboard.jpg', 59, 'PUBLICO'),
+('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
+('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
+('Silla Ergonómica', 'chair.jpg', 149, 'PUBLICO'),
+('Auriculares Inalámbricos', 'headphones.jpg', 89, 'PUBLICO');

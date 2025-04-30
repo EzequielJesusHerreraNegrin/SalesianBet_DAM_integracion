@@ -15,6 +15,6 @@ public class ProductResponseDto {
 	private String productId;
 	private String productName;
 	private String productImage;
-	private Enum<ProductState> state;
+	private ProductState state;
 	private int price;
 }
