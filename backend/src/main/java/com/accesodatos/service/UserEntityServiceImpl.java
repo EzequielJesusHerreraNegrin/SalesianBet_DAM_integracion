@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accesodatos.dto.product.ProductResponseDto;
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
 import com.accesodatos.entity.UserEntity;
@@ -48,6 +49,12 @@ public class UserEntityServiceImpl implements UserEntityService{
 		user = userEntityRepository.save(user);
 		
 		return user != null ;
+	}
+
+	@Override
+	public List<ProductResponseDto> getUserBoughtProducts(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

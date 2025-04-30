@@ -1,8 +1,5 @@
 package com.accesodatos.dto.product;
 
-import java.util.Set;
-
-import com.accesodatos.dto.userentity.UserEntityResponseDto;
 import com.accesodatos.entity.enums.ProductState;
 
 import lombok.Data;
