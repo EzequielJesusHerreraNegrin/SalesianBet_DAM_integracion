@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
+import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
 import com.accesodatos.entity.enums.ProductState;
 import com.accesodatos.exception.ResourceNotFoundException;
@@ -25,6 +26,8 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired UserEntityRepository userRepository;
 	@Autowired ProductMapper productMapper;
 	
+	private final String PRODUCT_NOT_FOUND = "Product with id %d was not found.";
+	
 	@Override
 	public List<ProductResponseDto> getAllProducts() {
 		List<Product> products = productRepository.findAll();
@@ -33,9 +36,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public ProductResponseDto gestProductById(Long id) {
-		Product product = productRepository.findById(id).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", id)));
+		Product product = validateAndGetProduct(id);
 		
 		return productMapper.toProductResponseDto(product);
 	}
@@ -55,9 +56,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Boolean updateProduct(ProductRequestDto dto, Long id) {
-		Product product = productRepository.findById(id).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", id)));
+		Product product = validateAndGetProduct(id);
 		
 		product.setPrice(dto.getPrice());
 		product.setProductImage(dto.getImageImage());
@@ -71,9 +70,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Boolean deleteProduct(Long id) {
-		Product product = productRepository.findById(id).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", id)));
+		Product product = validateAndGetProduct(id);
 		
 			productRepository.deleteById(id);			
 		
@@ -82,9 +79,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Boolean manageProductSate(Long productId, String state) {
-		Product product = productRepository.findById(productId).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(
-						"The product with id %d was not found.", productId)));
+		Product product = validateAndGetProduct(productId);
 		
 		String dinamicState = ProductState.valueOf(state).toString();
 		System.out.println("AÑAKSDÑLKAJSDÑLKJASDÑLKJAS :"+dinamicState);
@@ -98,22 +93,10 @@ public class ProductServiceImpl implements ProductService{
 		
 		return true;
 	}
-
 	
-//	public Boolean addProductToUserCart(Long productId, Long userId) {
-//		UserEntity user = userRepository.findById(userId).
-//				orElseThrow(() -> new ResourceNotFoundException(String.format(
-//						"The product with id %d was not found.", userId)));
-//		Product product = productRepository.findById(productId).
-//				orElseThrow(() -> new ResourceNotFoundException(String.format(
-//						"The product with id %d was not found.", productId)));
-//		CartItem cartItem = new CartItem();
-//		cartItem.setProduct(product);
-//		cartItem.setUser(user);
-//		user.getBasket().add(cartItem);
-//		userRepository.save(user);
-//		
-//		return true;
-//	}
+	public Product validateAndGetProduct(Long id) {
+		return productRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(PRODUCT_NOT_FOUND, id)));
+	}
 
 }

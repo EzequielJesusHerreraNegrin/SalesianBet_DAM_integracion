@@ -1,5 +1,6 @@
 package com.accesodatos.mappers.product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -21,6 +22,17 @@ public interface ProductMapper {
 	@Mapping(target = "productId", ignore = true)
 	Product toProduct(ProductRequestDto dto);
 	
-	@Mapping(target = "cuantity", ignore = true)
-	List<Product> toProducts(List<CartItemRequestDto> dtos);
+//	default List<Product> toProducts(List<CartItemRequestDto> dtos) {
+//        List<Product> products = new ArrayList<>();
+//
+//        for (CartItemRequestDto dto : dtos) {
+//            int quantity = dto.getCuantity() > 0 ? dto.getCuantity() : 1;
+//
+//            for (int i = 0; i < quantity; i++) {
+//                //products.add();
+//            }
+//        }
+//        return products;
+//    }
+	
 }

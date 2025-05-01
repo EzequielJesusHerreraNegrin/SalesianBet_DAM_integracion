@@ -1,5 +1,6 @@
 package com.accesodatos.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +13,9 @@ import com.accesodatos.dto.cartitem.CartItemResponseDto;
 import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
 import com.accesodatos.entity.UserEntity;
+import com.accesodatos.exception.NotEnoughPointsException;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.CartItemMapper;
-import com.accesodatos.mappers.product.ProductMapper;
 import com.accesodatos.repository.CartItemRepository;
 import com.accesodatos.repository.UserEntityRepository;
 
@@ -27,11 +28,12 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired private CartItemRepository cartItemRepository;
 	@Autowired private CartItemMapper cartItemMapper;
 	@Autowired private UserEntityRepository userEntityRepository;
-	@Autowired private ProductMapper productMapper;
+	@Autowired private ProductServiceImpl productServiceImpl;
 //	@Autowired private ;
 	
 	private final String CARTITEM_NOT_FOUND = "CartItem with id %d was not found.";
 	private final String USER_NOT_FOUND = "User with id %d was not found.";
+	private final String USER_FAIL_PURCHASE = "User purchase fail due to basket total price is higher than the points he owns.";
 	
 	
 	@Override
@@ -53,30 +55,36 @@ public class CartItemServiceImpl implements CartItemService{
 	@Transactional
 	public Boolean buyCartItems(List<CartItemRequestDto> cartItems, Long userId) {
 		UserEntity user = validateAndGetUser(userId);
+		List<Product> purchase = new ArrayList<>();
 		int cartPrice = 0;
 		
 		for (CartItemRequestDto item : cartItems) {
-			int cuantity = item.getCuantity() > 1 ? item.getCuantity() : null;
-			cartPrice = cartPrice + item.getProduct().getPrice() * cuantity;
+			Product product = productServiceImpl.validateAndGetProduct(item.getProductId());
+			cartPrice = cartPrice + product.getPrice() * item.getCuantity();
+			purchase.add(product);
 		}
 		
-		if (user.getPoints() > cartPrice) {
-			List<Product> products = productMapper.toProducts(cartItems);
-			products.forEach((product) -> user.buyProduct(product));
-			
+		if (user.getPoints() >= cartPrice) {
+			purchase.forEach((product) -> user.buyProduct(product));
+		} else {
+			throw new NotEnoughPointsException(USER_FAIL_PURCHASE);
 		}
-		
-		return null;
+		user.getBasket().clear();
+		return true;
 	}
 	@Override
 	public Boolean deleteCartItem(Long cartitemId) {
-		// TODO Auto-generated method stub
-		return null;
+		cartItemRepository.deleteById(cartitemId);
+		return true;
 	}
 	@Override
-	public Boolean updateCartItem(Long cartitemId, CartItemRequestDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean updateCartItem(Long userId, CartItemRequestDto dto) {
+		UserEntity user =  validateAndGetUser(userId);
+		CartItem item =  cartItemMapper.toCartItem(dto);
+		user.getBasket().stream().map((cartItem) -> cartItem.getProduct().getProductId() == dto.getProductId());
+		item.setCuantity(dto.getCuantity());
+		cartItemRepository.save(item);
+		return true;
 	}
 	
 	private CartItem validateAndGetCartItem(Long id) {
