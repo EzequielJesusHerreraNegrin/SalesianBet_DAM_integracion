@@ -10,5 +10,5 @@ public class UserEntityResponseDto {
 	private String email;
 	private String dni;
 	private int points;
-	private String Country;
+	private String country;
 }

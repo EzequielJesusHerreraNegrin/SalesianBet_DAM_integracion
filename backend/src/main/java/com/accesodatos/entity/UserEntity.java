@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -57,7 +56,7 @@ public class UserEntity {
 	
 	private int points;
 	
-	private String Country;
+	private String country;
 	
 	@OneToMany(
 			mappedBy = "user",
@@ -89,10 +88,10 @@ public class UserEntity {
 	@Builder.Default
 	private List<Bet> bets = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "users_products", joinColumns = @JoinColumn(name = "fk_user_id"),
-	inverseJoinColumns = @JoinColumn(name = "fk_product_id"))
-	@JsonBackReference
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "user_product",
+	           joinColumns = @JoinColumn(name = "user_id"),
+	           inverseJoinColumns = @JoinColumn(name = "product_id"))
 	@Builder.Default
 	private Set<Product> products = new LinkedHashSet<>();
 	
@@ -116,6 +115,7 @@ public class UserEntity {
 	
 	public void buyProduct(Product product) {
 		this.products.add(product);
+		product.getUsers().add(this);
 		this.setPoints(this.points - product.getPrice());
 	}
 	

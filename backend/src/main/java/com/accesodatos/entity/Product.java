@@ -3,10 +3,7 @@ package com.accesodatos.entity;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 import com.accesodatos.entity.enums.ProductState;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -51,6 +48,5 @@ public class Product {
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
 			mappedBy = "products"
 			)
-	@JsonManagedReference
 	private Set<UserEntity> users = new LinkedHashSet<>();	
 }

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
-import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
-import com.accesodatos.entity.UserEntity;
 import com.accesodatos.entity.enums.ProductState;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.product.ProductMapper;
@@ -49,6 +47,7 @@ public class ProductServiceImpl implements ProductService{
 		newProduct.setPrice(dto.getPrice());
 		newProduct.setProductImage(dto.getImageImage());
 		newProduct.setProductName(dto.getProductName());
+		newProduct.setState(dto.getState());
 		
 		productRepository.save(newProduct);
 		return true;
@@ -63,6 +62,7 @@ public class ProductServiceImpl implements ProductService{
 		product.setPrice(dto.getPrice());
 		product.setProductImage(dto.getImageImage());
 		product.setProductName(dto.getProductName());
+		product.setState(dto.getState());
 		
 		productRepository.save(product);
 		

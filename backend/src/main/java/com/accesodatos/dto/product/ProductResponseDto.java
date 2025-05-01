@@ -16,5 +16,6 @@ public class ProductResponseDto {
 	private String productName;
 	private String productImage;
 	private ProductState state;
+	private Set<UserEntityResponseDto> users;
 	private int price;
 }
