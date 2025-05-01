@@ -7,11 +7,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import MatchesPage from "./pages/MatchesPage";
-import MatchModal from "./components/modal/create/matchModal";
+import MatchModal from "./components/modal/create/MatchModal";
 import initialMatch, { Match } from "./type/Match";
 
 function App() {
   const [currentMatch, setCurrentMatch] = useState<Match>(initialMatch);
+  const [isCreating, setIsCreating] = useState<boolean>(true);
+
   return (
     <Router>
       <Navbar />
@@ -19,12 +21,18 @@ function App() {
         <Route path="/" element={<Navigate to="/matchesPage" replace />} />
         <Route
           path="/matchesPage"
-          element={<MatchesPage setCurrentMatch={setCurrentMatch} />}
+          element={
+            <MatchesPage
+              setIsCreating={setIsCreating}
+              setCurrentMatch={setCurrentMatch}
+            />
+          }
         />
         <Route
           path="/form"
           element={
             <MatchModal
+            isCreating={isCreating} 
               currentMatch={currentMatch}
               setCurrentMatch={setCurrentMatch}
             />

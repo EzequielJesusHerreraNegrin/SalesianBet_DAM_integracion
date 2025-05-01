@@ -37,10 +37,28 @@
   }
   
   .table-row {
+    display: flex;
+    align-items: center;
     border: 3px solid black;
     text-align: center;
     color: black;
     font-size: 20px;
     padding: 0.75rem 1rem;
     background-color: white;
+  }
+
+  .match-cell {
+    flex: 1;
+  }
+  
+  .match-cell.home {
+    text-align: right;
+  }
+  
+  .match-cell.away {
+    text-align: left;
+  }
+
+  .match-cell.center{
+    max-width: 90px;
   }

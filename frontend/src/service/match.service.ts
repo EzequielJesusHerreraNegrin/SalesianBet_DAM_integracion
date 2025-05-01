@@ -19,10 +19,16 @@ const createMatch = async (match: MatchRequest) => {
   return response.data;
 };
 
+const updateMatch = async (idMatch: number, match: MatchRequest) => {
+  const response = await axios.put(`${API_URL}/matches/${idMatch}`, match);
+  return response.data;
+};
+
 const MatchService = {
   getMatchesByDate,
   getMatchById,
   createMatch,
+  updateMatch,
 };
 
 export default MatchService;

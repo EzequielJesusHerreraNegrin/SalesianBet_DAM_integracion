@@ -10,14 +10,26 @@ interface TableProps {
   selectedDate: string;
   formatDate: (isoDate: string) => { date: string; time: string };
   setCurrentMatch: (match: Match) => void;
+  setIsCreating: (value: boolean) => void;
 }
-const Table = ({ selectedDate, formatDate, setCurrentMatch }: TableProps) => {
+const Table = ({
+  setIsCreating,
+  selectedDate,
+  formatDate,
+  setCurrentMatch,
+}: TableProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleAddMatch = () => {
+    setIsCreating(true);
     setCurrentMatch(initialMatch);
+  };
+
+  const handleEditMatch = (match: Match) => {
+    setIsCreating(false);
+    setCurrentMatch(match);
   };
 
   const fetchMatchesByDate = async (isoDate: String) => {
@@ -61,7 +73,7 @@ const Table = ({ selectedDate, formatDate, setCurrentMatch }: TableProps) => {
 
           return (
             <div
-              key={match.idMatch}
+              key={match.matchId}
               className={` ${
                 showCompetitionTitle ? "competition-separator" : ""
               }`}
@@ -73,9 +85,16 @@ const Table = ({ selectedDate, formatDate, setCurrentMatch }: TableProps) => {
               )}
 
               <div className="table-row">
-                {match.result === ""
-                  ? `${match.homeTeam.teamName} ${time} ${match.awayTeam.teamName}`
-                  : `${match.homeTeam.teamName} ${match.result} ${match.awayTeam.teamName}`}
+                <div className="match-cell home">{match.homeTeam.teamName}</div>
+                <div className="match-cell center">
+                  {match.result === null || match.result === ""
+                    ? time
+                    : match.result}
+                </div>
+                <div className="match-cell away">{match.awayTeam.teamName}</div>
+                <Link to={"/form"} onClick={() => handleEditMatch(match)}>
+                  edit
+                </Link>
               </div>
             </div>
           );

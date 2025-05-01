@@ -50,17 +50,6 @@ public class Match {
 	@Column(length = 40)
 	private String result;
 	
-//	@ManyToMany(
-//			fetch = FetchType.LAZY,
-//			cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-//			)
-//	@JoinTable(
-//			name = "teams_matches",
-//			joinColumns = @JoinColumn(name = "fk_match_id"),
-//			inverseJoinColumns = @JoinColumn(name = "fk_team_id")
-//			)
-//	@JsonBackReference
-//	private List<Team> teams = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "home_team_id", nullable = false)

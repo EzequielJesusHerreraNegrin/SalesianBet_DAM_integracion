@@ -2,7 +2,7 @@ import initialCompetition, { Competition } from "./Competition";
 import initialTeam, { Team } from "./Team";
 
 export type Match = {
-  idMatch: number;
+  matchId: number;
   date: string;
   result: string;
   competition: Competition;
@@ -11,7 +11,7 @@ export type Match = {
 };
 
 const initialMatch: Match = {
-  idMatch: 0,
+  matchId: 0,
   date: "",
   result: "",
   competition: initialCompetition,
@@ -36,5 +36,3 @@ export const initialMatchRequest: MatchRequest = {
 };
 
 export default initialMatch;
-
-  
