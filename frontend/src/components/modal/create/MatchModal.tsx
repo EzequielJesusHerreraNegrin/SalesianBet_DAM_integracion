@@ -8,6 +8,7 @@ import { Team } from "../../../type/Team";
 import { CompetitionService } from "../../../service/competition.service";
 import { TeamService } from "../../../service/team.service";
 import "./MatchModal.css";
+import { Link } from "react-router-dom";
 
 export interface formMatchProps {
   currentMatch: Match;
@@ -102,120 +103,124 @@ const MatchModal = ({
     <div className="formMatch-container">
       <Toaster />
       <h2 className="formMatch-title">Nuevo partido</h2>
-      <div className="formMatch-form">
-        <form onSubmit={handleSubmit}>
-          <div className="formMatch-input">
-            <label htmlFor="date">Fecha</label>
-            <input
-              type="datetime-local"
-              name="date"
-              id="date"
-              onChange={handleChange}
-              value={currentMatch.date}
-            />
-          </div>
+      <form onSubmit={handleSubmit}>
+        <div className="formMatch-input">
+          <label htmlFor="date">Fecha</label>
+          <input
+            type="datetime-local"
+            name="date"
+            id="date"
+            onChange={handleChange}
+            value={currentMatch.date}
+          />
+        </div>
+        <div className="formMatch-select">
+          <label htmlFor="competition">Competición</label>
+          <select
+            name="competition"
+            value={currentMatch.competition?.competitionId || ""}
+            onChange={(e) => {
+              const selectedId = Number(e.target.value);
+              const selected = competitions.find(
+                (c) => c.competitionId === selectedId
+              );
+
+              if (!selected) {
+                console.warn("Competición no encontrada");
+                return;
+              }
+
+              setCurrentMatch({
+                ...currentMatch,
+                competition: selected,
+              });
+            }}
+          >
+            <option value="">Selecciona la competición</option>
+            {competitions.map((c) => (
+              <option key={c.competitionId} value={c.competitionId}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="formMatch-teams">
           <div className="formMatch-select">
-            <label htmlFor="competition">Competición</label>
+            <label htmlFor="homeTeam">Equipo Local</label>
             <select
-              name="competition"
-              value={currentMatch.competition?.competitionId || ""}
+              name="homeTeam"
+              value={currentMatch.homeTeam.teamId}
               onChange={(e) => {
                 const selectedId = Number(e.target.value);
-                const selected = competitions.find(
-                  (c) => c.competitionId === selectedId
-                );
+                const selected = teams.find((t) => t.teamId === selectedId);
+                if (!selected) return;
 
-                if (!selected) {
-                  console.warn("Competición no encontrada");
+                if (selected.teamId === currentMatch.awayTeam.teamId) {
+                  toast.error(
+                    "El equipo local no puede ser igual que el visitante"
+                  );
                   return;
                 }
 
                 setCurrentMatch({
                   ...currentMatch,
-                  competition: selected,
+                  homeTeam: selected,
                 });
               }}
             >
-              <option value="">Selecciona la competición</option>
-              {competitions.map((c) => (
-                <option key={c.competitionId} value={c.competitionId}>
-                  {c.name}
+              <option value={0}>Selecciona el equipo</option>
+              {teams.map((team) => (
+                <option key={team.teamId} value={team.teamId}>
+                  {team.teamName}
                 </option>
               ))}
             </select>
           </div>
-          <div className="formMatch-teams">
-            <div className="formMatch-select">
-              <label htmlFor="homeTeam">Equipo Local</label>
-              <select
-                name="homeTeam"
-                value={currentMatch.homeTeam.teamId}
-                onChange={(e) => {
-                  const selectedId = Number(e.target.value);
-                  const selected = teams.find((t) => t.teamId === selectedId);
-                  if (!selected) return;
+          <div className="formMatch-select">
+            <label htmlFor="awayTeam">Equipo Visitante</label>
+            <select
+              name="awayTeam"
+              value={currentMatch.awayTeam.teamId}
+              onChange={(e) => {
+                const selectedId = Number(e.target.value);
+                const selected = teams.find((t) => t.teamId === selectedId);
+                if (!selected) {
+                  console.log("No hay nada seleccionado" + selected);
+                  return;
+                }
 
-                  if (selected.teamId === currentMatch.awayTeam.teamId) {
-                    toast.error(
-                      "El equipo local no puede ser igual que el visitante"
-                    );
-                    return;
-                  }
+                if (selected.teamId === currentMatch.homeTeam.teamId) {
+                  toast.error(
+                    "El equipo visitante no puede ser igual que el local"
+                  );
+                  return;
+                }
 
-                  setCurrentMatch({
-                    ...currentMatch,
-                    homeTeam: selected,
-                  });
-                }}
-              >
-                <option value={0}>Selecciona el equipo</option>
-                {teams.map((team) => (
-                  <option key={team.teamId} value={team.teamId}>
-                    {team.teamName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="formMatch-select">
-              <label htmlFor="awayTeam">Equipo Visitante</label>
-              <select
-                name="awayTeam"
-                value={currentMatch.awayTeam.teamId}
-                onChange={(e) => {
-                  const selectedId = Number(e.target.value);
-                  const selected = teams.find((t) => t.teamId === selectedId);
-                  if (!selected) {
-                    console.log("No hay nada seleccionado" + selected);
-                    return;
-                  }
-
-                  if (selected.teamId === currentMatch.homeTeam.teamId) {
-                    toast.error(
-                      "El equipo visitante no puede ser igual que el local"
-                    );
-                    return;
-                  }
-
-                  setCurrentMatch({
-                    ...currentMatch,
-                    awayTeam: selected,
-                  });
-                }}
-              >
-                <option value={0}>Selecciona el equipo</option>
-                {teams.map((team) => (
-                  <option key={team.teamId} value={team.teamId}>
-                    {team.teamName}
-                  </option>
-                ))}
-              </select>
-            </div>
+                setCurrentMatch({
+                  ...currentMatch,
+                  awayTeam: selected,
+                });
+              }}
+            >
+              <option value={0}>Selecciona el equipo</option>
+              {teams.map((team) => (
+                <option key={team.teamId} value={team.teamId}>
+                  {team.teamName}
+                </option>
+              ))}
+            </select>
           </div>
+        </div>
+        <div className="formMatch-buttons">
           <button className="formMatch-button" type="submit">
             {isCreating ? "Crear partido" : "Editar partido"}
           </button>
-        </form>
-      </div>
+
+          <Link to={"/"} className="formMatch-button-cancel">
+            Cancelar
+          </Link>
+        </div>
+      </form>
     </div>
   );
 };

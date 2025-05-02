@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 const Message = ({ msg, bgColor }: any) => {
     const styles: any = {
       padding: '1rem',

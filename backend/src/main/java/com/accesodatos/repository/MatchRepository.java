@@ -16,6 +16,6 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	List<Match> findByDateBetweenOrderByCompetitionNameAscDateAsc(LocalDateTime start, LocalDateTime end);
 	
-	@Query("SELECT m FROM Match m WHERE m.is_playing = false AND m.date <= :ninetyMinutes")
+	@Query("SELECT m FROM Match m WHERE m.is_playing = false AND m.date <= :ninetyMinutes AND (m.result IS NULL OR m.result = '')")
 	List<Match> findReadyToValidate(@Param("ninetyMinutes") LocalDateTime ninetyMinutes);
 }

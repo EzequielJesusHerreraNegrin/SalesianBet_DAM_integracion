@@ -1,9 +1,8 @@
 .formMatch-container{
-    justify-items: center;
     margin: auto;
     margin-top: 5rem;
     background-color: #c0eb75;
-    width: 20%;
+    width: 23%;
     padding: 20px;
     padding-top: 0;
     color: black;
@@ -17,23 +16,74 @@
     position: relative;
     top: -20px;
     background-color: #2f9e44;
-    padding: 10px 20px;
+    padding: 10px;
     margin: 0;
     border-radius: 20px;
     border: 3px solid black;
+    text-align: center;
 }
-.formMatch-form{
 
+input{
+    background-color: #d9f3ae;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 10px;
 }
+
+select{
+    background-color: #d9f3ae;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 10px;
+}
+
 .formMatch-input{
-
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
 }
+
 .formMatch-select{
-
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
 }
+
 .formMatch-teams{
+    display: flex;
+    justify-content: center;
+}
+
+.formMatch-teams{
+    display: flex;
     
 }
-.formMatch-button{
 
+.formMatch-buttons{
+    display: flex;
+    justify-content: space-around;
+}
+
+.formMatch-button{
+    margin-top: 20px;
+    background-color: #2f9e44;
+    border: 3px solid black;
+    font-weight: 600;
+    color: black;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.formMatch-button-cancel{
+    margin-top: 20px;
+    background-color: rgba(255, 0, 0, 0.671);
+    border: 3px solid black;
+    font-weight: bold;
+    color: black;
+    padding: 10px 20px;
+    font-size: 14px;
 }

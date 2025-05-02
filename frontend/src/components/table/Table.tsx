@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import initialMatch, { Match } from "../../type/Match";
 import MatchService from "../../service/match.service";
 import Loader from "../loader/Loader";
-import Message from "../message/Message";
 import "./Table.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface TableProps {
   selectedDate: string;
@@ -12,6 +11,7 @@ interface TableProps {
   setCurrentMatch: (match: Match) => void;
   setIsCreating: (value: boolean) => void;
 }
+
 const Table = ({
   setIsCreating,
   selectedDate,
@@ -19,49 +19,61 @@ const Table = ({
   setCurrentMatch,
 }: TableProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
-  const [error, setError] = useState<String | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [matchesReady, setMatchesReady] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleAddMatch = () => {
     setIsCreating(true);
     setCurrentMatch(initialMatch);
+    navigate("/matchForm");
   };
 
   const handleEditMatch = (match: Match) => {
     setIsCreating(false);
     setCurrentMatch(match);
+    navigate("/matchForm");
   };
 
-  const fetchMatchesByDate = async (isoDate: String) => {
+  const fetchMatches = async (isoDate: string) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const data = await MatchService.getMatchesByDate(isoDate);
-      console.log(data);
+      const data = matchesReady
+        ? await MatchService.getMatchesReadyToValidate()
+        : await MatchService.getMatchesByDate(isoDate);
       setMatches(data);
-      setError(null);
-    } catch ({ err }: any) {
+    } catch (err) {
       console.error(err);
-      setError(err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // console.log(selectedDate)
-    fetchMatchesByDate(selectedDate);
-  }, [selectedDate]);
+    fetchMatches(selectedDate);
+  }, [selectedDate, matchesReady]);
 
   if (loading) return <Loader />;
-  if (error) return <Message />;
 
   return (
     <div className="table-container">
       <div className="table-button-container">
-        <Link to={"/form"} onClick={handleAddMatch} className="table-button">
+        <button onClick={handleAddMatch} className="table-button">
           + Crear partido
-        </Link>
+        </button>
+        <button
+          className="table-button"
+          onClick={() => setMatchesReady((prev) => !prev)}
+          style={{
+            backgroundColor: matchesReady
+              ? "rgba(255, 0, 0, 0.671)"
+              : "#2f9e44",
+          }}
+        >
+          {matchesReady ? "Salir" : "Partidos a validar"}
+        </button>
       </div>
+
       {(() => {
         let lastCompetition = "";
 
@@ -74,7 +86,7 @@ const Table = ({
           return (
             <div
               key={match.matchId}
-              className={` ${
+              className={`${
                 showCompetitionTitle ? "competition-separator" : ""
               }`}
             >
@@ -87,14 +99,12 @@ const Table = ({
               <div className="table-row">
                 <div className="match-cell home">{match.homeTeam.teamName}</div>
                 <div className="match-cell center">
-                  {match.result === null || match.result === ""
-                    ? time
-                    : match.result}
+                  {match.result ? match.result : time}
                 </div>
                 <div className="match-cell away">{match.awayTeam.teamName}</div>
-                <Link to={"/form"} onClick={() => handleEditMatch(match)}>
-                  edit
-                </Link>
+                <button onClick={() => handleEditMatch(match)}>
+                  {matchesReady ? "Validar" : "Editar"}
+                </button>
               </div>
             </div>
           );

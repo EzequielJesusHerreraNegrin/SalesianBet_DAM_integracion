@@ -29,7 +29,7 @@ function App() {
           }
         />
         <Route
-          path="/form"
+          path="/matchForm"
           element={
             <MatchModal
             isCreating={isCreating} 

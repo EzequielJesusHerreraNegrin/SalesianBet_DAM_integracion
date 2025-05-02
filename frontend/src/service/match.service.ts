@@ -24,11 +24,17 @@ const updateMatch = async (idMatch: number, match: MatchRequest) => {
   return response.data;
 };
 
+const getMatchesReadyToValidate = async () => {
+  const response = await axios.get(`${API_URL}/matches/ready`);
+  return response.data.data
+};
+
 const MatchService = {
   getMatchesByDate,
   getMatchById,
   createMatch,
   updateMatch,
+  getMatchesReadyToValidate
 };
 
 export default MatchService;
