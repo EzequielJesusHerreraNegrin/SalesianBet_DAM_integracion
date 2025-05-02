@@ -31,7 +31,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 
 	@Override
 	public UserEntityResponseDto getUserByEmail(String email) {
-		UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("No user with email: %t was found.", email)));
+		UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("No user with email: %s was found.", email)));
 		return entityMapper.toUserEntityResponseDto(user);
 	}
 
