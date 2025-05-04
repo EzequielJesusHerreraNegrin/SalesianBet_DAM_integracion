@@ -28,8 +28,9 @@ import com.accesodatos.service.ProductServiceImpl;
 public class ProductController {
 
 	private static final String PRODUCT_RESOURCE = "/products";
+	private static final String PRODUCT_STATE = PRODUCT_RESOURCE + "/state";
 	private static final String PRODUCT_PATH_ID = PRODUCT_RESOURCE + "/{productId}";
-	private static final String PRODUCT_STATE = PRODUCT_PATH_ID +"/state";
+	private static final String PRODUCT_ID_STATE = PRODUCT_PATH_ID +"/state";
 	
 	@Autowired ProductServiceImpl productServiceImpl;
 	
@@ -41,6 +42,16 @@ public class ProductController {
 	@GetMapping(value = PRODUCT_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getAllProducts(){
 		List<ProductResponseDto> products = productServiceImpl.getAllProducts();
+		
+		ApiResponseDto<List<ProductResponseDto>> response = 
+				new ApiResponseDto<List<ProductResponseDto>>("All products fetched successfuly",
+						HttpStatus.OK.value(), products);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = PRODUCT_STATE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getProductsByState(@RequestParam String value){
+		List<ProductResponseDto> products = productServiceImpl.getProductsByState(value);
 		
 		ApiResponseDto<List<ProductResponseDto>> response = 
 				new ApiResponseDto<List<ProductResponseDto>>("All products fetched successfuly",
@@ -82,7 +93,7 @@ public class ProductController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = PRODUCT_STATE, 
+	@PutMapping(value = PRODUCT_ID_STATE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> manageProductSate(@PathVariable long productId, @RequestParam String value) {
 		Boolean changed = productServiceImpl.manageProductSate(productId, value);

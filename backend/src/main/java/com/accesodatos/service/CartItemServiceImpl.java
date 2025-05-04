@@ -29,11 +29,10 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired private CartItemMapper cartItemMapper;
 	@Autowired private UserEntityRepository userEntityRepository;
 	@Autowired private ProductServiceImpl productServiceImpl;
-//	@Autowired private ;
 	
-	private final String CARTITEM_NOT_FOUND = "CartItem with id %d was not found.";
-	private final String USER_NOT_FOUND = "User with id %d was not found.";
-	private final String USER_FAIL_PURCHASE = "User purchase fail due to basket total price is higher than the points he owns.";
+	private static final String CARTITEM_NOT_FOUND = "CartItem with id %d was not found.";
+	private static final String USER_NOT_FOUND = "User with id %d was not found.";
+	private static final String USER_FAIL_PURCHASE = "User purchase fail due to basket total price is higher than the points he owns.";
 	
 	
 	@Override
@@ -65,7 +64,7 @@ public class CartItemServiceImpl implements CartItemService{
 		}
 		
 		if (user.getPoints() >= cartPrice) {
-			purchase.forEach((product) -> user.buyProduct(product));
+			purchase.forEach(user::buyProduct);
 		} else {
 			throw new NotEnoughPointsException(USER_FAIL_PURCHASE);
 		}
@@ -81,7 +80,7 @@ public class CartItemServiceImpl implements CartItemService{
 	public Boolean updateCartItem(Long userId, CartItemRequestDto dto) {
 		UserEntity user =  validateAndGetUser(userId);
 		CartItem item =  cartItemMapper.toCartItem(dto);
-		user.getBasket().stream().map((cartItem) -> cartItem.getProduct().getProductId() == dto.getProductId());
+		user.getBasket().stream().map( cartItem -> cartItem.getProduct().getProductId() == dto.getProductId());
 		item.setCuantity(dto.getCuantity());
 		cartItemRepository.save(item);
 		return true;

@@ -8,9 +8,10 @@ import com.accesodatos.dto.product.ProductResponseDto;
 public interface ProductService {
 
 	List<ProductResponseDto> getAllProducts();
-	ProductResponseDto gestProductById(Long id);
+	ProductResponseDto getProductById(Long id);
 	Boolean createProduct(ProductRequestDto dto);
 	Boolean updateProduct(ProductRequestDto dto, Long id);
 	Boolean deleteProduct(Long id);
 	Boolean manageProductSate(Long productId, String state);
+	List<ProductResponseDto> getProductsByState(String state);
 }

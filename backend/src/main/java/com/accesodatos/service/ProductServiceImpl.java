@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
-import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
 import com.accesodatos.entity.enums.ProductState;
 import com.accesodatos.exception.ResourceNotFoundException;
@@ -28,6 +27,11 @@ public class ProductServiceImpl implements ProductService{
 	
 	private final String PRODUCT_NOT_FOUND = "Product with id %d was not found.";
 	
+	public Product validateAndGetProduct(Long id) {
+		return productRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(PRODUCT_NOT_FOUND, id)));
+	}	
+	
 	@Override
 	public List<ProductResponseDto> getAllProducts() {
 		List<Product> products = productRepository.findAll();
@@ -35,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ProductResponseDto gestProductById(Long id) {
+	public ProductResponseDto getProductById(Long id) {
 		Product product = validateAndGetProduct(id);
 		
 		return productMapper.toProductResponseDto(product);
@@ -93,10 +97,17 @@ public class ProductServiceImpl implements ProductService{
 		
 		return true;
 	}
-	
-	public Product validateAndGetProduct(Long id) {
-		return productRepository.findById(id).
-				orElseThrow(() -> new ResourceNotFoundException(String.format(PRODUCT_NOT_FOUND, id)));
+
+	@Override
+	public List<ProductResponseDto> getProductsByState(String state) {
+		List<Product> products = productRepository.findByState(ProductState.valueOf(state));
+		return products.stream().map(productMapper::toProductResponseDto).collect(Collectors.toList());
 	}
 
+	public static void main(String[] args) {
+		System.out.println();
+	}
 }
+
+
+
