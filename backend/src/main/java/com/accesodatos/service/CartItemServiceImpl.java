@@ -41,12 +41,17 @@ public class CartItemServiceImpl implements CartItemService{
 		return cart.stream().map(cartItemMapper::toCartItemResponseDto).collect(Collectors.toList());
 	}
 	@Override
-	public Boolean addproductToCart(Long cartItemtId, Long userId) {
-		CartItem item = validateAndGetCartItem(cartItemtId);
+	public Boolean addproductToCart(Long userId, CartItemRequestDto dto) {
+		CartItem item = new CartItem();
 		
 		UserEntity user = validateAndGetUser(userId);
 		
+		item.setCuantity(dto.getCuantity());
+		item.setProduct(productServiceImpl.validateAndGetProduct(dto.getProductId()));
+		item.setUser(user);
 		user.getBasket().add(item);
+		
+		userEntityRepository.save(user);
 		
 		return true;
 	}
@@ -85,7 +90,7 @@ public class CartItemServiceImpl implements CartItemService{
 		cartItemRepository.save(item);
 		return true;
 	}
-	
+
 	private CartItem validateAndGetCartItem(Long id) {
 		return cartItemRepository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException(String.format(CARTITEM_NOT_FOUND, id)));

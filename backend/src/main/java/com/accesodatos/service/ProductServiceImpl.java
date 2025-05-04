@@ -74,10 +74,7 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Boolean deleteProduct(Long id) {
-		Product product = validateAndGetProduct(id);
-		
-			productRepository.deleteById(id);			
-		
+		productRepository.deleteById(id);			
 		return true;
 	}
 

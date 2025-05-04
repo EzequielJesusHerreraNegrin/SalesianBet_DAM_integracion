@@ -11,10 +11,12 @@ import com.accesodatos.entity.CartItem;
 @Mapper(componentModel = "spring")
 public interface CartItemMapper {
 
+	//@Mapping(target = "productName", source = "product.productName")
 	CartItemResponseDto toCartItemResponseDto (CartItem cartItem);
 	
 	@Mapping(target = "cartId", ignore = true)
 	@Mapping(target = "user", ignore = true)
+	@Mapping(target = "product", ignore = true)
 	CartItem toCartItem(CartItemRequestDto dto);
 	
 	
