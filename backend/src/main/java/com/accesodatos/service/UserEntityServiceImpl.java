@@ -23,6 +23,13 @@ public class UserEntityServiceImpl implements UserEntityService{
 	@Autowired UserEntityRepository userEntityRepository;
 	@Autowired UserEntityMapper entityMapper;
 	
+	private static final String USER_NOT_FOUND = "User with id %d was not found.";
+	
+	public UserEntity validateAndGetUser(Long id) {
+		return userEntityRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, id)));
+	}
+	
 	@Override
 	public List<UserEntityResponseDto> getAllUsers() {
 		List<UserEntity> users = userEntityRepository.findAll();

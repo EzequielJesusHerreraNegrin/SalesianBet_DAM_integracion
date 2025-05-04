@@ -2,7 +2,6 @@ package com.accesodatos.entity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +31,8 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"products", "roles"})
-@EqualsAndHashCode(exclude = {"products", "roles"})
+@ToString(exclude = {"purchases", "roles","bets"})
+@EqualsAndHashCode(exclude = {"purchases", "roles","bets"})
 @Table(name = "users")
 public class UserEntity {
 
@@ -88,20 +87,14 @@ public class UserEntity {
 	@Builder.Default
 	private List<Bet> bets = new ArrayList<>();
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "user_product",
-	           joinColumns = @JoinColumn(name = "user_id"),
-	           inverseJoinColumns = @JoinColumn(name = "product_id"))
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	@JsonManagedReference("user-purchases")
 	@Builder.Default
-	private Set<Product> products = new LinkedHashSet<>();
-	
-	public void addRole(Role rol) {
-		this.roles.add(rol);
-	}
-	
-	public void removeRole(Role rol) {
-		this.roles.remove(rol);
-	}
+	private List<Purchase> purchases = new ArrayList<>();
 	
 	public void addBet(Bet bet) {
 		this.bets.add(bet);
@@ -112,11 +105,5 @@ public class UserEntity {
 		this.bets.remove(bet);
 		this.setPoints(this.points + bet.getPoints());
 	}
-	
-	public void buyProduct(Product product) {
-		this.products.add(product);
-		product.getUsers().add(this);
-		this.setPoints(this.points - product.getPrice());
-	}
-	
+
 }

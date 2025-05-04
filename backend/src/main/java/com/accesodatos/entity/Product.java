@@ -1,9 +1,10 @@
 package com.accesodatos.entity;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.accesodatos.entity.enums.ProductState;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,7 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +26,8 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
+@EqualsAndHashCode(exclude = "buys")
+@ToString(exclude = "buys")
 @Table(name = "products")
 public class Product {
 
@@ -44,9 +45,11 @@ public class Product {
 	@Enumerated(EnumType.STRING)
 	private ProductState state;
 	
-	@ManyToMany(
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			mappedBy = "products"
+	@OneToMany(
+			mappedBy = "product",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
 			)
-	private Set<UserEntity> users = new LinkedHashSet<>();	
+	@JsonManagedReference("product-purchases")
+	private List<Purchase> buys = new ArrayList<>();	
 }

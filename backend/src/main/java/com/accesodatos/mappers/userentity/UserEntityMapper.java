@@ -16,6 +16,10 @@ public interface UserEntityMapper {
 	
 	@Mapping(target = "userId", ignore = true)
 	@Mapping(target = "basket", ignore = true)
+	@Mapping(target = "purchases", ignore = true)
+	@Mapping(target = "bets", ignore = true)
+	@Mapping(target = "points", ignore = true)
+	@Mapping(target = "roles", ignore = true)
 	UserEntity toUserEntity (UserEntityRegisterRequestDto dto);
 	
 	Set<UserEntityResponseDto> toUserResponseDtoSet(Set<UserEntity> users); // Para mappear la lista de usuarios del producto en el carrito.

@@ -100,10 +100,6 @@ public class ProductServiceImpl implements ProductService{
 		List<Product> products = productRepository.findByState(ProductState.valueOf(state));
 		return products.stream().map(productMapper::toProductResponseDto).collect(Collectors.toList());
 	}
-
-	public static void main(String[] args) {
-		System.out.println();
-	}
 }
 
 

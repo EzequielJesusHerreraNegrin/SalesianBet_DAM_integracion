@@ -1,8 +1,8 @@
 package com.accesodatos.dto.product;
 
-import java.util.Set;
+import java.util.List;
 
-import com.accesodatos.dto.userentity.UserEntityResponseDto;
+import com.accesodatos.dto.purchase.PurchaseResponseDto;
 import com.accesodatos.entity.enums.ProductState;
 
 import lombok.Data;
@@ -16,6 +16,6 @@ public class ProductResponseDto {
 	private String productName;
 	private String productImage;
 	private ProductState state;
-	private Set<UserEntityResponseDto> users;
+	private List<PurchaseResponseDto> buys;
 	private int price;
 }

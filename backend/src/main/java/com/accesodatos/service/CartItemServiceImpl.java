@@ -1,5 +1,6 @@
 package com.accesodatos.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,11 +13,14 @@ import com.accesodatos.dto.cartitem.CartItemRequestDto;
 import com.accesodatos.dto.cartitem.CartItemResponseDto;
 import com.accesodatos.entity.CartItem;
 import com.accesodatos.entity.Product;
+import com.accesodatos.entity.Purchase;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.NotEnoughPointsException;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.CartItemMapper;
 import com.accesodatos.repository.CartItemRepository;
+import com.accesodatos.repository.ProductRepository;
+import com.accesodatos.repository.PurchaseRespository;
 import com.accesodatos.repository.UserEntityRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 public class CartItemServiceImpl implements CartItemService{
 
 	@Autowired private CartItemRepository cartItemRepository;
+	@Autowired private PurchaseRespository purchaseRespository;
 	@Autowired private CartItemMapper cartItemMapper;
 	@Autowired private UserEntityRepository userEntityRepository;
+	@Autowired private ProductRepository productRepository;
 	@Autowired private ProductServiceImpl productServiceImpl;
 	
 	private static final String CARTITEM_NOT_FOUND = "CartItem with id %d was not found.";
@@ -40,6 +46,7 @@ public class CartItemServiceImpl implements CartItemService{
 		List<CartItem> cart = cartItemRepository.findAll();
 		return cart.stream().map(cartItemMapper::toCartItemResponseDto).collect(Collectors.toList());
 	}
+	
 	@Override
 	public Boolean addproductToCart(Long userId, CartItemRequestDto dto) {
 		CartItem item = new CartItem();
@@ -55,26 +62,51 @@ public class CartItemServiceImpl implements CartItemService{
 		
 		return true;
 	}
+	
 	@Override
 	@Transactional
-	public Boolean buyCartItems(List<CartItemRequestDto> cartItems, Long userId) {
+	public Boolean buyCartItems(Long userId) {
 		UserEntity user = validateAndGetUser(userId);
-		List<Product> purchase = new ArrayList<>();
-		int cartPrice = 0;
-		
-		for (CartItemRequestDto item : cartItems) {
-			Product product = productServiceImpl.validateAndGetProduct(item.getProductId());
-			cartPrice = cartPrice + product.getPrice() * item.getCuantity();
-			purchase.add(product);
-		}
-		
-		if (user.getPoints() >= cartPrice) {
-			purchase.forEach(user::buyProduct);
-		} else {
-			throw new NotEnoughPointsException(USER_FAIL_PURCHASE);
-		}
-		user.getBasket().clear();
-		return true;
+
+	    int cartPrice = user.getBasket().stream()
+	        .mapToInt(item -> {
+	            Product product = item.getProduct();
+	            if (product == null) {
+	                throw new IllegalStateException("Producto no encontrado en el carrito: " + item.getCartId());
+	            }
+	            return product.getPrice() * item.getCuantity();
+	        })
+	        .sum();
+
+	    if (user.getPoints() < cartPrice) {
+	        throw new NotEnoughPointsException(USER_FAIL_PURCHASE);
+	    }
+
+	    for (CartItem item : new ArrayList<>(user.getBasket())) {
+	    	Product product = item.getProduct();
+	    	//System.out.println("****************************************************: "+ product);
+	        Purchase purchase = new Purchase();
+	        purchase.setUser(user);
+	        System.out.println("****************************************************: "+ purchase.getUser().getUserId());	        
+	        purchase.setProduct(product);
+	        purchase.setQuantity(item.getCuantity());
+	        purchase.setTotalPrice(product.getPrice() * item.getCuantity());
+	        purchase.setPurchaseDate(LocalDateTime.now());
+
+	        //newPurchases.add(purchase);
+	        product.getBuys().add(purchase);
+	        user.getPurchases().add(purchase);
+	    }
+
+	    // Descontar puntos y limpiar el carrito
+	    user.setPoints(user.getPoints() - cartPrice);
+	    user.getBasket().clear();
+
+	    // Persistir cambios
+	    //purchaseRespository.saveAll(newPurchases);
+	    userEntityRepository.save(user); // Si tienes cascada, esto asegura todo
+
+	    return true;
 	}
 	@Override
 	public Boolean deleteCartItem(Long cartitemId) {
@@ -84,10 +116,15 @@ public class CartItemServiceImpl implements CartItemService{
 	@Override
 	public Boolean updateCartItem(Long userId, CartItemRequestDto dto) {
 		UserEntity user =  validateAndGetUser(userId);
-		CartItem item =  cartItemMapper.toCartItem(dto);
+	    CartItem itemToUpdate = user.getBasket().stream()
+	            .filter(cartItem -> cartItem.getProduct().getProductId().equals(dto.getProductId()))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourceNotFoundException(
+	                    String.format("Producto con ID %d no encontrado en el carrito del usuario ID %d", dto.getProductId(), userId)));
+
+	    itemToUpdate.setCuantity(dto.getCuantity());
 		user.getBasket().stream().map( cartItem -> cartItem.getProduct().getProductId() == dto.getProductId());
-		item.setCuantity(dto.getCuantity());
-		cartItemRepository.save(item);
+		cartItemRepository.save(itemToUpdate);
 		return true;
 	}
 
@@ -101,4 +138,12 @@ public class CartItemServiceImpl implements CartItemService{
 				orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, id)));
 	}
 	
+    public void buyProduct(Purchase purchase, CartItem item, UserEntity user) {
+        purchase.setUser(user);
+        purchase.setProduct(item.getProduct());
+        purchase.setQuantity(item.getCuantity());
+        purchase.setTotalPrice(item.getProduct().getPrice() * item.getCuantity());
+        purchase.setPurchaseDate(LocalDateTime.now());
+        //purchaseRespository.save(purchase);
+	}
 }

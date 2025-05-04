@@ -30,12 +30,12 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference("user-cart")
 	private UserEntity user;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_id")
-    @JsonBackReference
+    @JsonBackReference("product-cart")
 	private Product product;
 	
 	private int cuantity;

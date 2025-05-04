@@ -17,16 +17,13 @@ import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.cartitem.CartItemRequestDto;
 import com.accesodatos.dto.cartitem.CartItemResponseDto;
 import com.accesodatos.service.CartItemServiceImpl;
-import com.accesodatos.service.ProductServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")
 public class CartItemController {
 
 	private static final String CARTITEM_RESOURCE = "/cartItems";
-	private static final String CARTITEM_STATE = CARTITEM_RESOURCE + "/state";
-	private static final String CARTITEM_PATH_ID = CARTITEM_RESOURCE + "/{productId}";
-	private static final String CARTITEM_ID_STATE = CARTITEM_PATH_ID +"/state";
+	private static final String CARTITEM_USER_ID = CARTITEM_RESOURCE + "/user/{id}";
 	
 	@Autowired CartItemServiceImpl cartItemServiceImpl;
 	
@@ -46,6 +43,16 @@ public class CartItemController {
 		Boolean items = cartItemServiceImpl.addproductToCart(userId, dto);
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("All items were fetched successfuly", HttpStatus.OK.value(), items);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = CARTITEM_USER_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Boolean>> buyCartItems(@PathVariable Long id) {
+		
+		Boolean items = cartItemServiceImpl.buyCartItems(id);
+		
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Purchase has been processed successfuly.", HttpStatus.OK.value(), items);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
