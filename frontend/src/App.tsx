@@ -13,6 +13,7 @@ import initialMatch, { Match } from "./type/Match";
 function App() {
   const [currentMatch, setCurrentMatch] = useState<Match>(initialMatch);
   const [isCreating, setIsCreating] = useState<boolean>(true);
+  const [matchesReady, setMatchesReady] = useState<boolean>(false);
 
   return (
     <Router>
@@ -23,6 +24,8 @@ function App() {
           path="/matchesPage"
           element={
             <MatchesPage
+              setMatchesReady={setMatchesReady}
+              matchesReady={matchesReady}
               setIsCreating={setIsCreating}
               setCurrentMatch={setCurrentMatch}
             />
@@ -32,7 +35,8 @@ function App() {
           path="/matchForm"
           element={
             <MatchModal
-            isCreating={isCreating} 
+            matchesReady={matchesReady}
+              isCreating={isCreating}
               currentMatch={currentMatch}
               setCurrentMatch={setCurrentMatch}
             />

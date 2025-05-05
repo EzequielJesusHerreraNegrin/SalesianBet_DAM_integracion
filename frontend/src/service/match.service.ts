@@ -9,8 +9,8 @@ const getMatchesByDate = async (date: String) => {
   return response.data.data;
 };
 
-const getMatchById = async (idMatch: number) => {
-  const response = await axios.get(`${API_URL}/matches/${idMatch}`);
+const getMatchById = async (matchId: number) => {
+  const response = await axios.get(`${API_URL}/matches/${matchId}`);
   return response.data;
 };
 
@@ -19,14 +19,21 @@ const createMatch = async (match: MatchRequest) => {
   return response.data;
 };
 
-const updateMatch = async (idMatch: number, match: MatchRequest) => {
-  const response = await axios.put(`${API_URL}/matches/${idMatch}`, match);
+const updateMatch = async (matchId: number, match: MatchRequest) => {
+  const response = await axios.put(`${API_URL}/matches/${matchId}`, match);
   return response.data;
 };
 
 const getMatchesReadyToValidate = async () => {
   const response = await axios.get(`${API_URL}/matches/ready`);
-  return response.data.data
+  return response.data.data;
+};
+
+const validateMatch = async (matchId: number, result: string) => {
+  const response = await axios.put(`${API_URL}/matches/${matchId}/validate`, {
+    result,
+  });
+  return response.data;
 };
 
 const MatchService = {
@@ -34,7 +41,8 @@ const MatchService = {
   getMatchById,
   createMatch,
   updateMatch,
-  getMatchesReadyToValidate
+  getMatchesReadyToValidate,
+  validateMatch,
 };
 
 export default MatchService;

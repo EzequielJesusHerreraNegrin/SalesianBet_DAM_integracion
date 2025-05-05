@@ -6,9 +6,16 @@ import { Match } from "../type/Match";
 interface matchProp {
   setCurrentMatch: (match: Match) => void;
   setIsCreating: (value: boolean) => void;
+  setMatchesReady: (value: boolean) => void;
+  matchesReady: boolean;
 }
 
-const MatchesPage = ({ setIsCreating, setCurrentMatch }: matchProp) => {
+const MatchesPage = ({
+  setIsCreating,
+  setCurrentMatch,
+  setMatchesReady,
+  matchesReady,
+}: matchProp) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const formatDate = (isoDate: string) => {
@@ -44,6 +51,8 @@ const MatchesPage = ({ setIsCreating, setCurrentMatch }: matchProp) => {
     <>
       <Schedulebar setSelectedDate={setSelectedDate} formatDate={formatDate} />
       <Table
+        setMatchesReady={setMatchesReady}
+        matchesReady={matchesReady}
         setIsCreating={setIsCreating}
         selectedDate={selectedDate}
         formatDate={formatDate}

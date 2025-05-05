@@ -10,6 +10,8 @@ interface TableProps {
   formatDate: (isoDate: string) => { date: string; time: string };
   setCurrentMatch: (match: Match) => void;
   setIsCreating: (value: boolean) => void;
+  matchesReady: boolean;
+  setMatchesReady: (value: boolean) => void;
 }
 
 const Table = ({
@@ -17,10 +19,12 @@ const Table = ({
   selectedDate,
   formatDate,
   setCurrentMatch,
+  matchesReady,
+  setMatchesReady,
 }: TableProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [matchesReady, setMatchesReady] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const handleAddMatch = () => {
@@ -33,6 +37,14 @@ const Table = ({
     setIsCreating(false);
     setCurrentMatch(match);
     navigate("/matchForm");
+  };
+
+  const handleClickMatchesReady = () => {
+    if (matchesReady) {
+      setMatchesReady(false);
+    } else {
+      setMatchesReady(true);
+    }
   };
 
   const fetchMatches = async (isoDate: string) => {
@@ -63,7 +75,7 @@ const Table = ({
         </button>
         <button
           className="table-button"
-          onClick={() => setMatchesReady((prev) => !prev)}
+          onClick={handleClickMatchesReady}
           style={{
             backgroundColor: matchesReady
               ? "rgba(255, 0, 0, 0.671)"

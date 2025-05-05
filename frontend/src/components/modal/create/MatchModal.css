@@ -87,3 +87,27 @@ select{
     padding: 10px 20px;
     font-size: 14px;
 }
+
+.formMatch-table-row {
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .formMatch-edit-match {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .match-cell {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .match-result-input {
+    width: 80px;
+    padding: 0.4rem;
+    text-align: center;
+    font-size: 1rem;
+  }
