@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.accesodatos.dto.bet.BetResponseDto;
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
 import com.accesodatos.service.BetServiceImpl;
+import com.accesodatos.service.PurchaseServiceImpl;
 import com.accesodatos.service.UserEntityServiceImpl;
 
 @RestController
@@ -26,11 +28,13 @@ public class UserEntityController {
 
 	private static final String USER_RESOURCE = "/users";
 	private static final String USER_PATH_EMAIL = USER_RESOURCE + "/{email}";
+	private static final String USER_CARTITEM_ID = USER_RESOURCE + "/purchase/{userId}";
 	private static final String BET_RESOURCE = "/bets";
 	private static final String BET_PATH_EMAIL = BET_RESOURCE + "/{email}";
 	
 	@Autowired BetServiceImpl betServiceImpl;
 	@Autowired UserEntityServiceImpl userEntityServiceImpl;
+	@Autowired PurchaseServiceImpl purchaseServiceImpl;
 	
 	@GetMapping( value = USER_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<UserEntityResponseDto>>> getAllUsers() {
@@ -65,5 +69,13 @@ public class UserEntityController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	
+	@PostMapping(value = USER_CARTITEM_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Boolean>> buyCartItems(@PathVariable Long userId) {
+		
+		Boolean purchased = purchaseServiceImpl.buyUserBasketProducts(userId);
+		
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Purchase has been processed successfuly.", HttpStatus.OK.value(), purchased);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }
