@@ -43,6 +43,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 		user.setPassword(dto.getPassword());
 		user.setDni(dto.getDni());
 		user.setCountry(dto.getCountry());
+		user.setPoints(100);
 		
 		user = userEntityRepository.save(user);
 		

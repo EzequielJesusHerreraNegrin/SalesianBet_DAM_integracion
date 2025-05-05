@@ -29,9 +29,15 @@ const MatchModal = ({
 
   const teamHomeLogo = `./src/assets/${currentMatch.competition.name
     .toLowerCase()
-    .replace(" ", "")}/${currentMatch.homeTeam.teamName
+    .replace(/\s+/g, "")}/${currentMatch.homeTeam.teamName
     .toLowerCase()
-    .replace(" ", "")}.png`;
+    .replace(/\s+/g, "")}.png`;
+
+  const teamAwayLogo = `./src/assets/${currentMatch.competition.name
+    .toLowerCase()
+    .replace(/\s+/g, "")}/${currentMatch.awayTeam.teamName
+    .toLowerCase()
+    .replace(/\s+/g, "")}.png`;
 
   useEffect(() => {
     console.log("currentMatch actualizado:", currentMatch);
@@ -144,6 +150,11 @@ const MatchModal = ({
                 className="match-result-input"
               />
               <div className="match-cell away">
+                <img
+                  src={teamAwayLogo}
+                  alt="awayTeam"
+                  style={{ width: "100px", height: "100px" }}
+                />
                 {currentMatch.awayTeam.teamName}
               </div>
             </div>

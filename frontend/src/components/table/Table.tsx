@@ -3,7 +3,7 @@ import initialMatch, { Match } from "../../type/Match";
 import MatchService from "../../service/match.service";
 import Loader from "../loader/Loader";
 import "./Table.css";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 
 interface TableProps {
   selectedDate: string;
@@ -90,6 +90,16 @@ const Table = ({
         let lastCompetition = "";
 
         return matches.map((match) => {
+          const teamHomeLogo = `./src/assets/${match.competition.name
+            .toLowerCase()
+            .replace(/\s+/g, "")}/${match.homeTeam.teamName
+            .toLowerCase()
+            .replace(/\s+/g, "")}.png`;
+          const teamAwayLogo = `./src/assets/${match.competition.name
+            .toLowerCase()
+            .replace(/\s+/g, "")}/${match.awayTeam.teamName
+            .toLowerCase()
+            .replace(/\s+/g, "")}.png`;
           const time = formatDate(match.date).time;
           const currentCompetition = `${match.competition?.country} ${match.competition?.name}`;
           const showCompetitionTitle = currentCompetition !== lastCompetition;
@@ -109,11 +119,17 @@ const Table = ({
               )}
 
               <div className="table-row">
-                <div className="match-cell home">{match.homeTeam.teamName}</div>
+                <div className="match-cell home">
+                  <img src={teamHomeLogo} alt="homeTeam" />
+                  {match.homeTeam.teamName}
+                </div>
                 <div className="match-cell center">
                   {match.result ? match.result : time}
                 </div>
-                <div className="match-cell away">{match.awayTeam.teamName}</div>
+                <div className="match-cell away">
+                  {match.awayTeam.teamName}
+                  <img src={teamAwayLogo} alt="awayTeam" />
+                </div>
                 <button onClick={() => handleEditMatch(match)}>
                   {matchesReady ? "Validar" : "Editar"}
                 </button>

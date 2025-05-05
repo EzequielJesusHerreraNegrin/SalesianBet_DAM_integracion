@@ -54,13 +54,23 @@
   }
   
   .match-cell.home {
+    display: flex;
+    align-items: center;
+    justify-content: end;
     text-align: right;
   }
   
   .match-cell.away {
+    display: flex;
+    align-items: center;
     text-align: left;
   }
 
   .match-cell.center{
     max-width: 90px;
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
   }
