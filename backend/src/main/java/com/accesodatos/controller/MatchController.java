@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.match.MatchRequestDto;
-import com.accesodatos.dto.match.MatchRequestUpdateDto;
 import com.accesodatos.dto.match.MatchResponseDto;
 import com.accesodatos.service.MatchServiceImpl;
 
@@ -67,7 +66,7 @@ public class MatchController {
 	}
 	
 	@PutMapping(value = MATCH_PATH_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<MatchResponseDto>> updateMatch(@PathVariable Long matchId, @RequestBody MatchRequestUpdateDto matchRequestDto) {
+	public ResponseEntity<ApiResponseDto<MatchResponseDto>> updateMatch(@PathVariable Long matchId, @RequestBody MatchRequestDto matchRequestDto) {
 		MatchResponseDto updatedMatch = matchService.updateMatch(matchId, matchRequestDto);
 		
 		ApiResponseDto<MatchResponseDto> response= new ApiResponseDto<>("Match updated successfully",

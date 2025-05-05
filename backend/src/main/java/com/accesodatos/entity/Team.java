@@ -1,6 +1,8 @@
 package com.accesodatos.entity;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -12,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +27,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "matches")
-@EqualsAndHashCode(exclude = "matches")
 @Table(name = "teams")
 public class Team {
 
@@ -39,10 +41,17 @@ public class Team {
 	@Column(length = 20, nullable = false)
 	private String sport;
 	
-	@ManyToMany(
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			mappedBy = "teams"
+	@OneToMany(
+			mappedBy = "homeTeam",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
 			)
-	@JsonManagedReference
-	private Set<Match> matches = new LinkedHashSet<>();
+	private List<Match> homeMatches = new ArrayList<>();
+	
+	@OneToMany(
+			mappedBy = "awayTeam",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	private List<Match> awayMatches = new ArrayList<>();
 }

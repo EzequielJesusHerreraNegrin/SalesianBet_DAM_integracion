@@ -37,38 +37,41 @@ public class UserEntityController {
 	@Autowired PurchaseServiceImpl purchaseServiceImpl;
 	
 	@GetMapping( value = USER_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
+
 	public ResponseEntity<ApiResponseDto<List<UserEntityResponseDto>>> getAllUsers() {
 		List<UserEntityResponseDto> users = userEntityServiceImpl.getAllUsers();
-		
-		ApiResponseDto<List<UserEntityResponseDto>> response = new ApiResponseDto<List<UserEntityResponseDto>>("All users fetched successfuly.", HttpStatus.OK.value(), users);
+
+		ApiResponseDto<List<UserEntityResponseDto>> response = new ApiResponseDto<List<UserEntityResponseDto>>(
+				"All users fetched successfuly.", HttpStatus.OK.value(), users);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	
-	@GetMapping( value = USER_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@GetMapping(value = USER_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String email) {
 		UserEntityResponseDto users = userEntityServiceImpl.getUserByEmail(email);
-		
-		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<UserEntityResponseDto>("All users fetched successfuly.", HttpStatus.OK.value(), users);
+
+		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<UserEntityResponseDto>(
+				"All users fetched successfuly.", HttpStatus.OK.value(), users);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@PostMapping( value = USER_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@PostMapping(value = USER_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> createUser(@RequestBody UserEntityRegisterRequestDto dto) {
 		boolean user = userEntityServiceImpl.createUser(dto);
-		
+
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("User created successfuly.", HttpStatus.CREATED.value(), user);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
-	
-	@GetMapping( value = BET_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@GetMapping(value = BET_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserEmail(@RequestParam String email) {
 		List<BetResponseDto> bets = betServiceImpl.getBetByUserEmail(email);
-		
-		ApiResponseDto<List<BetResponseDto>> response = new ApiResponseDto<List<BetResponseDto>>("All bets fetched successfuly.", HttpStatus.OK.value(), bets);
+
+		ApiResponseDto<List<BetResponseDto>> response = new ApiResponseDto<List<BetResponseDto>>(
+				"All bets fetched successfuly.", HttpStatus.OK.value(), bets);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = USER_CARTITEM_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> buyCartItems(@PathVariable Long userId) {
 		

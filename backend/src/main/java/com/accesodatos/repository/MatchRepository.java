@@ -11,5 +11,5 @@ import com.accesodatos.entity.Match;
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
 
-	List<Match> findByDateBetweenOrderByCompetitionNameAsc(LocalDateTime start, LocalDateTime end);
+	List<Match> findByDateBetweenOrderByCompetitionNameAscDateAsc(LocalDateTime start, LocalDateTime end);
 }
