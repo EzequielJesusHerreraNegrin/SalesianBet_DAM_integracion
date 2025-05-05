@@ -40,7 +40,7 @@ public class BetServiceImpl implements BetService{
 	@Override
 	public List<BetResponseDto> getBetByUserEmail(String email) {
 		List<Bet> bets = betRepository.findByUserEmail(email).
-				orElseThrow(() -> new ResourceNotFoundException(String.format("The email: %t, was not found.", email)));
+				orElseThrow(() -> new ResourceNotFoundException(String.format("The email: %s, was not found.", email)));
 		return bets.stream().map(betMapper::toBetResponseDto)
 				.collect(Collectors.toList());
 	}
@@ -60,9 +60,8 @@ public class BetServiceImpl implements BetService{
 		bet.setMatch(match);
 		bet.setUser(user);
 		
-		
-		bet = betRepository.save(bet);
-		return bet != null;
+		betRepository.save(bet);
+		return true;
 	}
 
 	@Override

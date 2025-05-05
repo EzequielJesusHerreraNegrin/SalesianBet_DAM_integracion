@@ -15,6 +15,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.accesodatos.dto.api.ApiError;
+import com.accesodatos.exception.NotEnoughPointsException;
 import com.accesodatos.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,16 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 		log.info(ex.getClass().getName());
 		
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), "Resource Not Found");
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+	
+	@ExceptionHandler(NotEnoughPointsException.class)
+	public ResponseEntity<ApiError> handleNotEnoughPointsException(NotEnoughPointsException ex,     											
+			WebRequest request) {
+		
+		log.info(ex.getClass().getName());
+		
+		ApiError apiError = new ApiError(HttpStatus.PAYMENT_REQUIRED, ex.getLocalizedMessage(), "Insufficient points");
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accesodatos.dto.product.ProductResponseDto;
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
 import com.accesodatos.entity.UserEntity;
@@ -22,6 +23,13 @@ public class UserEntityServiceImpl implements UserEntityService{
 	@Autowired UserEntityRepository userEntityRepository;
 	@Autowired UserEntityMapper entityMapper;
 	
+	private static final String USER_NOT_FOUND = "User with id %d was not found.";
+	
+	public UserEntity validateAndGetUser(Long id) {
+		return userEntityRepository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, id)));
+	}
+	
 	@Override
 	public List<UserEntityResponseDto> getAllUsers() {
 		List<UserEntity> users = userEntityRepository.findAll();
@@ -30,7 +38,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 
 	@Override
 	public UserEntityResponseDto getUserByEmail(String email) {
-		UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("No user with email: %t was found.", email)));
+		UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("No user with email: %s was found.", email)));
 		return entityMapper.toUserEntityResponseDto(user);
 	}
 
@@ -43,10 +51,17 @@ public class UserEntityServiceImpl implements UserEntityService{
 		user.setPassword(dto.getPassword());
 		user.setDni(dto.getDni());
 		user.setCountry(dto.getCountry());
-		
+		System.out.println(user.getCountry());
+		System.out.println(dto.getCountry());
 		user = userEntityRepository.save(user);
 		
 		return user != null ;
+	}
+
+	@Override
+	public List<ProductResponseDto> getUserBoughtProducts(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

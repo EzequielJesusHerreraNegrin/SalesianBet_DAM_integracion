@@ -2,11 +2,9 @@ package com.accesodatos.entity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -33,8 +31,8 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "products")
-@EqualsAndHashCode(exclude = "products")
+@ToString(exclude = {"purchases", "roles","bets","basket"})
+@EqualsAndHashCode(exclude = {"purchases", "roles","bets","basket"})
 @Table(name = "users")
 public class UserEntity {
 
@@ -57,8 +55,16 @@ public class UserEntity {
 	
 	private int points;
 	
-	private String Country;
+	private String country;
 	
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	@JsonManagedReference
+	@Builder.Default
+	private List<CartItem> basket = new ArrayList<>();
 	
 	@ManyToMany(
 			fetch = FetchType.EAGER,
@@ -81,33 +87,23 @@ public class UserEntity {
 	@Builder.Default
 	private List<Bet> bets = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "users_products", joinColumns = @JoinColumn(name = "fk_user_id"),
-	inverseJoinColumns = @JoinColumn(name = "fk_product_id"))
-	@JsonBackReference
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+			)
+	@JsonManagedReference("user-purchases")
 	@Builder.Default
-	private Set<Product> products = new LinkedHashSet<>();
-	
-	public void addRole(Role rol) {
-		this.roles.add(rol);
-		this.getRoles().add(rol);
-	}
-	
-	
-	public void removeRole(Role rol) {
-		this.roles.remove(rol);
-		this.getRoles().remove(rol);
-	}
+	private List<Purchase> purchases = new ArrayList<>();
 	
 	public void addBet(Bet bet) {
 		this.bets.add(bet);
 		this.setPoints(this.points - bet.getPoints());
-		this.getBets().add(bet);
 	}
 	
 	public void removeBet(Bet bet) {
 		this.bets.remove(bet);
 		this.setPoints(this.points + bet.getPoints());
-		this.getBets().remove(bet);
 	}
+
 }

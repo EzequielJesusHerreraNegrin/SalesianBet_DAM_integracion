@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.competitiondto.CompetitionRequestDto;
 import com.accesodatos.entity.Competition;
-import com.accesodatos.entity.Team;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.competition.CompetitionMapper;
 import com.accesodatos.repository.CompetitionRepository;
