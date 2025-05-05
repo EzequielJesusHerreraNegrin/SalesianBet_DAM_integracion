@@ -31,8 +31,8 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"purchases", "roles","bets"})
-@EqualsAndHashCode(exclude = {"purchases", "roles","bets"})
+@ToString(exclude = {"purchases", "roles","bets","basket"})
+@EqualsAndHashCode(exclude = {"purchases", "roles","bets","basket"})
 @Table(name = "users")
 public class UserEntity {
 

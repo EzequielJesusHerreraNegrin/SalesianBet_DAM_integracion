@@ -66,45 +66,73 @@ public class CartItemServiceImpl implements CartItemService{
 	@Override
 	@Transactional
 	public Boolean buyCartItems(Long userId) {
-		UserEntity user = validateAndGetUser(userId);
+	    UserEntity user = validateAndGetUser(userId);
+	    log.debug("Starting purchase for user: {}", user.getUserId()); // Use logger
 
+	    // Calculate total price safely
 	    int cartPrice = user.getBasket().stream()
 	        .mapToInt(item -> {
 	            Product product = item.getProduct();
 	            if (product == null) {
-	                throw new IllegalStateException("Producto no encontrado en el carrito: " + item.getCartId());
+	                // This shouldn't happen if data integrity is maintained, but good to check
+	                log.error("Null product found in CartItem ID: {} for User ID: {}", item.getCartId(), userId);
+	                throw new IllegalStateException("Producto nulo encontrado en el carrito para el ítem ID: " + item.getCartId());
 	            }
+	            log.debug("Calculating price for product ID: {}, price: {}, quantity: {}", product.getProductId(), product.getPrice(), item.getCuantity());
 	            return product.getPrice() * item.getCuantity();
 	        })
 	        .sum();
 
+	    log.debug("User ID: {} - Current Points: {}, Cart Total Price: {}", userId, user.getPoints(), cartPrice);
+
 	    if (user.getPoints() < cartPrice) {
+	        log.warn("User ID: {} purchase failed. Points: {}, Required: {}", userId, user.getPoints(), cartPrice);
 	        throw new NotEnoughPointsException(USER_FAIL_PURCHASE);
 	    }
 
-	    for (CartItem item : new ArrayList<>(user.getBasket())) {
-	    	Product product = item.getProduct();
-	    	//System.out.println("****************************************************: "+ product);
+	    // Create Purchase objects but don't save them individually
+	    // Use a temporary list if needed, though adding directly to user.getPurchases() is fine
+	    List<Purchase> createdPurchases = new ArrayList<>(); 
+	    for (CartItem item : new ArrayList<>(user.getBasket())) { // Iterate copy
+	        Product product = item.getProduct(); // Already fetched with user/basket typically
+	        if (product == null) { // Defensive check
+	             log.error("Null product encountered again for CartItem ID: {} during Purchase creation", item.getCartId());
+	             throw new IllegalStateException("Producto nulo encontrado al crear la compra para el ítem ID: " + item.getCartId());
+	        }
+
 	        Purchase purchase = new Purchase();
 	        purchase.setUser(user);
-	        System.out.println("****************************************************: "+ purchase.getUser().getUserId());	        
 	        purchase.setProduct(product);
 	        purchase.setQuantity(item.getCuantity());
 	        purchase.setTotalPrice(product.getPrice() * item.getCuantity());
 	        purchase.setPurchaseDate(LocalDateTime.now());
 
-	        //newPurchases.add(purchase);
-	        product.getBuys().add(purchase);
+	        // Add to collections to maintain bidirectional consistency IN MEMORY
 	        user.getPurchases().add(purchase);
+	        product.getBuys().add(purchase);
+	        // createdPurchases.add(purchase); // Optional: if you need the list later
+
+	        // --- REMOVED ---
+	        // purchaseRespository.save(purchase); 
+	        // --- REMOVED ---
+	        log.debug("Prepared Purchase for Product ID: {} by User ID: {}", product.getProductId(), userId);
 	    }
 
-	    // Descontar puntos y limpiar el carrito
+	    // Update user state
+	    log.debug("Updating User ID: {} points. Old: {}, New: {}", userId, user.getPoints(), user.getPoints() - cartPrice);
 	    user.setPoints(user.getPoints() - cartPrice);
-	    user.getBasket().clear();
 
-	    // Persistir cambios
-	    //purchaseRespository.saveAll(newPurchases);
-	    userEntityRepository.save(user); // Si tienes cascada, esto asegura todo
+	    log.debug("Clearing basket for User ID: {}", userId);
+	    user.getBasket().clear(); // Triggers CartItem removal due to orphanRemoval
+
+	    // Save the user. CascadeType.ALL on 'purchases' will save the new Purchase entities.
+	    // CascadeType.ALL + orphanRemoval=true on 'basket' will delete the CartItems.
+	    log.info("Saving UserEntity (ID: {}) which will cascade saves to Purchases and deletions of CartItems", userId);
+	    userEntityRepository.save(user);
+	    log.info("UserEntity (ID: {}) saved successfully.", userId);
+
+	    // System.out.println(" HOASDASLDHASLKJDHALSKJD"); // Use logger instead
+	    log.debug("Purchase process completed successfully for User ID: {}", userId);
 
 	    return true;
 	}

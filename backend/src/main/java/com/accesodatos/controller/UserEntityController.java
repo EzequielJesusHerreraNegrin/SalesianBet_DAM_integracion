@@ -65,6 +65,5 @@ public class UserEntityController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-
 	
 }
