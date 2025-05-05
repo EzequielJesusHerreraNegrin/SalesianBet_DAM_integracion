@@ -74,7 +74,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		log.info(ex.getClass().getName());
 		
-		ApiError apiError = new ApiError(HttpStatus.PAYMENT_REQUIRED, ex.getLocalizedMessage(), "Insufficient points\r\n");
+		ApiError apiError = new ApiError(HttpStatus.PAYMENT_REQUIRED, ex.getLocalizedMessage(), "Insufficient points");
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	
