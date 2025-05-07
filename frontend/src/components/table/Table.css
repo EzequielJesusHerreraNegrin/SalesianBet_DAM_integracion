@@ -25,6 +25,8 @@
   }
 
   .table-competition {
+    display: flex;
+    align-items: center;
     background-color: #4caf50;
     padding: 1rem 1rem;
     border: 3px solid black;
@@ -49,24 +51,24 @@
     background-color: white;
   }
 
-  .match-cell {
+  .match-cell-table {
     flex: 1;
   }
   
-  .match-cell.home {
+  .match-cell-table.home {
     display: flex;
     align-items: center;
     justify-content: end;
     text-align: right;
   }
   
-  .match-cell.away {
+  .match-cell-table.away {
     display: flex;
     align-items: center;
     text-align: left;
   }
 
-  .match-cell.center{
+  .match-cell-table.center{
     max-width: 90px;
   }
 
@@ -74,3 +76,16 @@
     width: 60px;
     height: 60px;
   }
+
+.table-button-edit {
+  cursor: pointer;
+  color: gray;
+  background-color: transparent;
+  border: 0;
+}
+
+.table-button-bet {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}

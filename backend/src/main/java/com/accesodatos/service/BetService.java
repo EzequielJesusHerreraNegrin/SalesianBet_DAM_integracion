@@ -8,8 +8,8 @@ import com.accesodatos.dto.bet.BetResponseDto;
 public interface BetService {
 	List<BetResponseDto> getAllBets();
 	List<BetResponseDto> getBetByUserEmail(String email);
-	boolean createBet(BetRequestDto dto);
-	boolean updateBetById(Long betId, BetRequestDto betRequestDto);
-	boolean deleteBet(Long betId);	
+	BetResponseDto createBet(BetRequestDto dto);
+	BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto);
+	void deleteBet(Long betId);	
 	
 }

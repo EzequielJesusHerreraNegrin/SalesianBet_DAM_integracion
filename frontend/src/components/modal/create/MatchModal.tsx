@@ -135,8 +135,7 @@ const MatchModal = ({
                   alt=""
                   style={{ width: "100px", height: "100px" }}
                 />
-
-                {currentMatch.homeTeam.teamName}
+                <span style={{}}>{currentMatch.homeTeam.teamName}</span>
               </div>
               <input
                 type="text"
@@ -150,12 +149,12 @@ const MatchModal = ({
                 className="match-result-input"
               />
               <div className="match-cell away">
+                {currentMatch.awayTeam.teamName}
                 <img
                   src={teamAwayLogo}
                   alt="awayTeam"
                   style={{ width: "100px", height: "100px" }}
                 />
-                {currentMatch.awayTeam.teamName}
               </div>
             </div>
             <div className="formMatch-buttons">

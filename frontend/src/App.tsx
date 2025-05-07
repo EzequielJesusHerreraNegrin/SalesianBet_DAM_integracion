@@ -14,6 +14,7 @@ function App() {
   const [currentMatch, setCurrentMatch] = useState<Match>(initialMatch);
   const [isCreating, setIsCreating] = useState<boolean>(true);
   const [matchesReady, setMatchesReady] = useState<boolean>(false);
+  const [isBetting, setIsBetting] = useState<boolean>(false);
 
   return (
     <Router>
@@ -24,10 +25,13 @@ function App() {
           path="/matchesPage"
           element={
             <MatchesPage
+              currentMatch={currentMatch}
               setMatchesReady={setMatchesReady}
               matchesReady={matchesReady}
               setIsCreating={setIsCreating}
               setCurrentMatch={setCurrentMatch}
+              setIsBetting={setIsBetting}
+              isBetting={isBetting}
             />
           }
         />
@@ -35,7 +39,7 @@ function App() {
           path="/matchForm"
           element={
             <MatchModal
-            matchesReady={matchesReady}
+              matchesReady={matchesReady}
               isCreating={isCreating}
               currentMatch={currentMatch}
               setCurrentMatch={setCurrentMatch}

@@ -2,12 +2,16 @@ import { useState } from "react";
 import Schedulebar from "../components/Schedulebar/Schedulebar";
 import Table from "../components/table/Table";
 import { Match } from "../type/Match";
+import BetForm from "../components/modal/bet/BetForm";
 
 interface matchProp {
   setCurrentMatch: (match: Match) => void;
   setIsCreating: (value: boolean) => void;
   setMatchesReady: (value: boolean) => void;
   matchesReady: boolean;
+  currentMatch: Match;
+  setIsBetting: (value: boolean) => void;
+  isBetting: boolean;
 }
 
 const MatchesPage = ({
@@ -15,6 +19,9 @@ const MatchesPage = ({
   setCurrentMatch,
   setMatchesReady,
   matchesReady,
+  currentMatch,
+  setIsBetting,
+  isBetting,
 }: matchProp) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
@@ -57,7 +64,11 @@ const MatchesPage = ({
         selectedDate={selectedDate}
         formatDate={formatDate}
         setCurrentMatch={setCurrentMatch}
+        setIsBetting={setIsBetting}
       />
+      {isBetting && (
+        <BetForm currentMatch={currentMatch} setIsBetting={setIsBetting} />
+      )}
     </>
   );
 };

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.accesodatos.dto.bet.BetRequestDto;
 import com.accesodatos.dto.bet.BetResponseDto;
 import com.accesodatos.entity.Bet;
-import com.accesodatos.entity.Competition;
 import com.accesodatos.entity.Match;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
@@ -76,7 +75,7 @@ public class BetServiceImpl implements BetService{
 	}
 
 	@Override
-	public boolean createBet(BetRequestDto dto) {
+	public BetResponseDto createBet(BetRequestDto dto) {
 		Match match = validateAndGetMatch(dto.getMatchId());
 		
 		UserEntity user = validateAndGetUser(dto.getUserId());
@@ -105,11 +104,11 @@ public class BetServiceImpl implements BetService{
 		
 		
 		bet = betRepository.save(bet);
-		return bet != null;
+		return betMapper.toBetResponseDto(bet);
 	}
 
 	@Override
-	public boolean updateBetById(Long betId, BetRequestDto betRequestDto) {
+	public BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto) {
 		Bet bet = validateAndGetBet(betId);
 		
 		Match match = validateAndGetMatch(betRequestDto.getMatchId());
@@ -121,18 +120,18 @@ public class BetServiceImpl implements BetService{
 		bet.setPrediction(betRequestDto.getPrediction());
 		bet.setPoints(betRequestDto.getPoints());
 		bet = betRepository.save(bet);
-		return bet != null;
+		
+		return betMapper.toBetResponseDto(bet);
 	}
 
 	@Override
-	public boolean deleteBet(Long betId) {
+	public void deleteBet(Long betId) {
 		Bet bet = betRepository.findById(betId).
 				orElseThrow(() -> 
 				new ResourceNotFoundException(
 						String.format("The bet with the id %d was not found.", betId)));
 		bet.getUser().removeBet(bet);
 		betRepository.delete(bet);
-		return bet != null;
 	}
 
 }

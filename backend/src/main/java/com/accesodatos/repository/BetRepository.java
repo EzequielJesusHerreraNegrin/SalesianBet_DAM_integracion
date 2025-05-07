@@ -16,4 +16,6 @@ public interface BetRepository extends JpaRepository<Bet, Long> {
 	Optional<List<Bet>> findByUserEmail(String email);
 	
 	boolean existsByUserAndMatch(UserEntity user, Match match);
+	
+	List<Bet> findByMatch(Match match);
 }

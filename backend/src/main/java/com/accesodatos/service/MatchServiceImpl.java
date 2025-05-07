@@ -200,7 +200,7 @@ public class MatchServiceImpl implements MatchService {
 		match.setResult(matchResult.getResult());
 		matchRepository.save(match);
 		
-		List<Bet> bets = betRepository.findAll();
+		List<Bet> bets = betRepository.findByMatch(match);
 		
 		for (Bet bet : bets) {
 			UserEntity user = bet.getUser();
