@@ -12,6 +12,6 @@ public interface UserEntityService {
 	UserEntityResponseDto getUserByEmail(String email);
 
 	UserEntityResponseDto createUser(UserEntityRegisterRequestDto dto);
-	
+	List<ProductResponseDto> getUserBoughtProducts(Long id);
 
 }

@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserEntityServiceImpl implements UserEntityService{
 
 	@Autowired UserEntityRepository userEntityRepository;
-	@Autowired UserEntityMapper entityMapper;
+	@Autowired UserEntityMapper userEntityMapper;
 	
 	private static final String USER_NOT_FOUND = "User with id %d was not found.";
 	
@@ -39,7 +39,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 	@Override
 	public UserEntityResponseDto getUserByEmail(String email) {
 		UserEntity user = userEntityRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("No user with email: %s was found.", email)));
-		return entityMapper.toUserEntityResponseDto(user);
+		return userEntityMapper.toUserEntityResponseDto(user);
 	}
 
 	@Override
@@ -53,11 +53,9 @@ public class UserEntityServiceImpl implements UserEntityService{
 		user.setCountry(dto.getCountry());
 		user.setPoints(100);
 		
-		System.out.println(user.getCountry());
-		System.out.println(dto.getCountry());
 		user = userEntityRepository.save(user);
 		
-		return user != null ;
+		return userEntityMapper.toUserEntityResponseDto(user) ;
 	}
 
 	@Override
