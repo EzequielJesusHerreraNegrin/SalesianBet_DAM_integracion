@@ -3,6 +3,7 @@ package com.accesodatos.jwt;
 
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -10,6 +11,7 @@ import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.accesodatos.exception.TokenExpiredException;
@@ -25,18 +27,22 @@ public class JwtTokenProvider {
 	@Value("${security.jwt.key.private}")
 	private String privateKey;
 	
+	
 	private static final long JWT_EXPIRATION_DATE = 3600000;
 	
 	public String generateToken(Authentication authentication) {
 		String username = authentication.getName();
+		List<String> role = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 		Date currentDate = new Date();
 		Date expirate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
-		
+	
 		return Jwts.builder()
 				.subject(username)
-				.issuedAt(expirate)
+				.issuedAt(currentDate)
 				.expiration(expirate)
-				.claim("role", authentication.getAuthorities())
+				.claim("role", role)
 				.signWith(getSignInKey(), Jwts.SIG.HS256)
 				.compact();
 	}
@@ -75,8 +81,7 @@ public class JwtTokenProvider {
 		}
 	}
 	
-	private <T> T extraClaim(String token, Function<Claims, T> claimResolver) {
-		// Objeto para leer variables del json token cifrado sin exponerlo 
+	private <T> T extraClaim(String token, Function<Claims, T> claimResolver) { 
 		final Claims claims = extractAllClaims(token);
 		return claimResolver.apply(claims);
 	}

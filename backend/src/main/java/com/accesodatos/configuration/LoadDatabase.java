@@ -1,6 +1,5 @@
 package com.accesodatos.configuration;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.boot.CommandLineRunner;

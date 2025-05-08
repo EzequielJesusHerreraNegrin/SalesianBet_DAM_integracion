@@ -19,10 +19,10 @@ import com.accesodatos.jwt.JwtAuthenticationFilter;
 public class SecurityConfig {
 	
 	
-	/*
-	 * public static void main(String[] args) { System.out.println(new
-	 * BCryptPasswordEncoder().encode("1234")); }
-	 */
+	
+	  public static void main(String[] args) { System.out.println(new
+	  BCryptPasswordEncoder().encode("1234")); }
+	 
 	// $2a$10$WuJ7nzkzSHzZJZhNwOL2/OSYrX5PJStblUrnWl2QrKI2LyV6L1i/S
 
 	
@@ -42,7 +42,7 @@ public class SecurityConfig {
 														 "/doc/swagger-ui.html",
 														 "/v3/api-docs/**"
 														 ).permitAll()
-						.requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
+						.requestMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
 						// requiere que el user tenga rol ADMIN para acceder	
 						.requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasRole("ADMIN")
 						//.requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")
@@ -76,7 +76,6 @@ public class SecurityConfig {
 //	}
 	
 	
-	// Método para encriptar la contraseña
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

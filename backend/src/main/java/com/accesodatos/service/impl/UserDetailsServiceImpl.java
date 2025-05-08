@@ -18,11 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.auth.AuthLoginRequestDto;
+import com.accesodatos.dto.auth.AuthRegisterRequestDto;
 import com.accesodatos.dto.auth.AuthResponseDto;
 import com.accesodatos.entity.Role;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.jwt.JwtTokenProvider;
+import com.accesodatos.repository.RoleRepository;
 import com.accesodatos.repository.UserEntityRepository;
 
 @Service
@@ -30,6 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	UserEntityRepository userRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
 
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
@@ -58,6 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	private Authentication autenticate(String username, String password) {
 		UserDetails userDetails = this.loadUserByUsername(username);
+		
 		if (!passwordEncoder.matches(password, userDetails.getPassword())) {
 			throw new BadCredentialsException("Invalid username or password");
 		}
@@ -68,7 +74,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 	
 	public AuthResponseDto login(AuthLoginRequestDto authLoginRequestDto) {
-		System.out.println(authLoginRequestDto);
 		Authentication authentication = this.autenticate(authLoginRequestDto.getEmail(),
 														 authLoginRequestDto.getPassword());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -76,6 +81,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		String accsessToken = jwtTokenProvider.generateToken(authentication);
 		
 		return new AuthResponseDto(accsessToken);
+	}
+	
+	public Boolean register(AuthRegisterRequestDto dto) {
+		UserEntity newUser = new UserEntity();
+		
+		newUser.setUserName(dto.getUserName());
+		newUser.setEmail(dto.getEmail());
+		newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+		newUser.setDni(dto.getDni());
+		newUser.setCountry(dto.getCountry());
+		newUser.getRoles().add(roleRepository.findByRoleName("USER").orElseThrow(
+					() -> new ResourceNotFoundException("Role not found."))
+				);
+
+		userRepository.save(newUser);
+		return true;
 	}
 
 }
