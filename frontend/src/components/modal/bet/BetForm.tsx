@@ -65,12 +65,18 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
         setIsBetting(false);
       }, 1000);
     } catch (error: any) {
-      const message = error.response?.data?.message || "Error al crear apuesta";
-      console.log(error.data?.message);
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.detail || // por si viene en otro campo
+        error.message ||
+        "Error al crear apuesta";
+
+      console.error("Error al crear apuesta:", error); // muestra todo el objeto de error en consola
       toast.error(message, { position: "top-right" });
     }
   };
 
+  console.log(currentMatch.competition.country.toLowerCase());
   return (
     <div className="bet-modal">
       <Toaster />
@@ -79,11 +85,18 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
           <h2 className="bet-title">Predicción</h2>
         </div>
         <div className="bet-info">
-          <div className="bet-input">
+          <div className="bet-label">
             <label>Competition:</label>
-            <p>{currentMatch.competition.name}</p>
+            <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img
+                src={`./src/assets/pais/${currentMatch.competition.country.toLowerCase()}.png`}
+                alt="country"
+                style={{ borderRadius: "50%", width: "25px", height: "25px" }}
+              />
+              {currentMatch.competition.name}
+            </p>
           </div>
-          <div className="bet-input">
+          <div className="bet-label">
             <label>Partido:</label>
             <p className="teams">
               <img src={teamHomeLogo} alt="homeTeam" />
@@ -92,7 +105,7 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
               <img src={teamAwayLogo} alt="awayTeam" />
             </p>
           </div>
-          <div className="bet-input">
+          <div className="bet-label">
             <label>Fecha:</label>
             <p>{matchDate}</p>
           </div>
@@ -114,15 +127,26 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
           ))}
         </div>
 
-        <div className="bet-input">
-          <label htmlFor="bet">Apuesta:</label>
-          <input
-            type="number"
-            name="bet"
-            id="bet"
-            value={points}
-            onChange={(e) => setPoints(Number(e.target.value))}
-          />
+        <div className="bet-container-inputs">
+          <div className="bet-input">
+            <label htmlFor="bet">Apuesta:</label>
+            <input
+              type="number"
+              min={1}
+              name="bet"
+              id="bet"
+              value={points}
+              onChange={(e) => setPoints(Number(e.target.value))}
+            />
+          </div>
+          <div className="bet-input">
+            <label htmlFor="multiplier">Multiplicador</label>
+            <p>X2</p>
+          </div>
+          <div className="bet-input">
+            <label htmlFor="earnings">Ganancias</label>
+            <p>{points * 2}</p>
+          </div>
         </div>
 
         <div className="bet-buttons">

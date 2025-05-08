@@ -85,7 +85,22 @@
     font-weight: bold;
   }
   
+  .bet-container-inputs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .bet-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: black;
+    margin-bottom: 20px;
+    width: min-content;
+  }
+  
+  .bet-label {
     display: flex;
     flex-direction: column;
     gap: 10px;

@@ -72,6 +72,15 @@
     max-width: 90px;
   }
 
+  .playing-label {
+    color: #fff;
+    background-color: orange;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
   img {
     width: 60px;
     height: 60px;

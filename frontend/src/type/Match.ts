@@ -8,6 +8,7 @@ export type Match = {
   competition: Competition;
   homeTeam: Team;
   awayTeam: Team;
+  is_playing: boolean;
 };
 
 const initialMatch: Match = {
@@ -17,6 +18,7 @@ const initialMatch: Match = {
   competition: initialCompetition,
   homeTeam: initialTeam,
   awayTeam: initialTeam,
+  is_playing: false,
 };
 
 export type MatchRequest = {

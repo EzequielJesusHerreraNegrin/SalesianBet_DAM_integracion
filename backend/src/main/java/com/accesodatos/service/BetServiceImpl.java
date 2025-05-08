@@ -81,15 +81,19 @@ public class BetServiceImpl implements BetService{
 		UserEntity user = validateAndGetUser(dto.getUserId());
 		
 		if (betRepository.existsByUserAndMatch(user, match)) {
-			throw new IllegalArgumentException("The user " + user.getUserName() + " has bet in this match");
+			throw new IllegalArgumentException( user.getUserName() + " ya habías apostado antes a este partido");
 		}
 		
 		if (match.getDate().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("You can't make a bet, because match has already begun");
+			throw new IllegalArgumentException("No puedes hacer la apuesta, porque el partido ya ha empezado");
+		}
+		
+		if (dto.getPoints() <= 0) {
+			throw new IllegalArgumentException("Debes apostar más de 0 puntos");
 		}
 		
 		if (user.getPoints() < dto.getPoints()) {
-			throw new IllegalArgumentException("You don't have enough points");
+			throw new IllegalArgumentException("No tienes los puntos suficientes");
 		}
 		
 		user.setPoints(user.getPoints() - dto.getPoints());

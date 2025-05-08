@@ -6,9 +6,11 @@ import "./Table.css";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import DateCalendar from "../calendar/DateCalendar";
 
 interface TableProps {
   selectedDate: string;
+  setSelectedDate: (date: string) => void;
   formatDate: (isoDate: string) => { date: string; time: string };
   setCurrentMatch: (match: Match) => void;
   setIsCreating: (value: boolean) => void;
@@ -25,6 +27,7 @@ const Table = ({
   matchesReady,
   setMatchesReady,
   setIsBetting,
+  setSelectedDate,
 }: TableProps) => {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -74,6 +77,88 @@ const Table = ({
     fetchMatches(selectedDate);
   }, [selectedDate, matchesReady]);
 
+  const renderMatches = () => {
+    let lastCompetition = "";
+
+    return matches.map((match) => {
+      const teamHomeLogo = `./src/assets/${match.competition.name
+        .toLowerCase()
+        .replace(/\s+/g, "")}/${match.homeTeam.teamName
+        .toLowerCase()
+        .replace(/\s+/g, "")}.png`;
+      const teamAwayLogo = `./src/assets/${match.competition.name
+        .toLowerCase()
+        .replace(/\s+/g, "")}/${match.awayTeam.teamName
+        .toLowerCase()
+        .replace(/\s+/g, "")}.png`;
+      const time = formatDate(match.date).time;
+      const currentCompetition = `${match.competition?.name}`;
+      const showCompetitionTitle = currentCompetition !== lastCompetition;
+      if (showCompetitionTitle) lastCompetition = currentCompetition;
+
+      return (
+        <div
+          key={match.matchId}
+          className={`${showCompetitionTitle ? "competition-separator" : ""}`}
+        >
+          {showCompetitionTitle && (
+            <div className="table-competition">
+              <img
+                style={{ borderRadius: "50%", marginRight: "20px" }}
+                src={`./src/assets/pais/${match.competition?.country.toLowerCase()}.png`}
+                alt="country"
+              />
+              <h4 className="table-header">{currentCompetition}</h4>
+            </div>
+          )}
+
+          <div className="table-row">
+            <div className="match-cell-table home">
+              {match.homeTeam.teamName}
+              <img src={teamHomeLogo} alt="homeTeam" />
+            </div>
+            <div className="match-cell-table center">
+              {match.is_playing ? (
+                <span className="playing-label">EN JUEGO</span>
+              ) : match.result ? (
+                match.result
+              ) : (
+                time
+              )}
+            </div>
+            <div className="match-cell-table away">
+              <img src={teamAwayLogo} alt="awayTeam" />
+              {match.awayTeam.teamName}
+            </div>
+            <button
+              className="table-button-edit"
+              onClick={() => handleEditMatch(match)}
+            >
+              <EditIcon sx={{ width: "30px", height: "30px" }} />
+            </button>
+            {!matchesReady && (
+              <button
+                className="table-button-bet"
+                onClick={() => handleBetMatch(match)}
+              >
+                <MonetizationOnIcon
+                  color="warning"
+                  sx={{
+                    backgroundColor: "green",
+                    borderRadius: "50%",
+                    border: "3px solid",
+                    width: "30px",
+                    height: "30px",
+                  }}
+                />
+              </button>
+            )}
+          </div>
+        </div>
+      );
+    });
+  };
+
   if (loading) return <Loader />;
 
   return (
@@ -94,83 +179,9 @@ const Table = ({
           >
             {matchesReady ? "Salir" : "Partidos a validar"}
           </button>
+          <DateCalendar onSelectDate={setSelectedDate} />
         </div>
-
-        {(() => {
-          let lastCompetition = "";
-
-          return matches.map((match) => {
-            const teamHomeLogo = `./src/assets/${match.competition.name
-              .toLowerCase()
-              .replace(/\s+/g, "")}/${match.homeTeam.teamName
-              .toLowerCase()
-              .replace(/\s+/g, "")}.png`;
-            const teamAwayLogo = `./src/assets/${match.competition.name
-              .toLowerCase()
-              .replace(/\s+/g, "")}/${match.awayTeam.teamName
-              .toLowerCase()
-              .replace(/\s+/g, "")}.png`;
-            const time = formatDate(match.date).time;
-            const currentCompetition = `${match.competition?.name}`;
-            const showCompetitionTitle = currentCompetition !== lastCompetition;
-            if (showCompetitionTitle) lastCompetition = currentCompetition;
-
-            return (
-              <div
-                key={match.matchId}
-                className={`${
-                  showCompetitionTitle ? "competition-separator" : ""
-                }`}
-              >
-                {showCompetitionTitle && (
-                  <div className="table-competition">
-                    <img
-                    style={{borderRadius: "50%", marginRight: "20px"}}
-                      src={`./src/assets/pais/${match.competition?.country.toLowerCase()}.png`}
-                      alt="country"
-                    />
-                    <h4 className="table-header">{currentCompetition}</h4>
-                  </div>
-                )}
-
-                <div className="table-row">
-                  <div className="match-cell-table home">
-                    {match.homeTeam.teamName}
-                    <img src={teamHomeLogo} alt="homeTeam" />
-                  </div>
-                  <div className="match-cell-table center">
-                    {match.result ? match.result : time}
-                  </div>
-                  <div className="match-cell-table away">
-                    <img src={teamAwayLogo} alt="awayTeam" />
-                    {match.awayTeam.teamName}
-                  </div>
-                  <button
-                    className="table-button-edit"
-                    onClick={() => handleEditMatch(match)}
-                  >
-                    <EditIcon sx={{ width: "30px", height: "30px" }} />
-                  </button>
-                  <button
-                    className="table-button-bet"
-                    onClick={() => handleBetMatch(match)}
-                  >
-                    <MonetizationOnIcon
-                      color="warning"
-                      sx={{
-                        backgroundColor: "green",
-                        borderRadius: "50%",
-                        border: "3px solid",
-                        width: "30px",
-                        height: "30px",
-                      }}
-                    />
-                  </button>
-                </div>
-              </div>
-            );
-          });
-        })()}
+        {renderMatches()}
       </div>
     </>
   );

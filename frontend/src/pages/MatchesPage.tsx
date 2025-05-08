@@ -23,7 +23,8 @@ const MatchesPage = ({
   setIsBetting,
   isBetting,
 }: matchProp) => {
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const today = new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState<string>(today);
 
   const formatDate = (isoDate: string) => {
     if (!isoDate || typeof isoDate !== "string" || !isoDate.includes("T")) {
@@ -32,8 +33,19 @@ const MatchesPage = ({
 
     const [year, month, day] = isoDate.split("T")[0].split("-").map(Number);
     const date: Date = new Date(year, month - 1, day);
+    const today = new Date();
+
+    const sameDay =
+      date.getFullYear() == today.getFullYear() &&
+      date.getMonth() == today.getMonth() &&
+      date.getDate() == today.getDate();
 
     const localDate = new Date(isoDate);
+
+    const optionsToday: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "short",
+    };
 
     const options: Intl.DateTimeFormatOptions = {
       weekday: "short",
@@ -42,6 +54,11 @@ const MatchesPage = ({
     };
 
     const formatted = date.toLocaleDateString("es-ES", options);
+
+    const formattedToday = date
+      .toLocaleDateString("es-ES", optionsToday)
+      .replace(".", "");
+
     const time = localDate.toLocaleTimeString("es-ES", {
       hour: "2-digit",
       minute: "2-digit",
@@ -49,15 +66,22 @@ const MatchesPage = ({
     });
 
     return {
-      date: formatted.replace(".", ""),
+      date: sameDay
+        ? `HOY ${formattedToday}`
+        : formatted.replace(".", "").replace(",", ""),
       time,
     };
   };
 
   return (
     <>
-      <Schedulebar setSelectedDate={setSelectedDate} formatDate={formatDate} />
+      <Schedulebar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        formatDate={formatDate}
+      />
       <Table
+        setSelectedDate={setSelectedDate}
         setMatchesReady={setMatchesReady}
         matchesReady={matchesReady}
         setIsCreating={setIsCreating}

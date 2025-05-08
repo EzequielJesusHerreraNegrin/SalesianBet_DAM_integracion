@@ -4,9 +4,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 interface ScheduleProps {
   setSelectedDate: (date: string) => void;
   formatDate: (isoDate: string) => { date: string; time: string };
+  selectedDate: string;
 }
 
-const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
+const Schedulebar = ({
+  selectedDate,
+  setSelectedDate,
+  formatDate,
+}: ScheduleProps) => {
   const tabsUseRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const generateDates = () => {
@@ -28,9 +33,10 @@ const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
 
   const filterDates = generateDates();
 
-  const today = new Date().toISOString().split("T")[0];
-  const initialValue = filterDates.findIndex((d) => d.isoDate == today);
-  const [value, setValue] = useState(initialValue >= 0 ? initialValue : 0);
+  const [value, setValue] = useState(() => {
+    const index = filterDates.findIndex((d) => d.isoDate === selectedDate);
+    return index >= 0 ? index : 0;
+  });
 
   const handleChange = (_event: any, newValue: number) => {
     setValue(newValue);
@@ -40,11 +46,14 @@ const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
   };
 
   useEffect(() => {
-    setSelectedDate(filterDates[value].isoDate);
-  }, []);
+    const index = filterDates.findIndex((d) => d.isoDate === selectedDate);
+    if (index !== -1 && index !== value) {
+      setValue(index);
+    }
+  }, [selectedDate]);
 
   useLayoutEffect(() => {
-    const tab = tabsUseRef.current[value]
+    const tab = tabsUseRef.current[value];
     if (tab) {
       // Espera a que todo esté montado correctamente
 
@@ -60,7 +69,7 @@ const Schedulebar = ({ setSelectedDate, formatDate }: ScheduleProps) => {
     <div
       style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}
     >
-      <Box sx={{ maxWidth: "62.6%", display: "flex", color: "black" }}>
+      <Box sx={{ maxWidth: "59%", display: "flex", color: "black" }}>
         <Tabs value={value} onChange={handleChange} variant="scrollable">
           {filterDates.map((day, index) => (
             <Tab
