@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +17,7 @@ import com.accesodatos.mappers.CartItemMapper;
 import com.accesodatos.repository.CartItemRepository;
 import com.accesodatos.repository.ProductRepository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.CartItemService;
 
 import lombok.extern.slf4j.Slf4j;
 

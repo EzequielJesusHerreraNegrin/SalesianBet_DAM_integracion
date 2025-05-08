@@ -18,9 +18,9 @@ import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.bet.BetResponseDto;
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
-import com.accesodatos.service.BetServiceImpl;
-import com.accesodatos.service.PurchaseServiceImpl;
-import com.accesodatos.service.UserEntityServiceImpl;
+import com.accesodatos.service.impl.BetServiceImpl;
+import com.accesodatos.service.impl.PurchaseServiceImpl;
+import com.accesodatos.service.impl.UserEntityServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")

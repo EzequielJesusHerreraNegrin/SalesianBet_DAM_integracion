@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;

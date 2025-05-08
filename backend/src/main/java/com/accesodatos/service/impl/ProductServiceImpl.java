@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +14,7 @@ import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.product.ProductMapper;
 import com.accesodatos.repository.ProductRepository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 

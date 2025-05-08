@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +17,7 @@ import com.accesodatos.mappers.match.MatchMapper;
 import com.accesodatos.repository.BetRepository;
 import com.accesodatos.repository.MatchRepository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.BetService;
 
 import lombok.extern.slf4j.Slf4j;
 

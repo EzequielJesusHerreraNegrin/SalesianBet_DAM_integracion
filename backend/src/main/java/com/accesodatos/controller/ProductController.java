@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
-import com.accesodatos.service.ProductServiceImpl;
+import com.accesodatos.service.impl.ProductServiceImpl;
 
 
 

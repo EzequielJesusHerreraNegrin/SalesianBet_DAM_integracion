@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.match.MatchRequestDto;
 import com.accesodatos.dto.match.MatchResponseDto;
-import com.accesodatos.service.MatchServiceImpl;
+import com.accesodatos.service.impl.MatchServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1")

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.cartitem.CartItemRequestDto;
 import com.accesodatos.dto.cartitem.CartItemResponseDto;
-import com.accesodatos.service.CartItemServiceImpl;
+import com.accesodatos.service.impl.CartItemServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")

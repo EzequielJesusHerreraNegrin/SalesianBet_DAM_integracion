@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.bet.BetRequestDto;
 import com.accesodatos.dto.bet.BetResponseDto;
-import com.accesodatos.service.BetServiceImpl;
+import com.accesodatos.service.impl.BetServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")

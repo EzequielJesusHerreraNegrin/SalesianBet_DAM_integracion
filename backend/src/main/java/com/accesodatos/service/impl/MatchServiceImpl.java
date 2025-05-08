@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +19,7 @@ import com.accesodatos.mappers.match.MatchMapper;
 import com.accesodatos.repository.CompetitionRepository;
 import com.accesodatos.repository.MatchRepository;
 import com.accesodatos.repository.TeamRepository;
+import com.accesodatos.service.MatchService;
 
 @Service
 public class MatchServiceImpl implements MatchService {

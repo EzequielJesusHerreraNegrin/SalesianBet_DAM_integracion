@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import com.accesodatos.entity.Competition;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.competition.CompetitionMapper;
 import com.accesodatos.repository.CompetitionRepository;
+import com.accesodatos.service.CompetitionService;
 
 @Service
 public class CompetitionServiceImpl implements CompetitionService {
