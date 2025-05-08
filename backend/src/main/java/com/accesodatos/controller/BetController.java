@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.accesodatos.service.BetServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BetController {
 
 
@@ -38,19 +40,19 @@ public class BetController {
 	}
 
 	@PostMapping( value = BET_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> createBet(@RequestBody BetRequestDto betRequestDto) {
-		boolean bet = betServiceImpl.createBet(betRequestDto);
+	public ResponseEntity<ApiResponseDto<BetResponseDto>> createBet(@RequestBody BetRequestDto betRequestDto) {
+		BetResponseDto bet = betServiceImpl.createBet(betRequestDto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("The bet was created successfuly.", HttpStatus.CREATED.value(), bet);
+		ApiResponseDto<BetResponseDto> response = new ApiResponseDto<>("The bet was created successfuly.", HttpStatus.CREATED.value(), bet);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@PutMapping( value = BET_PATH_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> updateBet(@PathVariable Long betId, @RequestBody BetRequestDto dto ) {
-		boolean bet = betServiceImpl.updateBetById(betId, dto);
+	public ResponseEntity<ApiResponseDto<BetResponseDto>> updateBet(@PathVariable Long betId, @RequestBody BetRequestDto dto ) {
+		BetResponseDto bet = betServiceImpl.updateBetById(betId, dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("The bet was created successfuly.", HttpStatus.CREATED.value(), bet);
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		ApiResponseDto<BetResponseDto> response = new ApiResponseDto<>("The bet was created successfuly.", HttpStatus.OK.value(), bet);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

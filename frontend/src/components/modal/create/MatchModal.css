@@ -1,0 +1,97 @@
+.formMatch-container {
+    margin-inline: auto;
+    margin-top: 5rem;
+    background-color: #c0eb75;
+    padding: 1.5rem 2rem;
+    color: black;
+    border-radius: 12px;
+    border: 3px solid black;
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .formMatch-title {
+    background-color: #2f9e44;
+    padding: 10px 20px;
+    margin-top: -2rem;
+    margin-bottom: 1rem;
+    border-radius: 20px;
+    border: 3px solid black;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .formMatch-edit-match {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* espacio entre elementos */
+    flex-wrap: nowrap;
+  }
+  
+  .match-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    white-space: nowrap; /* evita que se parta el nombre del equipo */
+  }
+  
+  .match-result-input {
+    width: 80px;
+    padding: 0.4rem;
+    text-align: center;
+    font-size: 1rem;
+    background-color: #d9f3ae;
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  
+  .formMatch-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .formMatch-button,
+  .formMatch-button-cancel {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 3px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .formMatch-button {
+    background-color: #2f9e44;
+    color: black;
+  }
+  
+  .formMatch-button-cancel {
+    background-color: rgba(255, 0, 0, 0.75);
+    color: black;
+    text-decoration: none;
+  }
+  
+  .formMatch-teams {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .formMatch-select,
+  .formMatch-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 180px;
+  }

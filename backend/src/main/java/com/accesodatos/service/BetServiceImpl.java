@@ -1,5 +1,6 @@
 package com.accesodatos.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +25,39 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BetServiceImpl implements BetService{
 	
-	@Autowired BetRepository betRepository;
-	@Autowired BetMapper betMapper;
-	@Autowired MatchMapper matchMapper;
-	@Autowired MatchRepository matchRepository;
-	@Autowired UserEntityRepository userEntityRepository;
+	private static final String BET_NOT_FOUND = "Bet with id %d not found";
+	private static final String MATCH_NOT_FOUND = "Match with id %d not found";
+	private static final String USER_NOT_FOUND = "User with id %d not found";
+	
+	@Autowired 
+	BetRepository betRepository;
+	
+	@Autowired 
+	BetMapper betMapper;
+	
+	@Autowired 
+	MatchMapper matchMapper;
+	
+	@Autowired 
+	MatchRepository matchRepository;
+	
+	@Autowired 
+	UserEntityRepository userEntityRepository;
+	
+	private Bet validateAndGetBet(Long id) {
+		return betRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(String.format(BET_NOT_FOUND, id)));
+	}
+	
+	private Match validateAndGetMatch(Long id) {
+		return matchRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(String.format(MATCH_NOT_FOUND, id)));
+	}
+	
+	private UserEntity validateAndGetUser(Long id) {
+		return userEntityRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, id)));
+	}
 	
 	@Override
 	public List<BetResponseDto> getAllBets() {
@@ -46,46 +75,69 @@ public class BetServiceImpl implements BetService{
 	}
 
 	@Override
-	public boolean createBet(BetRequestDto dto) {
-		Match match = matchRepository.findById(dto.getMatchId()).
-				orElseThrow(() -> 
-				new ResourceNotFoundException(
-						String.format("The bet with the id %d was not found.", dto.getMatchId())));
+	public BetResponseDto createBet(BetRequestDto dto) {
+		Match match = validateAndGetMatch(dto.getMatchId());
 		
-		UserEntity user = userEntityRepository.findById(dto.getUserId())
-	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getUserId()));
+		UserEntity user = validateAndGetUser(dto.getUserId());
+		
+		if (betRepository.existsByUserAndMatch(user, match)) {
+			throw new IllegalArgumentException( user.getUserName() + " ya habías apostado antes a este partido");
+		}
+		
+		if (match.getDate().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("No puedes hacer la apuesta, porque el partido ya ha empezado");
+		}
+		
+		if (dto.getPoints() <= 0) {
+			throw new IllegalArgumentException("Debes apostar más de 0 puntos");
+		}
+		
+		if (user.getPoints() < dto.getPoints()) {
+			throw new IllegalArgumentException("No tienes los puntos suficientes");
+		}
+		
+		user.setPoints(user.getPoints() - dto.getPoints());
+		
+		userEntityRepository.save(user);
+		
 		Bet bet = new Bet();
 		bet.setPrediction(dto.getPrediction());
 		bet.setPoints(dto.getPoints());
 		bet.setMatch(match);
 		bet.setUser(user);
 		
-		betRepository.save(bet);
-		return true;
-	}
 
-	@Override
-	public boolean updateBetById(Long betId, BetRequestDto dto) {
-		Bet bet = betRepository.findById(betId).
-				orElseThrow(() -> 
-				new ResourceNotFoundException(
-						String.format("The bet with the id %d was not found.", betId)));
 		
-		bet.setPrediction(dto.getPrediction());
-		bet.setPoints(dto.getPoints());
 		bet = betRepository.save(bet);
-		return bet != null;
+		return betMapper.toBetResponseDto(bet);
+
 	}
 
 	@Override
-	public boolean deleteBet(Long betId) {
+	public BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto) {
+		Bet bet = validateAndGetBet(betId);
+		
+		Match match = validateAndGetMatch(betRequestDto.getMatchId());
+		
+		if (match.getDate().isBefore(LocalDateTime.now())) {
+			new IllegalArgumentException("You cant edit this bet, because match has already begin");
+		}
+		
+		bet.setPrediction(betRequestDto.getPrediction());
+		bet.setPoints(betRequestDto.getPoints());
+		bet = betRepository.save(bet);
+		
+		return betMapper.toBetResponseDto(bet);
+	}
+
+	@Override
+	public void deleteBet(Long betId) {
 		Bet bet = betRepository.findById(betId).
 				orElseThrow(() -> 
 				new ResourceNotFoundException(
 						String.format("The bet with the id %d was not found.", betId)));
 		bet.getUser().removeBet(bet);
 		betRepository.delete(bet);
-		return bet != null;
 	}
 
 }

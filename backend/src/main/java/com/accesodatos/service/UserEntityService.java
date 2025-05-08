@@ -10,6 +10,8 @@ public interface UserEntityService {
 
 	List<UserEntityResponseDto> getAllUsers();
 	UserEntityResponseDto getUserByEmail(String email);
-	boolean createUser(UserEntityRegisterRequestDto dto);
-	List<ProductResponseDto> getUserBoughtProducts(Long id);
+
+	UserEntityResponseDto createUser(UserEntityRegisterRequestDto dto);
+	
+
 }

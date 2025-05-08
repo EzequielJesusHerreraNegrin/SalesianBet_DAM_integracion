@@ -14,6 +14,6 @@ public interface TeamMapper {
 	@Mapping(target = "homeMatches", ignore = true)
 	@Mapping(target = "awayMatches", ignore = true)
 	Team toTeam(TeamRequestDto teamRequestDto);
-	
+
 	TeamResponseDto toTeamResponseDto(Team team);
 }

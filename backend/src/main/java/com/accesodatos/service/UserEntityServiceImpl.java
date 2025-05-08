@@ -33,7 +33,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 	@Override
 	public List<UserEntityResponseDto> getAllUsers() {
 		List<UserEntity> users = userEntityRepository.findAll();
-		return users.stream().map(entityMapper::toUserEntityResponseDto).collect(Collectors.toList());
+		return users.stream().map(userEntityMapper::toUserEntityResponseDto).collect(Collectors.toList());
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 	}
 
 	@Override
-	public boolean createUser(UserEntityRegisterRequestDto dto) {
+	public UserEntityResponseDto createUser(UserEntityRegisterRequestDto dto) {
 		UserEntity user = new UserEntity();
 		
 		user.setUserName(dto.getUserName());
@@ -51,6 +51,8 @@ public class UserEntityServiceImpl implements UserEntityService{
 		user.setPassword(dto.getPassword());
 		user.setDni(dto.getDni());
 		user.setCountry(dto.getCountry());
+		user.setPoints(100);
+		
 		System.out.println(user.getCountry());
 		System.out.println(dto.getCountry());
 		user = userEntityRepository.save(user);
