@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+<!-- # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -52,3 +52,17 @@ export default tseslint.config({
   },
 })
 ```
+ -->
+
+# Instalación del front para poder iniciar el programa
+
+- Para iniciar el programa tendrás que irte a la terminal y poner el siguiente comando
+
+  'npm i o npm install'
+
+- Una vez hayas puesto este código y que se hayan instalado la carpeta 'node_modules' con lo necesario para
+  iniciar el programa tendrás que escribir esto otro comando
+
+  'npm run dev'
+
+Con esto ya podrás iniciar la parte del front que por supuesto para que funcione debidamente antes tendrás que arrancar el back que la información para la instalación de esta estará en su propio README
