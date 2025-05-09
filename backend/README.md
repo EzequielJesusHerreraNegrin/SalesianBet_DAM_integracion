@@ -75,6 +75,18 @@ docker-compose.yml y hacer el comando desde esa carpeta nueva que creó
 
    · Dandole click derecho encima del proyecto --> Maven --> Update Project
 
-3. Ejecutar la aplicación
+3. Cambiar el properties (src/main/resources/application.properties)
+
+    · Modificar la linea que dice never y poner always para ejecutar el data.sql
+
+    · Cuando se hayan insertado los datos por primera vez volver a ponerlo en never
+
+4. Ejecutar la aplicación
 
    · Click derecho sobre el proyecto --> Run As --> Spring Boot App
+
+### Paso 3 (Opcional): Recomendado instalar Postman
+
+Se adjunta aquí un link que tiene una colección de endpoints para facilitar la prueba de los datos:
+
+    https://salesianos.postman.co/workspace/Integración-DAM~2eedd03e-1511-462d-9359-b368ced7d672/collection/30085561-09f4d610-3ad3-452d-a25d-4cc309276c3d?action=share&creator=30085561
