@@ -39,8 +39,7 @@ public class SecurityConfig {
 			"/api/v1/bets",
 			"/api/v1/bets/{betId}",
 			"/api/v1/bets/{email}",
-			"/api/v1/matches/by-date",
-			
+			"/api/v1/matches/by-date",			
 	};
 	
 	@Bean
@@ -59,7 +58,6 @@ public class SecurityConfig {
 						// requiere que el user tenga rol ADMIN para acceder	
 						.requestMatchers(HttpMethod.GET, "/api/v1/products").hasRole("USER")
 						.requestMatchers("/**").hasRole("ADMIN")
-						//.requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")
 						.anyRequest().authenticated()
 				)
 				// Para que el servidor del navegador no guarde la sesión del cliente, solo el propio equipo del cliente guarda la información del token.
