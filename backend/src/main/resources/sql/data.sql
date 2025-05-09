@@ -135,31 +135,7 @@ INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, awa
 ('2025-04-15 20:00:00', FALSE, '', 6, 22, 90),
 ('2025-04-15 20:00:00', FALSE, '', 6, 65, 1),
 ('2025-04-16 20:00:00', FALSE, '', 6, 3, 21),
-('2025-04-16 20:00:00', FALSE, '', 6, 49, 63),
-
--- Jornada 31 de la liga 
-
-('2025-04-11 21:00:00', FALSE, '1 - 0', 1), -- Valencia vs Sevilla
-('2025-04-12 14:00:00', FALSE, '0 - 2', 1), -- Real Sociedad vs Mallorca
-('2025-04-12 16:15:00', FALSE, '1 - 3', 1), -- Getafe vs Las Palmas
-('2025-04-12 18:30:00', FALSE, '', 1),      -- Betis vs Villarreal
-('2025-04-12 21:00:00', FALSE, '', 1),      -- Leganés vs Barcelona
-('2025-04-13 14:00:00', FALSE, '', 1),      -- Osasuna vs Girona
-('2025-04-13 16:15:00', FALSE, '', 1),      -- Athletic Club vs Rayo Vallecano
-('2025-04-13 18:30:00', FALSE, '', 1),      -- Celta de Vigo vs Espanyol
-('2025-04-13 21:00:00', FALSE, '', 1),      -- Real Madrid vs Alavés
-('2025-04-14 21:00:00', FALSE, '', 1); 
-
-
-INSERT teams_matches (fk_match_id, fk_team_id) VALUES
-(1, 21), (1, 3),
-(2, 63), (2, 49), 
-(3, 90), (3, 22),
-(4, 1), (4, 65),
-(5, 22), (5, 90),
-(6, 65), (6, 1),
-(7, 3), (7, 21),
-(8, 49), (8, 63);
+('2025-04-16 20:00:00', FALSE, '', 6, 49, 63);
 
 INSERT INTO users (user_id, user_name, password, email, dni, points, country) VALUES
 (1, 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
