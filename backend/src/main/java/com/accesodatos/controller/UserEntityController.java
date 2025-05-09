@@ -26,9 +26,8 @@ import com.accesodatos.service.impl.UserEntityServiceImpl;
 public class UserEntityController {
 
 	private static final String USER_RESOURCE = "/users";
-	private static final String USER_PATH_EMAIL = USER_RESOURCE + "/{email}";
+	private static final String USER_PATH_EMAIL = USER_RESOURCE + "/email";
 	private static final String USER_CARTITEM_ID = USER_RESOURCE + "/purchase/{userId}";
-	private static final String BET_RESOURCE = "/bets";
 
 	
 	@Autowired BetServiceImpl betServiceImpl;
@@ -46,8 +45,8 @@ public class UserEntityController {
 	}
 
 	@GetMapping(value = USER_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String email) {
-		UserEntityResponseDto users = userEntityServiceImpl.getUserByEmail(email);
+	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String value) {
+		UserEntityResponseDto users = userEntityServiceImpl.getUserByEmail(value);
 
 		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<UserEntityResponseDto>(
 				"All users fetched successfuly.", HttpStatus.OK.value(), users);
@@ -62,7 +61,8 @@ public class UserEntityController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = USER_CARTITEM_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = USER_CARTITEM_ID, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> buyCartItems(@PathVariable Long userId) {
 		
 		Boolean purchased = purchaseServiceImpl.buyUserBasketProducts(userId);

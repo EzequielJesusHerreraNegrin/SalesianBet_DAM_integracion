@@ -51,7 +51,7 @@ public class BetServiceImpl implements BetService{
 		Match match = matchRepository.findById(dto.getMatchId()).
 				orElseThrow(() -> 
 				new ResourceNotFoundException(
-						String.format("The bet with the id %d was not found.", dto.getMatchId())));
+						String.format("The match with the id %d was not found.", dto.getMatchId())));
 		
 		UserEntity user = userEntityRepository.findById(dto.getUserId())
 	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.getUserId()));

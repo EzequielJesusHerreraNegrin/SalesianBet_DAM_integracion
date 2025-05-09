@@ -28,7 +28,7 @@ public class BetController {
 
 	private static final String BET_RESOURCE = "/bets";
 	private static final String BET_PATH_ID = BET_RESOURCE + "/{betId}";
-	private static final String BET_PATH_EMAIL = BET_RESOURCE + "/{email}";
+	private static final String BET_PATH_EMAIL = BET_RESOURCE + "/email";
 	
 	@Autowired BetServiceImpl betServiceImpl;
 	
@@ -49,8 +49,8 @@ public class BetController {
 	}
 	
 	@GetMapping(value = BET_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserEmail(@RequestParam String email) {
-		List<BetResponseDto> bets = betServiceImpl.getBetByUserEmail(email);
+	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserEmail(@RequestParam String value) {
+		List<BetResponseDto> bets = betServiceImpl.getBetByUserEmail(value);
 
 		ApiResponseDto<List<BetResponseDto>> response = new ApiResponseDto<List<BetResponseDto>>(
 				"All bets fetched successfuly.", HttpStatus.OK.value(), bets);
