@@ -1,9 +1,13 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.accesodatos.dto.product.ProductRequestDto;
@@ -14,6 +18,7 @@ import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.product.ProductMapper;
 import com.accesodatos.repository.ProductRepository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.ProductService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +39,18 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public List<ProductResponseDto> getAllProducts() {
-		List<Product> products = productRepository.findAll();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        boolean isAdmin = authentication.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .anyMatch(role -> role.equals("ROLE_ADMIN"));
+        List<Product> products = new ArrayList<>();
+        if (isAdmin) {
+        	products = productRepository.findAll();			
+		} else {
+			products = productRepository.findByState(ProductState.PUBLICO);						
+		}
+		
 		return products.stream().map(productMapper::toProductResponseDto).collect(Collectors.toList());
 	}
 
@@ -93,12 +109,6 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 		return true;
-	}
-
-	@Override
-	public List<ProductResponseDto> getProductsByState(String state) {
-		List<Product> products = productRepository.findByState(ProductState.valueOf(state));
-		return products.stream().map(productMapper::toProductResponseDto).collect(Collectors.toList());
 	}
 }
 

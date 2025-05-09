@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +25,7 @@ import com.accesodatos.repository.CompetitionRepository;
 import com.accesodatos.repository.MatchRepository;
 import com.accesodatos.repository.TeamRepository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.MatchService;
 
 @Service
 public class MatchServiceImpl implements MatchService {
@@ -44,10 +45,10 @@ public class MatchServiceImpl implements MatchService {
 
 	@Autowired
 	TeamRepository teamRepository;
-	
+
 	@Autowired
 	BetRepository betRepository;
-	
+
 	@Autowired
 	UserEntityRepository userRepository;
 
@@ -65,12 +66,12 @@ public class MatchServiceImpl implements MatchService {
 		return teamRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format(TEAM_NOT_FOUND, id)));
 	}
-	
+
 	private String calculatePrediction(String result) {
 		String[] goals = result.trim().split("-");
 		int homeGoals = Integer.parseInt(goals[0]);
 		int awayGoals = Integer.parseInt(goals[1]);
-		
+
 		if (homeGoals > awayGoals) {
 			return "LOCAL";
 		} else if (awayGoals > homeGoals) {
@@ -186,39 +187,35 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public MatchResponseDto validateMatch(Long matchId, MatchResultRequestDto matchResult) {
-		
+
 		Match match = validateAndGetMatch(matchId);
-		
+
 		if (match.getIs_playing()) {
 			throw new IllegalStateException("Cannot set result while match is still playing!");
 		}
-		
+
 		if (match.getResult() != null && !match.getResult().isBlank()) {
 			throw new IllegalStateException("Match already have a result");
 		}
-		
+
 		match.setResult(matchResult.getResult());
 		matchRepository.save(match);
-		
+
 		List<Bet> bets = betRepository.findByMatch(match);
-		
+
 		for (Bet bet : bets) {
 			UserEntity user = bet.getUser();
-			
+
 			String realPrediction = calculatePrediction(matchResult.getResult());
-			
+
 			if (bet.getPrediction().equalsIgnoreCase(realPrediction)) {
 				int earnings = bet.getPoints() * 2;
 				user.setPoints(user.getPoints() + earnings);
 				userRepository.save(user);
 			}
 		}
-		
+
 		return matchMapper.toMatchResponseDto(match);
 	}
-
-	
-	
-	
 
 }

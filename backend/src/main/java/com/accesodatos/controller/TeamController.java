@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.teamdto.TeamRequestDto;
 import com.accesodatos.dto.teamdto.TeamResponseDto;
-import com.accesodatos.service.TeamServiceImpl;
+import com.accesodatos.service.impl.TeamServiceImpl;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;

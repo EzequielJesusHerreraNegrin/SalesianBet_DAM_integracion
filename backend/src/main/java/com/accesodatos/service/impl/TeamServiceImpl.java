@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +12,7 @@ import com.accesodatos.entity.Team;
 import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.mappers.team.TeamMapper;
 import com.accesodatos.repository.TeamRepository;
+import com.accesodatos.service.TeamService;
 
 @Service
 public class TeamServiceImpl implements TeamService {

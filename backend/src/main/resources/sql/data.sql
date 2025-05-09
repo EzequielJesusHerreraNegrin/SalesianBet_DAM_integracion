@@ -1,5 +1,5 @@
 -- competitions --
-INSERT INTO competitions (name, country) VALUES
+/*INSERT INTO competitions (name, country) VALUES
 ('La Liga', 'España'),
 ('Premier League', 'Inglaterra'),
 ('Serie A', 'Italia'),
@@ -124,9 +124,9 @@ INSERT INTO teams (team_name, sport) VALUES
 ('Dinamo Zagreb', 'Fútbol'), -- 108
 ('Estrella Roja', 'Fútbol'), -- 109
 ('Slovan Bratislava', 'Fútbol'); -- 110
-
+*/
 -- matches --
-INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, away_team_id) VALUES  
+/*INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, away_team_id) VALUES  
 -- Cuartos de Champions
 ('2025-04-08 20:00:00', FALSE, '3 - 0', 6, 21, 3),  -- Arsenal vs. Real Madrid
 ('2025-04-08 20:00:00', FALSE, '1 - 2', 6, 63, 49), -- Bayern Múnich vs Inter
@@ -135,8 +135,36 @@ INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, awa
 ('2025-04-15 20:00:00', FALSE, '', 6, 22, 90),
 ('2025-04-15 20:00:00', FALSE, '', 6, 65, 1),
 ('2025-04-16 20:00:00', FALSE, '', 6, 3, 21),
-('2025-04-16 20:00:00', FALSE, '', 6, 49, 63);
+('2025-04-16 20:00:00', FALSE, '', 6, 49, 63),
 
+-- Jornada 31 de La Liga
+('2025-04-11 20:00:00', FALSE, '1 - 0', 1, 8, 10),   -- Valencia vs Sevilla
+('2025-04-12 13:00:00', FALSE, '0 - 2', 1, 6, 16),   -- Real Sociedad vs Mallorca
+('2025-04-12 15:15:00', FALSE, '1 - 3', 1, 11, 14),  -- Getafe vs Las Palmas
+('2025-04-12 18:30:00', FALSE, '', 1, 7, 9),         -- Betis vs Villarreal
+('2025-04-12 20:00:00', FALSE, '', 1, 19, 1),        -- Leganés vs Barcelona
+('2025-04-13 13:00:00', FALSE, '', 1, 13, 4),        -- Osasuna vs Girona
+('2025-04-13 15:15:00', FALSE, '', 1, 5, 12),        -- Athletic vs Rayo
+('2025-04-13 18:30:00', FALSE, '', 1, 17, 20),       -- Celta vs Espanyol
+('2025-04-13 20:00:00', FALSE, '', 1, 3, 15),        -- Real Madrid vs Alavés
+('2025-04-14 20:00:00', FALSE, '', 1, 2, 18);        -- Atlético vs Valladolid*/
+
+-- Jornada 31 de la liga 
+
+/*('2025-04-11 21:00:00', FALSE, '1 - 0', 1), -- Valencia vs Sevilla
+('2025-04-12 14:00:00', FALSE, '0 - 2', 1), -- Real Sociedad vs Mallorca
+('2025-04-12 16:15:00', FALSE, '1 - 3', 1), -- Getafe vs Las Palmas
+('2025-04-12 18:30:00', FALSE, '', 1),      -- Betis vs Villarreal
+('2025-04-12 21:00:00', FALSE, '', 1),      -- Leganés vs Barcelona
+('2025-04-13 14:00:00', FALSE, '', 1),      -- Osasuna vs Girona
+('2025-04-13 16:15:00', FALSE, '', 1),      -- Athletic Club vs Rayo Vallecano
+('2025-04-13 18:30:00', FALSE, '', 1),      -- Celta de Vigo vs Espanyol
+('2025-04-13 21:00:00', FALSE, '', 1),      -- Real Madrid vs Alavés
+('2025-04-14 21:00:00', FALSE, '', 1); */
+
+
+
+/*
 INSERT INTO users (user_id, user_name, password, email, dni, points, country) VALUES
 (1, 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
 (2, 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
@@ -150,5 +178,97 @@ INSERT INTO products (product_name, product_image, price, state) VALUES
 ('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
 ('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
 ('Silla Ergonómica', 'chair.jpg', 149, 'PUBLICO'),
-('Auriculares Inalámbricos', 'headphones.jpg', 89, 'PUBLICO');
+('Auriculares Inalámbricos', 'headphones.jpg', 89, 'PUBLICO');*/
 
+-- Borrar datos existentes (opcional, para pruebas)
+-- SET FOREIGN_KEY_CHECKS = 0; -- Para MySQL, si tienes problemas con FKs al borrar
+-- TRUNCATE TABLE bets;
+-- TRUNCATE TABLE purchases;
+-- TRUNCATE TABLE cart_items;
+-- TRUNCATE TABLE matches;
+-- TRUNCATE TABLE user_roles;
+-- TRUNCATE TABLE users;
+-- TRUNCATE TABLE roles;
+-- TRUNCATE TABLE teams;
+-- TRUNCATE TABLE competitions;
+-- TRUNCATE TABLE products;
+-- SET FOREIGN_KEY_CHECKS = 1; -- Para MySQL
+
+-- 1. Roles
+INSERT INTO roles (role_name) VALUES ('ROLE_USER'); -- Supongamos ID 1
+INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN'); -- Supongamos ID 2
+
+-- 2. Products
+INSERT INTO products (product_name, product_image, price, state) VALUES ('Camiseta Oficial', 'camiseta.jpg', 25, 'PUBLICO'); -- Supongamos ID 1
+INSERT INTO products (product_name, product_image, price, state) VALUES ('Bufanda Equipo', 'bufanda.png', 15, 'PUBLICO'); -- Supongamos ID 2
+INSERT INTO products (product_name, product_image, price, state) VALUES ('Balón Firmado', 'balon.jpg', 150, 'DESCATALOGADO'); -- Supongamos ID 3 (Asumiendo que LIMITED_STOCK es un valor válido para ProductState)
+INSERT INTO products (product_name, product_image, price, state) VALUES ('Taza Logo', 'taza.gif', 10, 'DESCATALOGADO'); -- Supongamos ID 4
+
+-- 3. Competitions
+INSERT INTO competitions (name, country) VALUES ('La Liga EA Sports', 'Spain'); -- Supongamos ID 1
+INSERT INTO competitions (name, country) VALUES ('Premier League', 'England'); -- Supongamos ID 2
+INSERT INTO competitions (name, country) VALUES ('Champions League', 'Europe'); -- Supongamos ID 3
+
+-- 4. Teams
+INSERT INTO teams (team_name, sport) VALUES ('Real Madrid', 'Football'); -- Supongamos ID 1
+INSERT INTO teams (team_name, sport) VALUES ('FC Barcelona', 'Football'); -- Supongamos ID 2
+INSERT INTO teams (team_name, sport) VALUES ('Manchester City', 'Football'); -- Supongamos ID 3
+INSERT INTO teams (team_name, sport) VALUES ('Liverpool FC', 'Football'); -- Supongamos ID 4
+INSERT INTO teams (team_name, sport) VALUES ('Bayern Munich', 'Football'); -- Supongamos ID 5
+
+-- 5. Users
+INSERT INTO users (user_name, password, email, dni, points, country)
+VALUES ('john_doe', 'password123', 'john.doe@example.com', '12345678A', 1000, 'Spain'); -- Supongamos ID 1
+INSERT INTO users (user_name, password, email, dni, points, country)
+VALUES ('jane_smith', 'securepass', 'jane.smith@example.com', '87654321B', 500, 'UK'); -- Supongamos ID 2
+INSERT INTO users (user_name, password, email, dni, points, country)
+VALUES ('admin_user', 'adminpass', 'admin@example.com', '11223344C', 9999, 'Germany'); -- Supongamos ID 3
+
+-- 6. User_Roles (Tabla de unión para la relación ManyToMany entre Users y Roles)
+-- John Doe es USER
+INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (1, 1);
+-- Jane Smith es USER
+INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (2, 1);
+-- Admin User es USER y ADMIN
+INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 1);
+INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 2);
+
+-- 7. Matches
+-- Asumimos que los IDs de team y competition son los que hemos insertado antes
+INSERT INTO matches (date, is_playing, result, home_team_id, away_team_id, competition_id)
+VALUES ('2024-08-15 21:00:00', FALSE, '2-1', 1, 2, 1); -- Real Madrid vs Barcelona (La Liga), Supongamos ID 1
+INSERT INTO matches (date, is_playing, home_team_id, away_team_id, competition_id)
+VALUES ('2024-08-16 19:00:00', TRUE, 3, 4, 2); -- Man City vs Liverpool (Premier League), en juego, Supongamos ID 2
+INSERT INTO matches (date, is_playing, home_team_id, away_team_id, competition_id)
+VALUES (DATE_ADD(NOW(), INTERVAL 2 DAY), FALSE, 1, 5, 3); -- Real Madrid vs Bayern (Champions), futuro, Supongamos ID 3
+
+-- 8. Bets
+-- John Doe apuesta en el Real Madrid vs Barcelona
+INSERT INTO bets (points, prediction, match_id, user_id)
+VALUES (100, 'Real Madrid 2-1', 1, 1); -- Supongamos ID 1
+-- Jane Smith apuesta en el Man City vs Liverpool
+INSERT INTO bets (points, prediction, match_id, user_id)
+VALUES (50, 'Draw 1-1', 2, 2); -- Supongamos ID 2
+-- Actualizar puntos de usuario (esto lo hace tu lógica de `addBet`, pero para SQL puro lo haríamos así)
+UPDATE users SET points = points - 100 WHERE user_id = 1;
+UPDATE users SET points = points - 50 WHERE user_id = 2;
+
+
+-- 9. Cart_Items (Cesta de la compra)
+-- John Doe tiene una camiseta en su cesta
+INSERT INTO cart_items (user_id, product_id, cuantity)
+VALUES (1, 1, 1); -- Supongamos ID 1
+-- John Doe también tiene una bufanda
+INSERT INTO cart_items (user_id, product_id, cuantity)
+VALUES (1, 2, 2); -- Supongamos ID 2
+-- Jane Smith tiene una taza (aunque esté out of stock, podría estar en la cesta esperando reposición)
+INSERT INTO cart_items (user_id, product_id, cuantity)
+VALUES (2, 4, 1); -- Supongamos ID 3
+
+-- 10. Purchases (Compras realizadas)
+-- John Doe compró un Balón Firmado
+INSERT INTO purchases (user_id, product_id, quantity, total_price, purchase_date)
+VALUES (1, 3, 1, 150, '2024-07-20 10:00:00'); -- Supongamos ID 1
+-- Jane Smith compró una Camiseta Oficial
+INSERT INTO purchases (user_id, product_id, quantity, total_price, purchase_date)
+VALUES (2, 1, 2, 50, '2024-07-21 15:30:00'); -- Supongamos ID 2

@@ -13,5 +13,4 @@ public interface ProductService {
 	Boolean updateProduct(ProductRequestDto dto, Long id);
 	Boolean deleteProduct(Long id);
 	Boolean manageProductSate(Long productId, String state);
-	List<ProductResponseDto> getProductsByState(String state);
 }

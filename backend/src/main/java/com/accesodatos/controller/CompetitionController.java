@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.competitiondto.CompetitionRequestDto;
 import com.accesodatos.entity.Competition;
-import com.accesodatos.service.CompetitionServiceImpl;
+import com.accesodatos.service.impl.CompetitionServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")

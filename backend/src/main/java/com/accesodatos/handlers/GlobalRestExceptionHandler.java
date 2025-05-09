@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.accesodatos.dto.api.ApiError;
 import com.accesodatos.exception.NotEnoughPointsException;
 import com.accesodatos.exception.ResourceNotFoundException;
+import com.accesodatos.exception.TokenExpiredException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,17 +66,17 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), "Resource Not Found");
 		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
-	
+
+	// 402 - Puntos insuficientes
 	@ExceptionHandler(NotEnoughPointsException.class)
-	public ResponseEntity<ApiError> handleNotEnoughPointsException(NotEnoughPointsException ex,     											
+	public ResponseEntity<ApiError> handleNotEnoughPointsException(NotEnoughPointsException ex,
 			WebRequest request) {
-		
+
 		log.info(ex.getClass().getName());
-		
+
 		ApiError apiError = new ApiError(HttpStatus.PAYMENT_REQUIRED, ex.getLocalizedMessage(), "Insufficient points");
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
-	
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ApiError> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
@@ -86,6 +87,16 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 				ex.getLocalizedMessage(),
 				"Invalid request or business rule violated");
 
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+	}
+
+	@ExceptionHandler(TokenExpiredException.class)
+	private ResponseEntity<ApiError> handleTokenExpiredException(NotEnoughPointsException ex,
+			WebRequest request) {
+
+		log.info(ex.getClass().getName());
+
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), "Session Expired");
 		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 

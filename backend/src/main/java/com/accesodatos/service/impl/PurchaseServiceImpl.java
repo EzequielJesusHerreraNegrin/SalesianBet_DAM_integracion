@@ -1,4 +1,4 @@
-package com.accesodatos.service;
+package com.accesodatos.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import com.accesodatos.entity.UserEntity;
 import com.accesodatos.exception.NotEnoughPointsException;
 import com.accesodatos.repository.PurchaseRespository;
 import com.accesodatos.repository.UserEntityRepository;
+import com.accesodatos.service.PurchaseService;
 
 import lombok.extern.slf4j.Slf4j;
 
