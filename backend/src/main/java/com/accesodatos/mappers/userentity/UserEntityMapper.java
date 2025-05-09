@@ -12,6 +12,7 @@ import com.accesodatos.entity.UserEntity;
 @Mapper(componentModel = "spring")
 public interface UserEntityMapper {
 
+
 	UserEntityResponseDto toUserEntityResponseDto (UserEntity userEntity);
 	
 	@Mapping(target = "userId", ignore = true)

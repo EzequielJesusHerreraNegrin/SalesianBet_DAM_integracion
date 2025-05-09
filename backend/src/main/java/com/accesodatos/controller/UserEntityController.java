@@ -54,10 +54,11 @@ public class UserEntityController {
 	}
 
 	@PostMapping(value = USER_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> createUser(@RequestBody UserEntityRegisterRequestDto dto) {
-		boolean user = userEntityServiceImpl.createUser(dto);
+	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> createUser(@RequestBody UserEntityRegisterRequestDto dto) {
+		UserEntityResponseDto user = userEntityServiceImpl.createUser(dto);
 
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("User created successfuly.", HttpStatus.CREATED.value(), user);
+		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<>("All users fetched successfuly.",
+				HttpStatus.CREATED.value(), user);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 

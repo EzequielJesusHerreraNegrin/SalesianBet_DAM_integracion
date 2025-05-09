@@ -1,0 +1,38 @@
+.navbar-container {
+    display: flex;
+    background-color: #2f9e44;
+    align-items: center;
+    width: 100%;
+    color: black;
+}
+
+.navbar-screens {
+    display: flex;
+    gap: 300px;
+    align-items: center;
+}
+
+.navbar-logo {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    margin-right: 100px;
+}
+
+.navbar-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+p {
+    margin: 0;
+    margin-left: 30px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+}

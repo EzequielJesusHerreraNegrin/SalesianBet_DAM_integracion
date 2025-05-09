@@ -17,8 +17,7 @@ public interface MatchMapper {
 	@Mapping(target = "awayTeam", ignore = true)
 	@Mapping(target = "bets", ignore = true)
 	Match toMatch(MatchRequestDto matchRequestDto);
-	
+
 	MatchResponseDto toMatchResponseDto(Match match);
-	
 
 }

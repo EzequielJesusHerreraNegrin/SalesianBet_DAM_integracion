@@ -12,5 +12,5 @@ public interface CompetitionMapper {
 	@Mapping(target = "competitionId", ignore = true)
 	@Mapping(target = "matches", ignore = true)
 	Competition ToCompetition(CompetitionRequestDto competitionRequestDto);
-	
+
 }

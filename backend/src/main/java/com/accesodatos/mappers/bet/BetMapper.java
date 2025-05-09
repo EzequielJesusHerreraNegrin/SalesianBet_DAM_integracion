@@ -10,8 +10,8 @@ import com.accesodatos.entity.Bet;
 @Mapper(componentModel = "spring")
 public interface BetMapper {
 
-	BetResponseDto toBetResponseDto (Bet bet);
-	
+	BetResponseDto toBetResponseDto(Bet bet);
+
 	@Mapping(target = "betId", ignore = true)
 	@Mapping(target = "match", ignore = true)
 	@Mapping(target = "user", ignore = true)
