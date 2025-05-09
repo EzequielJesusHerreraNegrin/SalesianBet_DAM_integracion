@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accesodatos.dto.api.ApiResponseDto;
-import com.accesodatos.dto.bet.BetResponseDto;
 import com.accesodatos.dto.userentity.UserEntityRegisterRequestDto;
 import com.accesodatos.dto.userentity.UserEntityResponseDto;
 import com.accesodatos.service.impl.BetServiceImpl;
@@ -30,7 +29,7 @@ public class UserEntityController {
 	private static final String USER_PATH_EMAIL = USER_RESOURCE + "/{email}";
 	private static final String USER_CARTITEM_ID = USER_RESOURCE + "/purchase/{userId}";
 	private static final String BET_RESOURCE = "/bets";
-	private static final String BET_PATH_EMAIL = BET_RESOURCE + "/{email}";
+
 	
 	@Autowired BetServiceImpl betServiceImpl;
 	@Autowired UserEntityServiceImpl userEntityServiceImpl;
@@ -61,15 +60,6 @@ public class UserEntityController {
 
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("User created successfuly.", HttpStatus.CREATED.value(), user);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
-	}
-
-	@GetMapping(value = BET_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserEmail(@RequestParam String email) {
-		List<BetResponseDto> bets = betServiceImpl.getBetByUserEmail(email);
-
-		ApiResponseDto<List<BetResponseDto>> response = new ApiResponseDto<List<BetResponseDto>>(
-				"All bets fetched successfuly.", HttpStatus.OK.value(), bets);
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping(value = USER_CARTITEM_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

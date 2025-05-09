@@ -28,7 +28,7 @@ public class JwtTokenProvider {
 	private String privateKey;
 	
 	
-	private static final long JWT_EXPIRATION_DATE = 3600000;
+	private static final long JWT_EXPIRATION_DATE = 360000000;
 	
 	public String generateToken(Authentication authentication) {
 		String username = authentication.getName();
