@@ -56,6 +56,12 @@ export default tseslint.config({
 
 # Instalación del front para poder iniciar el programa
 
+Antes de Instar el front, entren a este enlace (https://drive.google.com/drive/folders/1u-X37IbVZxp88j4wPySXRy5pscOHZKUV?usp=sharing) y descarguense la carpeta assets de ahí que contiene los logos de los equipos (Entrar por el dominio de los salesianos). 
+Importante no modificar la estructura de las carpetas dentro de assets y después mover la carpeta assets a la siguiente ruta:
+
+  - 'frontend/src/assets'
+
+
 - Para iniciar el programa tendrás que irte a la terminal y poner el siguiente comando
 
   'npm i o npm install'
