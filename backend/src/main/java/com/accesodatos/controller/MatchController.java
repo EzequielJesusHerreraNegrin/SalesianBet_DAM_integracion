@@ -24,7 +24,6 @@ import com.accesodatos.dto.match.MatchRequestDto;
 import com.accesodatos.dto.match.MatchResponseDto;
 import com.accesodatos.service.impl.MatchServiceImpl;
 import com.accesodatos.dto.match.MatchResultRequestDto;
-import com.accesodatos.service.MatchServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1")

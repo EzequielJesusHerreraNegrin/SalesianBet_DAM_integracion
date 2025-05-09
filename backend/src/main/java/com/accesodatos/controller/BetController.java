@@ -72,12 +72,9 @@ public class BetController {
 	}
 
 	@DeleteMapping(value = BET_PATH_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> deleteBet(@PathVariable Long betId) {
-		boolean bet = betServiceImpl.deleteBet(betId);
-
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("The bet was deleted successfully.",
-				HttpStatus.CREATED.value(), bet);
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	public ResponseEntity<ApiResponseDto<Void>> deleteBet(@PathVariable Long betId) {
+		betServiceImpl.deleteBet(betId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }
