@@ -19,16 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
-import com.accesodatos.service.ProductServiceImpl;
+import com.accesodatos.service.impl.ProductServiceImpl;
 
 
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 public class ProductController {
 
 	private static final String PRODUCT_RESOURCE = "/products";
-	private static final String PRODUCT_STATE = PRODUCT_RESOURCE + "/state";
 	private static final String PRODUCT_PATH_ID = PRODUCT_RESOURCE + "/{productId}";
 	private static final String PRODUCT_ID_STATE = PRODUCT_PATH_ID +"/state";
 	
@@ -48,17 +47,7 @@ public class ProductController {
 						HttpStatus.OK.value(), products);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@GetMapping(value = PRODUCT_STATE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getProductsByState(@RequestParam String value){
-		List<ProductResponseDto> products = productServiceImpl.getProductsByState(value);
-		
-		ApiResponseDto<List<ProductResponseDto>> response = 
-				new ApiResponseDto<List<ProductResponseDto>>("All products fetched successfuly",
-						HttpStatus.OK.value(), products);
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-	
+
 	@PostMapping(value = PRODUCT_RESOURCE, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,7 +72,6 @@ public class ProductController {
 	}
 	
 	@DeleteMapping(value = PRODUCT_PATH_ID, 
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> deleteProduct(@PathVariable Long productId) {
 		Boolean deleted = productServiceImpl.deleteProduct(productId);
@@ -101,15 +89,5 @@ public class ProductController {
 				"Product state updated successfuly.", HttpStatus.OK.value(), changed);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-//	@PostMapping(value = PRODUCT_AND_USER_PATH_ID, 
-//			consumes = MediaType.APPLICATION_JSON_VALUE, 
-//			produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<ApiResponseDto<Boolean>> addProductToTheCart(@PathVariable Long productId, @PathVariable Long userId) {
-//		Boolean added = productServiceImpl.addProductToUserCart(productId, userId);
-//		
-//		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>(
-//				"Product addes to user successfuly.", HttpStatus.OK.value(), added);
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
+
 }

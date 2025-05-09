@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.accesodatos.dto.api.ApiResponseDto;
 import com.accesodatos.dto.cartitem.CartItemRequestDto;
 import com.accesodatos.dto.cartitem.CartItemResponseDto;
-import com.accesodatos.service.CartItemServiceImpl;
+import com.accesodatos.service.impl.CartItemServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")
 public class CartItemController {
 
 	private static final String CARTITEM_RESOURCE = "/cartItems";
-	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product/{id}";
+	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product/{userId}";
 	private static final String CARTITEM_USER_ID_PRODUCT_ID = CARTITEM_RESOURCE + "/{userId}/product/{productId}";
 	
 	@Autowired CartItemServiceImpl cartItemServiceImpl;
@@ -39,20 +39,24 @@ public class CartItemController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = CARTITEM_PRODUCT_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = CARTITEM_PRODUCT_ID, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> addProductToCart(
-			@RequestBody CartItemRequestDto dto,@PathVariable Long id) {
+			@RequestBody CartItemRequestDto dto,@PathVariable Long userId) {
 		
-		Boolean items = cartItemServiceImpl.addproductToCart(id, dto);
+		Boolean items = cartItemServiceImpl.addproductToCart(userId, dto);
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), items);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = CARTITEM_PRODUCT_ID, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> updateCartItem(@PathVariable Long id, @RequestBody CartItemRequestDto dto) {
-		Boolean updated = cartItemServiceImpl.updateCartItem(id, dto);
+	@PutMapping(value = CARTITEM_PRODUCT_ID, 
+			consumes = MediaType.APPLICATION_JSON_VALUE, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Boolean>> updateCartItem(@PathVariable Long userId, @RequestBody CartItemRequestDto dto) {
+		Boolean updated = cartItemServiceImpl.updateCartItem(userId, dto);
 		
 		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), updated);
 		

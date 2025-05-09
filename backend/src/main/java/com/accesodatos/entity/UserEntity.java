@@ -19,6 +19,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,13 +45,14 @@ public class UserEntity {
 	@Column(length = 30, nullable = false)
 	private String userName;
 	
-	@Column(length = 30, nullable = false)
+	@Column(nullable = false)
 	private String password;
 	
-	@Column(length = 30, nullable = false)
+	@Column(length = 30, unique = true ,nullable = false)
+	@Email
 	private String email;
 	
-	@Column(length = 30, nullable = false)
+	@Column(length = 30, unique = true, nullable = false)
 	private String dni;
 	
 	private int points;
