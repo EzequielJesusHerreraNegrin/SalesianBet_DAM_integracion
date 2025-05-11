@@ -7,6 +7,7 @@ export type User = {
   email: string;
   dni: string;
   bets: Bet[];
+  token: string
   // roles:
 };
 
