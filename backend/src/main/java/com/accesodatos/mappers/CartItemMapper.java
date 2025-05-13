@@ -7,12 +7,11 @@ import com.accesodatos.dto.cartitem.CartItemRequestDto;
 import com.accesodatos.dto.cartitem.CartItemResponseDto;
 import com.accesodatos.entity.CartItem;
 
-
 @Mapper(componentModel = "spring")
 public interface CartItemMapper {
 
-	CartItemResponseDto toCartItemResponseDto (CartItem cartItem);
-	
+	CartItemResponseDto toCartItemResponseDto(CartItem cartItem);
+
 	@Mapping(target = "cartId", ignore = true)
 	@Mapping(target = "user", ignore = true)
 	@Mapping(target = "product", ignore = true)

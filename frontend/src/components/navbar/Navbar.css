@@ -8,7 +8,9 @@
 
 .navbar-screens {
     display: flex;
-    gap: 300px;
+    padding: 0 30px;
+    width: 90%;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -25,6 +27,14 @@
     align-items: center;
 
 }
+
+.navbar-auth {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
 
 p {
     margin: 0;

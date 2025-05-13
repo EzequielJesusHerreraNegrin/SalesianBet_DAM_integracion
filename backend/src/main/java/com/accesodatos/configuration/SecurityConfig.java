@@ -40,6 +40,7 @@ public class SecurityConfig {
 	};
 
 	private static final String[] USER_PATHS = {
+			"/api/v1/users/me",
 			"/api/v1/users/email",
 			"/api/v1/users/purchase/{userId}",
 			"/api/v1/bets/{betId}",

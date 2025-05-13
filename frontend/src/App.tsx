@@ -7,12 +7,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import MatchesPage from "./pages/MatchesPage";
-import MatchModal from "./components/modal/create/MatchModal";
 import initialMatch, { Match } from "./type/Match";
+import AuthPage from "./pages/AuthPage";
+import { useAuthContext } from "./context/AuthContext";
+import MatchModal from "./components/form/create/MatchForm";
 
 function App() {
+  const { isLogin } = useAuthContext();
   const [currentMatch, setCurrentMatch] = useState<Match>(initialMatch);
-  const [isCreating, setIsCreating] = useState<boolean>(true);
+  const [isCreating, setIsCreating] = useState<boolean>(false);
   const [matchesReady, setMatchesReady] = useState<boolean>(false);
   const [isBetting, setIsBetting] = useState<boolean>(false);
 
@@ -43,9 +46,11 @@ function App() {
               isCreating={isCreating}
               currentMatch={currentMatch}
               setCurrentMatch={setCurrentMatch}
+              setIsCreating={setIsCreating}
             />
           }
         />
+        <Route path={isLogin ? "/login" : "/register"} element={<AuthPage />} />
       </Routes>
     </Router>
   );

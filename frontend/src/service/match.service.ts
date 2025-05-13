@@ -1,6 +1,6 @@
 import axios from "axios";
 import { MatchRequest } from "../type/Match";
-export const API_URL = "http://172.18.176.1:8081/api/v1";
+export const API_URL = "http://localhost:8081/api/v1";
 
 const getMatchesByDate = async (date: String) => {
   const response = await axios.get(`${API_URL}/matches/by-date`, {

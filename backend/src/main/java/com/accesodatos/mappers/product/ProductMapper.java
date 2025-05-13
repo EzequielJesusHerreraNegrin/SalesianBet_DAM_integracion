@@ -11,11 +11,11 @@ import com.accesodatos.entity.Product;
 public interface ProductMapper {
 
 	ProductResponseDto toProductResponseDto(Product product);
-	
+
 	@Mapping(target = "productImage", ignore = true)
 	@Mapping(target = "buys", ignore = true)
-	@Mapping(target = "state", ignore = true)	
+	@Mapping(target = "state", ignore = true)
 	@Mapping(target = "productId", ignore = true)
 	Product toProduct(ProductRequestDto dto);
-	
+
 }

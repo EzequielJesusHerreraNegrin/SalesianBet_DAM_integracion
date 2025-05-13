@@ -35,6 +35,7 @@ const Table = ({
   const navigate = useNavigate();
 
   const handleAddMatch = () => {
+    setMatchesReady(false);
     setIsCreating(true);
     setCurrentMatch(initialMatch);
     navigate("/matchForm");
@@ -47,11 +48,7 @@ const Table = ({
   };
 
   const handleClickMatchesReady = () => {
-    if (matchesReady) {
-      setMatchesReady(false);
-    } else {
-      setMatchesReady(true);
-    }
+    setMatchesReady(!matchesReady);
   };
 
   const fetchMatches = async (isoDate: string) => {

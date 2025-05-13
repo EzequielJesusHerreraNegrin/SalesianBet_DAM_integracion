@@ -11,7 +11,7 @@ async function save<T>(key: string, value: T) {
   }
 }
 
-async function get<T>(key: string) {
+async function get(key: string) {
   try {
     const jsonValue = localStorage.getItem(key);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
