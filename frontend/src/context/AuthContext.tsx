@@ -1,8 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { AuthenticatedUser, UserRequest } from "../type/User";
-import axios from "axios";
-import { API_URL } from "../service/match.service";
 import { LocalStorageService } from "../service/localstorage.service";
+import api from "../service/api";
+import { Role } from "../type/Role";
 
 interface AuthContextType {
   user: AuthenticatedUser | null;
@@ -12,6 +18,8 @@ interface AuthContextType {
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
   setUser: (user: AuthenticatedUser) => void;
+  isAdmin: boolean;
+  setIsAdmin: (value: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -19,10 +27,44 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const initialaizeUser = async () => {
+      const token = await LocalStorageService.get(
+        LocalStorageService.KEY.userToken
+      );
+      if (token) {
+        try {
+          const userLogged = await getUserLogged();
+          if (userLogged) {
+            setUser(userLogged.data);
+
+            const isAdminUser = userLogged.data.roles.some(
+              (role: Role) => role.roleName == "ADMIN"
+            );
+            setIsAdmin(isAdminUser);
+            setIsLogin(true);
+          }
+        } catch (error) {
+          console.error("Error initializing user:", error);
+          // Token inválido o expirado → lo borro para limpiar la sesión
+          await LocalStorageService.remove(LocalStorageService.KEY.userToken);
+          setUser(null);
+          setIsLogin(false);
+          setIsAdmin(false);
+        }
+      } else {
+        setIsLogin(false);
+      }
+    };
+
+    initialaizeUser();
+  }, []);
 
   const loginUser = async (userRequest: UserRequest) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await api.post(`/auth/login`, {
         email: userRequest.email,
         password: userRequest.password,
       });
@@ -38,6 +80,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (userLogged) {
         setUser(userLogged.data);
+
+        const isAdminUser = userLogged.data.roles.some(
+          (role: Role) => role.roleName == "ADMIN"
+        );
+        setIsAdmin(isAdminUser!);
       }
 
       return jsonValue;
@@ -47,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const registerUser = async (userRequest: UserRequest) => {
-    const response = await axios.post(`${API_URL}/auth/register`, {
+    const response = await api.post(`/auth/register`, {
       email: userRequest.email,
       userName: userRequest.userName,
       dni: userRequest.dni,
@@ -60,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await LocalStorageService.remove(LocalStorageService.KEY.userToken);
+    setUser(null);
   };
 
   const getUserLogged = async () => {
@@ -67,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = await LocalStorageService.get(
         LocalStorageService.KEY.userToken
       );
-      const response = await axios.get(`${API_URL}/users/me`, {
+      const response = await api.get(`/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -89,6 +137,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         isLogin,
         setIsLogin,
+        isAdmin,
+        setIsAdmin,
       }}
     >
       {children}

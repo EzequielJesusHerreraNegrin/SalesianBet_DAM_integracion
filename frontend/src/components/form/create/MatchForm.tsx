@@ -27,6 +27,7 @@ const MatchModal = ({
 }: formMatchProps) => {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
+  const navigate = useNavigate();
 
   const teamHomeLogo = `./src/assets/${currentMatch.competition.name
     .toLowerCase()
@@ -66,7 +67,6 @@ const MatchModal = ({
     e.preventDefault();
 
     const { date, competition, homeTeam, awayTeam } = currentMatch;
-
     if (
       date.trim() == "" ||
       competition.competitionId == 0 ||
@@ -89,10 +89,12 @@ const MatchModal = ({
     try {
       const request: MatchRequest = {
         date: currentMatch.date,
+        result: "",
         competitionId: competition.competitionId,
         homeTeamId: homeTeam.teamId,
         awayTeamId: awayTeam.teamId,
       };
+      console.log(request);
       if (isCreating) {
         await MatchService.createMatch(request);
         toast.success("Partido creado correctamente", {
@@ -114,6 +116,7 @@ const MatchModal = ({
       }
 
       setTimeout(() => {
+        navigate("/matchesPage")
         setIsCreating(false);
       }, 1000);
     } catch (error) {

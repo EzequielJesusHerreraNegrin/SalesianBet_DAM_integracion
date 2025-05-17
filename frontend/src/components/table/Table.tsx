@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import DateCalendar from "../calendar/DateCalendar";
+import { useAuthContext } from "../../context/AuthContext";
 
 interface TableProps {
   selectedDate: string;
@@ -29,6 +30,7 @@ const Table = ({
   setIsBetting,
   setSelectedDate,
 }: TableProps) => {
+  const { user, isAdmin } = useAuthContext();
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -108,32 +110,26 @@ const Table = ({
               <h4 className="table-header">{currentCompetition}</h4>
             </div>
           )}
-
           <div className="table-row">
             <div className="match-cell-table home">
               {match.homeTeam.teamName}
               <img src={teamHomeLogo} alt="homeTeam" />
             </div>
             <div className="match-cell-table center">
-              {match.is_playing ? (
-                <span className="playing-label">EN JUEGO</span>
-              ) : match.result ? (
-                match.result
-              ) : (
-                time
-              )}
+              {match.result ? match.result : time}
             </div>
             <div className="match-cell-table away">
               <img src={teamAwayLogo} alt="awayTeam" />
               {match.awayTeam.teamName}
             </div>
-            <button
-              className="table-button-edit"
-              onClick={() => handleEditMatch(match)}
-            >
-              <EditIcon sx={{ width: "30px", height: "30px" }} />
-            </button>
-            {!matchesReady && (
+            {isAdmin ? (
+              <button
+                className="table-button-edit"
+                onClick={() => handleEditMatch(match)}
+              >
+                <EditIcon sx={{ width: "30px", height: "30px" }} />
+              </button>
+            ) : (user &&
               <button
                 className="table-button-bet"
                 onClick={() => handleBetMatch(match)}
@@ -162,20 +158,25 @@ const Table = ({
     <>
       <div className="table-container">
         <div className="table-button-container">
-          <button onClick={handleAddMatch} className="table-button">
-            + Crear partido
-          </button>
-          <button
-            className="table-button"
-            onClick={handleClickMatchesReady}
-            style={{
-              backgroundColor: matchesReady
-                ? "rgba(255, 0, 0, 0.671)"
-                : "#2f9e44",
-            }}
-          >
-            {matchesReady ? "Salir" : "Partidos a validar"}
-          </button>
+          {isAdmin && (
+            <>
+              <button onClick={handleAddMatch} className="table-button">
+                + Crear partido
+              </button>
+              <button
+                className="table-button"
+                onClick={handleClickMatchesReady}
+                style={{
+                  backgroundColor: matchesReady
+                    ? "rgba(255, 0, 0, 0.671)"
+                    : "#2f9e44",
+                }}
+              >
+                {matchesReady ? "Salir" : "Partidos a validar"}
+              </button>
+            </>
+          )}
+
           <DateCalendar onSelectDate={setSelectedDate} />
         </div>
         {renderMatches()}

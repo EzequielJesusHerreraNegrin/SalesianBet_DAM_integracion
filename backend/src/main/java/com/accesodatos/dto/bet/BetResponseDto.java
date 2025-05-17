@@ -12,5 +12,4 @@ public class BetResponseDto {
 	private int points;
 	private String prediction;
 	private MatchResponseDto match;
-	private UserEntityResponseDto user;
 }

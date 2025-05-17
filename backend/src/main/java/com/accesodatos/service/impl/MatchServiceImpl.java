@@ -96,6 +96,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public MatchResponseDto createMatch(MatchRequestDto matchRequestDto) {
+		System.out.println("Entro" + matchRequestDto);
 		Competition competition = validateAndGetCompetition(matchRequestDto.getCompetitionId());
 
 		Team homeTeam = validateAndGetTeam(matchRequestDto.getHomeTeamId());

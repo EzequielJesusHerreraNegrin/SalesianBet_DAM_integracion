@@ -3,7 +3,7 @@ import "../navbar/Navbar.css";
 import { useAuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
-  const { user, setIsLogin } = useAuthContext();
+  const { user, setIsLogin, logout } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleRegister = () => {
     setIsLogin(false);
-    navigate("/register");
+    navigate("/");
   };
 
   return (
@@ -31,9 +31,14 @@ const Navbar = () => {
             <NavLink to="/predictions" className="navbar-link">
               Mis predicciones
             </NavLink>
-            <div className="navbar-user">
-              <p> {user.userName} </p>
-              <p> {user.points} </p>
+            <div className="navbar-auth">
+              <div className="navbar-user">
+                <p> {user.userName} </p>
+                <p> {user.points} </p>
+              </div>
+              <div>
+                <button onClick={() => logout()}>Cerrar sesión</button>
+              </div>
             </div>
           </div>
         </div>

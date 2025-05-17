@@ -9,7 +9,7 @@ export type AuthenticatedUser = {
   bets: Bet[];
   token: string;
   points: number;
-  roles: Role;
+  roles: Role[];
 };
 
 export const initialUserRequest: UserRequest = {

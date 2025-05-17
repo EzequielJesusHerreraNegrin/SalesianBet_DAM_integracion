@@ -60,6 +60,7 @@ public class SecurityConfig {
 					auth.requestMatchers(HttpMethod.GET, 
 													GENERAL_PATHS).permitAll()
 						.requestMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/matches").hasRole("ADMIN")
 						.requestMatchers(USER_PATHS).hasRole("USER")
 						.requestMatchers(HttpMethod.POST, "/api/v1/bets").hasRole("USER")
 					 	.requestMatchers("/**").hasRole("ADMIN")
