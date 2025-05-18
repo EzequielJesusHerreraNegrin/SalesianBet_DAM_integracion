@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { Match, MatchRequest } from "../../../type/Match";
+import { Match, MatchRequest } from "../../../types/Match";
 import toast, { Toaster } from "react-hot-toast";
 import MatchService from "../../../service/match.service";
 import { useEffect, useState } from "react";
-import { Competition } from "../../../type/Competition";
-import { Team } from "../../../type/Team";
+import { Competition } from "../../../types/Competition";
+import { Team } from "../../../types/Team";
 import { CompetitionService } from "../../../service/competition.service";
 import { TeamService } from "../../../service/team.service";
 import "./MatchModal.css";

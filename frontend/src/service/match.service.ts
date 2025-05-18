@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MatchRequest } from "../type/Match";
+import { MatchRequest } from "../types/Match";
 export const API_URL = "http://172.18.176.1:8081/api/v1";
 
 const getMatchesByDate = async (date: String) => {

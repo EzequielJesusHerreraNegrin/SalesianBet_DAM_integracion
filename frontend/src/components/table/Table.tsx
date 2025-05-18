@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import initialMatch, { Match } from "../../type/Match";
+import initialMatch, { Match } from "../../types/Match";
 import MatchService from "../../service/match.service";
 import Loader from "../loader/Loader";
 import "./Table.css";

@@ -8,7 +8,8 @@ import {
 } from "react-router-dom";
 import MatchesPage from "./pages/MatchesPage";
 import MatchModal from "./components/modal/create/MatchModal";
-import initialMatch, { Match } from "./type/Match";
+import initialMatch, { Match } from "./types/Match";
+import StorePage from "./pages/store/StorePage";
 
 function App() {
   const [currentMatch, setCurrentMatch] = useState<Match>(initialMatch);
@@ -46,6 +47,7 @@ function App() {
             />
           }
         />
+        <Route path="/store" element={<StorePage />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Schedulebar from "../components/Schedulebar/Schedulebar";
 import Table from "../components/table/Table";
-import { Match } from "../type/Match";
+import { Match } from "../types/Match";
 import BetForm from "../components/modal/bet/BetForm";
 
 interface matchProp {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BetRequest } from "../type/Bet";
+import { BetRequest } from "../types/Bet";
 import { API_URL } from "./match.service";
 
 const createBet = async (betRquest: BetRequest) => {
