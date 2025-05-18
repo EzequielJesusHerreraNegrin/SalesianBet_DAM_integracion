@@ -182,7 +182,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public List<MatchResponseDto> getMatchesReadyToValidate() {
-		return matchRepository.findReadyToValidate(LocalDateTime.now().plusMinutes(90)).stream()
+		return matchRepository.findReadyToValidate(LocalDateTime.now().minusMinutes(90)).stream()
 				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
 	}
 

@@ -14,7 +14,7 @@ interface BetProps {
 const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
   const [selected, setSelected] = useState<string>("");
   const [points, setPoints] = useState<number>(0);
-  const { user } = useAuthContext();
+  const { user, refreshUser } = useAuthContext();
 
   const teamHomeLogo = `./src/assets/${currentMatch.competition.name
     .toLowerCase()
@@ -60,6 +60,7 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
         userId: user!.userId,
       };
       await BetService.createBet(requestBet);
+      refreshUser();
       toast.success("Creation of bet successfully", { position: "top-right" });
 
       setTimeout(() => {

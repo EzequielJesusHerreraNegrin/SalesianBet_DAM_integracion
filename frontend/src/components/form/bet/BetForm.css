@@ -9,7 +9,7 @@
     color: black;
   }
 
-  .bet-modal {
+.bet-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -22,14 +22,14 @@
     z-index: 1000;
   }
 
-  .bet-header {
+.bet-header {
     display: flex;
     justify-content: center;
     position: relative;
     top: -60px;
   }
   
-  .bet-title {
+.bet-title {
     color: black;
     background-color: #2f9e44;
     padding: 20px;
@@ -40,7 +40,7 @@
     margin-bottom: 0;
   }
   
-  .bet-info label {
+.bet-info label {
     font-weight: bold;
   }
   
@@ -55,20 +55,20 @@
     height: 30px;
   }
   
-  .prediction-options {
+.prediction-options {
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
   }
   
-  .option-container {
+.option-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
   }
   
-  .option-box {
+.option-box {
     width: 40px;
     height: 40px;
     border: 2px solid black;
@@ -79,19 +79,19 @@
     margin-top: 5px;
   }
   
-  .option-box.selected {
+.option-box.selected {
     background-color: #f08c00;
     color: black;
     font-weight: bold;
   }
   
-  .bet-container-inputs {
+.bet-container-inputs {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .bet-input {
+.bet-input {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -100,7 +100,7 @@
     width: min-content;
   }
   
-  .bet-label {
+.bet-label {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -108,7 +108,7 @@
     margin-bottom: 20px;
   }
   
-  .bet-input input {
+.bet-input input {
     width: 100%;
     padding: 6px;
     border-radius: 6px;
@@ -117,13 +117,13 @@
     color: black;
   }
   
-  .bet-buttons {
+.bet-buttons {
     display: flex;
     justify-content: space-around;
 
   }
 
-  .bet-button {
+.bet-button {
     padding: 10px;
     background-color: #4caf50;
     color: black;
@@ -136,7 +136,7 @@
     border: 3px solid black;
   }
 
-  .bet-button-cancel {
+.bet-button-cancel {
     background-color: rgba(255, 0, 0, 0.671);
     color: black;
     font-weight: bold;

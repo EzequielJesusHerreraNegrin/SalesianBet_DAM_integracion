@@ -20,6 +20,7 @@ interface AuthContextType {
   setUser: (user: AuthenticatedUser) => void;
   isAdmin: boolean;
   setIsAdmin: (value: boolean) => void;
+  refreshUser: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -108,6 +109,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     await LocalStorageService.remove(LocalStorageService.KEY.userToken);
     setUser(null);
+    setIsAdmin(false);
   };
 
   const getUserLogged = async () => {
@@ -127,6 +129,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const refreshUser = async () => {
+    const userLogged = await getUserLogged(); // Puedes mover esta función a exportarla si hace falta
+    if (userLogged) {
+      setUser(userLogged.data);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -139,6 +148,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLogin,
         isAdmin,
         setIsAdmin,
+        refreshUser,
       }}
     >
       {children}

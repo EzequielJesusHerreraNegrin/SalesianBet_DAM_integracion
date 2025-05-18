@@ -37,7 +37,15 @@ const Navbar = () => {
                 <p> {user.points} </p>
               </div>
               <div>
-                <button onClick={() => logout()}>Cerrar sesión</button>
+                <button
+                  className="navbar-button"
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
+                >
+                  Cerrar sesión
+                </button>
               </div>
             </div>
           </div>

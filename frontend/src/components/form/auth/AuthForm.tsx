@@ -3,6 +3,7 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { initialUserRequest, UserRequest } from "../../../type/User";
+import "./AuthForm.css";
 
 const AuthForm = () => {
   const { loginUser, registerUser, isLogin, setIsLogin } = useAuthContext();
@@ -40,11 +41,14 @@ const AuthForm = () => {
   };
 
   return (
-    <div>
+    <div className="auth-container">
+      <h2 className="auth-title">
+        {isLogin ? "Inicio de sesión" : "Registrarse"}
+      </h2>
       <form onSubmit={handleSubmit} action="auth">
-        <div>
+        <div className="auth-form">
           {!isLogin && (
-            <div>
+            <div className="auth-input-container">
               <label htmlFor="username">Nombre:</label>
               <input
                 type="text"
@@ -55,7 +59,7 @@ const AuthForm = () => {
               />
             </div>
           )}
-          <div>
+          <div className="auth-input-container">
             <label htmlFor="email">Email:</label>
             <input
               type="email"
@@ -66,7 +70,7 @@ const AuthForm = () => {
             />
           </div>
           {!isLogin && (
-            <div>
+            <div className="auth-input-container">
               <label htmlFor="dni">Dni:</label>
               <input
                 type="text"
@@ -78,7 +82,7 @@ const AuthForm = () => {
             </div>
           )}
           {!isLogin && (
-            <div>
+            <div className="auth-input-container">
               <label htmlFor="country">País:</label>
               <input
                 type="text"
@@ -89,7 +93,7 @@ const AuthForm = () => {
               />
             </div>
           )}
-          <div>
+          <div className="auth-input-container">
             <label htmlFor="password">Contraseña:</label>
             <input
               type="password"
@@ -100,15 +104,27 @@ const AuthForm = () => {
             />
           </div>
         </div>
-        <div>
-          <button type="submit">
-            {isLogin ? "Iniciar sesión" : "Registrarse"}
-          </button>
-          <button>Cancelar</button>
-          <button type="button" onClick={() => setIsLogin(!isLogin)}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button
+            className="auth-link"
+            type="button"
+            onClick={() => {
+              const newValue = !isLogin;
+              setIsLogin(newValue); // booleano ✅
+              navigate(newValue ? "/login" : "/register"); // redirección según el valor
+            }}
+          >
             {isLogin
               ? "¿No tienes cuenta? Regístrate"
               : "¿Ya tienes cuenta? Inicia sesión"}
+          </button>
+        </div>
+        <div className="auth-buttons">
+          <button className="auth-button" type="submit">
+            {isLogin ? "Iniciar sesión" : "Registrarse"}
+          </button>
+          <button onClick={() => navigate("/")} className="auth-button-cancel">
+            Cancelar
           </button>
         </div>
       </form>
