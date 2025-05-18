@@ -8,6 +8,56 @@
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-gap: 1.5rem;
   width: 70%;
+}
+
+.cartItems-section-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 10vh;
+  right: 2%;
+  margin: 0 0 0 0;
+  height: 100vh;
+  width: 25%;
+  background-color: #2f9e44;
+  border: 1px solid #ddd;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cartItem-card {
+  margin: 0 0 0 0;
+  width: 100%;
+  height: fit-content;
+}
+
+.cartItem-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 10px;
+  height: calc(100vh - 20vh);
+  scrollbar-width: none;
+  gap: 10px;
+}
+.cartItems-section-title {
+  position: sticky;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+  padding: 10px;
+}
+
+.empty-cart-message {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
 }

@@ -150,20 +150,18 @@ INSERT INTO products (product_name, product_image, price, state) VALUES
 ('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
 ('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
 ('Silla Ergonómica', 'chair.jpg', 149, 'DESCATALOGADO'),
-('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');*/
+('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');
 
 -- 1. Roles
-INSERT INTO roles (role_name) VALUES ('ROLE_USER'); -- Supongamos ID 1
-INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN'); -- Supongamos ID 2
+INSERT INTO roles (role_name) VALUES ('USER'); -- Supongamos ID 1
 
 -- 6. User_Roles (Tabla de unión para la relación ManyToMany entre Users y Roles)
 -- John Doe es USER
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (1, 1);
 -- Jane Smith es USER
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (2, 1);
--- Admin User es USER y ADMIN
+-- Admin User es USER 
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 1);
-INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 2);
 
 -- 9. Cart_Items (Cesta de la compra)
 -- John Doe tiene una camiseta en su cesta

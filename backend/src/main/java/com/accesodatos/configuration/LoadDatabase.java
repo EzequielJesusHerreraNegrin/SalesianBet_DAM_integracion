@@ -21,14 +21,17 @@ public class LoadDatabase {
 			Role roleAdmin = Role.builder()
 					.roleName("ADMIN")
 					.build();
+		
 
 			UserEntity userAdmin = UserEntity.builder()
 					.userName("admin")
 					.password("$2a$10$V.9kO3/QWR/J19M2RB2VFuMtWwzVbkgTsqULZE7N0yaLW3xmdQMPG") // 1234
+					.dni("00000000A")
+					.email("admin@gmail.com")
 					.roles(Set.of(roleAdmin))
 					.build();
 
-			userRepository.saveAll(List.of(userAdmin));
+			//userRepository.saveAll(List.of(userAdmin));
 
 		};
 	}

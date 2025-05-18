@@ -2,16 +2,26 @@ import { Button } from "@mui/material";
 import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
 import { Product, ProductCartItem } from "../../../types/Product";
 
-const ProductCart = (Product: Product, cartItems: [ProductCartItem]) => {
+const ProductCart = (product: Product, cartItems: ProductCartItem[]) => {
+  const handleAddToCart = (product: Product) => {
+    const cartItem: ProductCartItem = {
+      productId: product.productId as number,
+      productName: product.productName,
+      productImage: product.imageImage,
+      price: product.price,
+    };
+    cartItems.push(cartItem);
+    console.log("Product added to cart:", cartItem);
+  };
   return (
     <div className="product-cart-container">
       <div className="product-image-container">
-        <img src={Product.imageImage} alt="Product" className="product-image" />
+        <img src={product.imageImage} alt="Product" className="product-image" />
       </div>
       <div className="product-description-container">
-        <h2 className="product-name">{Product.productName}</h2>
+        <h2 className="product-name">{product.productName}</h2>
         <h3 className="product-price">Precio</h3>
-        <p className="product-price-text">{Product.price} tps.</p>
+        <p className="product-price-text">{product.price} tps.</p>
       </div>
       <div className="button-container"></div>
       <div className="product-button-container">
@@ -27,10 +37,11 @@ const ProductCart = (Product: Product, cartItems: [ProductCartItem]) => {
             fontSize: "16px",
           }}
           onClick={() => {
-            return Product.productId;
+            handleAddToCart(product);
+            console.log(cartItems.length);
           }}
         >
-          Comprar
+          Añadir al carrito
         </Button>
       </div>
     </div>
