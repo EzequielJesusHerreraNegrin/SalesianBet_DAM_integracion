@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { BetRequest } from "../../../type/Bet";
 import BetService from "../../../service/bet.service";
 import "./BetForm.css";
+import { useAuthContext } from "../../../context/AuthContext";
 
 interface BetProps {
   currentMatch: Match;
@@ -13,7 +14,7 @@ interface BetProps {
 const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
   const [selected, setSelected] = useState<string>("");
   const [points, setPoints] = useState<number>(0);
-  const userId = 1;
+  const { user, refreshUser } = useAuthContext();
 
   const teamHomeLogo = `./src/assets/${currentMatch.competition.name
     .toLowerCase()
@@ -56,9 +57,10 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
         prediction: selected,
         points: points,
         matchId: currentMatch.matchId,
-        userId: userId,
+        userId: user!.userId,
       };
       await BetService.createBet(requestBet);
+      refreshUser();
       toast.success("Creation of bet successfully", { position: "top-right" });
 
       setTimeout(() => {

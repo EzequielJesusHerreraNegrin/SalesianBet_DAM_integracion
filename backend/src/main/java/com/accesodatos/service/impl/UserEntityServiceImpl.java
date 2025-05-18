@@ -31,6 +31,7 @@ public class UserEntityServiceImpl implements UserEntityService{
 				orElseThrow(() -> new ResourceNotFoundException(String.format(USER_NOT_FOUND, id)));
 	}
 	
+	
 	@Override
 	public List<UserEntityResponseDto> getAllUsers() {
 		List<UserEntity> users = userEntityRepository.findAll();
@@ -64,5 +65,6 @@ public class UserEntityServiceImpl implements UserEntityService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

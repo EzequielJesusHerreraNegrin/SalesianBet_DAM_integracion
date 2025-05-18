@@ -40,6 +40,7 @@ public class SecurityConfig {
 	};
 
 	private static final String[] USER_PATHS = {
+			"/api/v1/users/me",
 			"/api/v1/users/email",
 			"/api/v1/users/purchase/{userId}",
 			"/api/v1/bets/{betId}",
@@ -55,9 +56,11 @@ public class SecurityConfig {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.cors(Customizer.withDefaults())
-				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET,
-						GENERAL_PATHS).permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+				.authorizeHttpRequests(auth -> 
+					auth.requestMatchers(HttpMethod.GET, 
+													GENERAL_PATHS).permitAll()
+						.requestMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/api/v1/matches").hasRole("ADMIN")
 						.requestMatchers(USER_PATHS).hasRole("USER")
 						.requestMatchers(HttpMethod.POST, "/api/v1/bets").hasRole("USER")
 						.requestMatchers("/**").hasRole("ADMIN")

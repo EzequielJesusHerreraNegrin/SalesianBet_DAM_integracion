@@ -137,12 +137,14 @@ INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, awa
 ('2025-04-16 20:00:00', FALSE, '', 6, 3, 21),
 ('2025-04-16 20:00:00', FALSE, '', 6, 49, 63);
 
-INSERT INTO users (user_id, user_name, password, email, dni, points, country) VALUES
-(1, 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
-(2, 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
-(3, 'lucasfernandez', 'pass123', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
-(4, 'analopez', 'qwerty', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
-(5, 'carlossanchez', 'admin123', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
+
+INSERT INTO users ( user_name, password, email, dni, points, country) VALUES
+( 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
+( 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
+( 'lucasfernandez', 'pass123', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
+( 'analopez', 'qwerty', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
+( 'carlossanchez', 'admin123', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
+
 
 -- Inserta productos en la tabla 'products'
 INSERT INTO products (product_name, product_image, price, state) VALUES
@@ -150,11 +152,12 @@ INSERT INTO products (product_name, product_image, price, state) VALUES
 ('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
 ('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
 ('Silla Ergonómica', 'chair.jpg', 149, 'DESCATALOGADO'),
-('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');*/
+('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');
 
 -- 1. Roles
-INSERT INTO roles (role_name) VALUES ('ROLE_USER'); -- Supongamos ID 1
-INSERT INTO roles (role_name) VALUES ('ROLE_ADMIN'); -- Supongamos ID 2
+INSERT INTO roles (role_name) VALUES ('USER'); -- Supongamos ID 1
+INSERT INTO roles (role_name) VALUES ('ADMIN'); -- Supongamos ID 2
+
 
 -- 6. User_Roles (Tabla de unión para la relación ManyToMany entre Users y Roles)
 -- John Doe es USER

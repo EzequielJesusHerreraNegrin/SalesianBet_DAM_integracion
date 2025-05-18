@@ -96,6 +96,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public MatchResponseDto createMatch(MatchRequestDto matchRequestDto) {
+		System.out.println("Entro" + matchRequestDto);
 		Competition competition = validateAndGetCompetition(matchRequestDto.getCompetitionId());
 
 		Team homeTeam = validateAndGetTeam(matchRequestDto.getHomeTeamId());
@@ -181,7 +182,7 @@ public class MatchServiceImpl implements MatchService {
 
 	@Override
 	public List<MatchResponseDto> getMatchesReadyToValidate() {
-		return matchRepository.findReadyToValidate(LocalDateTime.now().plusMinutes(90)).stream()
+		return matchRepository.findReadyToValidate(LocalDateTime.now().minusMinutes(90)).stream()
 				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
 	}
 
