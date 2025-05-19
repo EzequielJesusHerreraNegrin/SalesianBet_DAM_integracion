@@ -1,15 +1,18 @@
 import axios from "axios";
 import { ProductResponse, ProductRequest } from "../types/Product";
 import { API_URL } from "./match.service";
+import { ApiResponseDto } from "./CartItem.service";
 
-const createBet = async (productRequest: ProductRequest) => {
+const createProduct = async (productRequest: ProductRequest) => {
   const response = await axios.post(`${API_URL}/products`, productRequest);
   return response.data;
 };
 
 const getAllProducts = async () => {
-  const response = await axios.get<ProductResponse[]>(`${API_URL}/products`);
-  return response.data;
+  const response = await axios.get<ApiResponseDto<ProductResponse[]>>(
+    `${API_URL}/products`
+  );
+  return response.data.data; // Asegúrate de que la respuesta tenga la estructura correcta
 };
 
 const getProductById = async (productId: number) => {
@@ -30,11 +33,11 @@ const updateProduct = async (
   return response.data;
 };
 
-const BetService = {
-  createBet,
+const ProductService = {
+  createProduct,
   getAllProducts,
   getProductById,
   updateProduct,
 };
 
-export default BetService;
+export default ProductService;
