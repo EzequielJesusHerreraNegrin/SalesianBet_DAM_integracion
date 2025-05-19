@@ -1,29 +1,33 @@
 import { useEffect, useState } from "react";
 import ProductCart from "../../components/Card/productCard/ProductCart";
 import "./StorePageStyles.css";
-import { Product, ProductCartItem } from "../../types/Product";
+import { Product } from "../../types/Product";
 import CartItem from "../../components/Card/cardItemCard/CartItem";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
+import {
+  CartItemResponseDto,
+  cartItemService,
+} from "../../service/CartItem.service";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const [cartItems, setCartItems] = useState<ProductCartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([]);
 
   useEffect(() => {
     ProductService.getAllProducts()
-      .then((apiResponse) => {
+      .then((product) => {
         // Renombrado para claridad
-        console.log("API Response:", apiResponse);
-        if (apiResponse && Array.isArray(apiResponse)) {
+        console.log("API Response:", product);
+        if (product && Array.isArray(product)) {
           // Verifica apiResponse y apiResponse.data
-          setProducts(apiResponse);
+          setProducts(product);
         } else {
           setProducts([]);
           console.error(
             "ProductService.getAllProducts() did not return an array in response.data:",
-            apiResponse
+            product
           );
         }
       })
@@ -32,6 +36,21 @@ const StorePage = () => {
         console.error("Error fetching products:", error);
         setProducts([]);
       });
+
+    cartItemService.getAllCartItems().then((apiResponse) => {
+      // Renombrado para claridad
+      console.log("API Response:", apiResponse);
+      if (apiResponse && Array.isArray(apiResponse)) {
+        // Verifica apiResponse y apiResponse.data
+        setCartItems(apiResponse);
+      } else {
+        setCartItems([]);
+        console.error(
+          "cartItemService.getAllCartItems() did not return an array in response.data:",
+          apiResponse
+        );
+      }
+    });
   }, []);
 
   return (
@@ -62,6 +81,20 @@ const StorePage = () => {
             ))}
           </div>
         )}
+        <div className="cartItems-section-action-container">
+          <button
+            className="cartItems-section-action-button"
+            style={{
+              backgroundColor: "#2f9e44",
+              color: "white",
+              borderRadius: 18,
+              padding: "10px 20px",
+              fontSize: "16px",
+            }}
+          >
+            Comprar
+          </button>
+        </div>
       </div>
     </div>
   );

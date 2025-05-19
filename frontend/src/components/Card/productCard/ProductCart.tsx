@@ -1,19 +1,19 @@
 import { Button } from "@mui/material";
 import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
 import { Product, ProductCartItem } from "../../../types/Product";
+import { CartItemResponseDto } from "../../../service/CartItem.service";
 
 type Props = {
   product: Product;
-  cartItems: ProductCartItem[];
-  setCartItems: React.Dispatch<React.SetStateAction<ProductCartItem[]>>;
+  cartItems: CartItemResponseDto[];
+  setCartItems: React.Dispatch<React.SetStateAction<CartItemResponseDto[]>>;
 };
 
 const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   const handleAddToCart = (product: Product) => {
     const productCartItem: ProductCartItem = {
       productId: product.productId,
-      productName: product.productName,
-      productImage: product.imageImage, // Assuming 'imageImage' is the correct field
+      product: product, // Assuming 'imageImage' is the correct field
       price: product.price,
     };
     const updatedCart = [...cartItems, productCartItem];

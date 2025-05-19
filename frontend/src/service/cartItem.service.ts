@@ -1,41 +1,23 @@
 import axios from "axios"; // Ajusta la ruta si es diferente
+import { ProductResponse } from "../types/Product";
 
-// --- Tipos basados en tus DTOs de Java ---
-
-// Asumimos que tienes estos DTOs definidos en algún lugar,
-// por ejemplo, src/types/domain.types.ts o src/types/api.types.ts
-
-// Placeholder para ProductResponseDto (deberías tener su definición completa)
-export interface ProductResponseDto {
-  id: number; // Asumiendo que Long se mapea a number
-  name: string;
-  // ... otros campos del producto
-}
-
-// Placeholder para UserEntityResponseDto (deberías tener su definición completa)
 export interface UserEntityResponseDto {
   id: number; // Asumiendo que Long se mapea a number
   username: string;
-  // ... otros campos del usuario
 }
 
-// Corresponde a com.accesodatos.dto.cartitem.CartItemRequestDto
 export interface CartItemRequestDto {
   productId: number; // Long se mapea a number en TS
   cuantity: number;
 }
 
-// Corresponde a com.accesodatos.dto.cartitem.CartItemResponseDto
 export interface CartItemResponseDto {
   cartId: number; // Long se mapea a number
   user: UserEntityResponseDto;
-  product: ProductResponseDto;
+  product: ProductResponse;
   cuantity: number;
 }
 
-// Corresponde a com.accesodatos.dto.api.ApiResponseDto
-// Usaremos 'payload' como el nombre genérico para el campo de datos,
-// ya que en tu Java DTO lo pasas como el tercer argumento al constructor.
 export interface ApiResponseDto<T> {
   timestamp: Date;
   message: string;
@@ -43,15 +25,8 @@ export interface ApiResponseDto<T> {
   data: T;
 }
 
-// --- Constantes para las rutas (basadas en tu controlador) ---
 const CART_ITEMS_RESOURCE = "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
 
-// --- Funciones del Servicio ---
-
-/**
- * Obtiene todos los ítems del carrito.
- * GET /api/v1/cartItems
- */
 export const getAllCartItems = async (): Promise<CartItemResponseDto[]> => {
   try {
     const response = await axios.get<ApiResponseDto<CartItemResponseDto[]>>(

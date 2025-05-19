@@ -55,3 +55,11 @@
   margin-left: 16px;
   margin-bottom: 2px;
 }
+
+.cartItem-actions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
