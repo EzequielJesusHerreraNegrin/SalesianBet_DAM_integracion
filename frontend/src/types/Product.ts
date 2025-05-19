@@ -8,7 +8,7 @@ type ProductCartItem = {
 };
 
 type Product = {
-  productId?: number;
+  productId: number;
   productName: string;
   imageImage: string;
   state?: productState;

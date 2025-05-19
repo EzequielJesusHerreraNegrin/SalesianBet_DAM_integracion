@@ -21,8 +21,6 @@ import com.accesodatos.dto.product.ProductRequestDto;
 import com.accesodatos.dto.product.ProductResponseDto;
 import com.accesodatos.service.impl.ProductServiceImpl;
 
-
-
 @RestController
 @RequestMapping("/api/v1")
 public class ProductController {

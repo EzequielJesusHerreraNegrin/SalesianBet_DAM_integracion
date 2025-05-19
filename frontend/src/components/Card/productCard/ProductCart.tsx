@@ -2,16 +2,23 @@ import { Button } from "@mui/material";
 import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
 import { Product, ProductCartItem } from "../../../types/Product";
 
-const ProductCart = (product: Product, cartItems: ProductCartItem[]) => {
+type Props = {
+  product: Product;
+  cartItems: ProductCartItem[];
+  setCartItems: React.Dispatch<React.SetStateAction<ProductCartItem[]>>;
+};
+
+const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   const handleAddToCart = (product: Product) => {
-    const cartItem: ProductCartItem = {
-      productId: product.productId as number,
+    const productCartItem: ProductCartItem = {
+      productId: product.productId,
       productName: product.productName,
-      productImage: product.imageImage,
+      productImage: product.imageImage, // Assuming 'imageImage' is the correct field
       price: product.price,
     };
-    cartItems.push(cartItem);
-    console.log("Product added to cart:", cartItem);
+    const updatedCart = [...cartItems, productCartItem];
+    setCartItems(updatedCart);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
   return (
     <div className="product-cart-container">

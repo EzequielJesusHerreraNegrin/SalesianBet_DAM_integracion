@@ -93,7 +93,11 @@ const StorePage = () => {
       <div className="products-grid">
         {products.map((product, index) => (
           <div key={index} className="product-card">
-            {ProductCart(product, cartItems)}
+            <ProductCart
+              product={product}
+              cartItems={cartItems}
+              setCartItems={setCartItems}
+            />
           </div>
         ))}
       </div>
