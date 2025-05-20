@@ -5,10 +5,10 @@ import {
   useEffect,
   useState,
 } from "react";
-import { AuthenticatedUser, UserRequest } from "../type/User";
+import { AuthenticatedUser, UserRequest } from "../types/User";
 import { LocalStorageService } from "../service/localstorage.service";
 import api from "../service/api";
-import { Role } from "../type/Role";
+import { Role } from "../types/Role";
 
 interface AuthContextType {
   user: AuthenticatedUser | null;

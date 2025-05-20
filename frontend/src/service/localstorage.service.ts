@@ -14,6 +14,7 @@ async function save<T>(key: string, value: T) {
 async function get(key: string) {
   try {
     const jsonValue = localStorage.getItem(key);
+
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (error) {
     console.error(`localstorage error: ${error}`);

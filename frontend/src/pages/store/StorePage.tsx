@@ -7,10 +7,22 @@ import "../../service/product.service";
 import ProductService from "../../service/product.service";
 import { CartItemResponseDto } from "../../types/cartItem";
 import { cartItemService } from "../../service/cartItem.service";
+import { LocalStorageService } from "../../service/localstorage.service";
+import { jwtDecode } from "jwt-decode";
 
 const StorePage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const decodedToken = LocalStorageService.get(
+    LocalStorageService.KEY.userToken
+  ).then((token) => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      console.log("Decoded token:", decodedToken);
+    } else {
+      console.log("No token found");
+    }
+  });
 
+  const [products, setProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([
     /*     {
       cartId: 1,
@@ -99,6 +111,20 @@ const StorePage = () => {
           </div>
         ))}
       </div>
+      {decodedToken.role === "ADMIN" && (
+        <div className="admin-section">
+          <h2 className="admin-section-title">Administración</h2>
+          <button
+            className="admin-section-button"
+            onClick={() => {
+              // Aquí puedes agregar la lógica para la administración
+              console.log("Administrar productos");
+            }}
+          >
+            Administrar productos
+          </button>
+        </div>
+      )}
       <div className="cartItems-section-container">
         <h2 className="cartItems-section-title">Carrito de compras</h2>
         {cartItems.length === 0 ? (

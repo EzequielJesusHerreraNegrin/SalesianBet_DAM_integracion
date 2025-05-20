@@ -13,3 +13,27 @@ const UserService = {
 
 export default UserService;
  */
+
+import { jwtDecode } from "jwt-decode";
+import { LocalStorageService } from "./localstorage.service";
+
+export const manageUserToken = async () => {
+  const token = await LocalStorageService.get(
+    LocalStorageService.KEY.userToken
+  );
+  if (!token) return null;
+  const decodedToken = jwtDecode(token);
+
+  return decodedToken;
+};
+
+export const manageUserRole = async () => {
+  const token = await LocalStorageService.get(
+    LocalStorageService.KEY.userToken
+  );
+  if (!token) return null;
+  const decodedToken = jwtDecode(token);
+  const role = decodedToken["role"];
+
+  return role;
+};

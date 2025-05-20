@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { initialUserRequest, UserRequest } from "../../../type/User";
+import { initialUserRequest, UserRequest } from "../../../types/User";
 import "./AuthForm.css";
 
 const AuthForm = () => {

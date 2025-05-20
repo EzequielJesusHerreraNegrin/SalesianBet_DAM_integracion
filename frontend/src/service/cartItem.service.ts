@@ -3,14 +3,12 @@ import { ApiResponseDto, baseURL } from "../types/api";
 import { CartItemRequestDto, CartItemResponseDto } from "../types/cartItem";
 
 const CART_ITEMS_RESOURCE = baseURL + "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
+const token = localStorage.getItem("token"); // Obtener el token del localStorage
 
 export const getAllCartItems = async (): Promise<
   ApiResponseDto<CartItemResponseDto[]>
 > => {
   try {
-    const token = localStorage.getItem(
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3NzY0NTE5LCJleHAiOjE3NDgxMjQ1MTksInJvbGUiOlsiUk9MRV9VU0VSIl19._c5al76lnQJZm5-Jm4PyL-Q64JzwmsJj_rG9y1hCKTo"
-    );
     const response = await axios.get<ApiResponseDto<CartItemResponseDto[]>>(
       CART_ITEMS_RESOURCE,
       {
