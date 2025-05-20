@@ -1,4 +1,3 @@
-import { UserEntityResponseDto } from "../service/CartItem.service";
 import productState from "./enums/ProductState";
 
 type Product = {
@@ -34,8 +33,7 @@ type ProductPurchaseResponseDto = {
 
 export type {
   Product,
+  ProductPurchaseResponseDto,
   ProductRequest,
   ProductResponse,
-  CartItemResponse as ProductCartItem,
-  ProductPurchaseResponseDto,
 };

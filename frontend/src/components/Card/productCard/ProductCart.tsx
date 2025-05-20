@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
-import { Product, ProductCartItem } from "../../../types/Product";
-import { CartItemResponseDto } from "../../../service/CartItem.service";
+import { Product } from "../../../types/Product";
+import { CartItemResponseDto } from "../../../types/cartItem";
 
 type Props = {
   product: Product;
@@ -11,10 +11,16 @@ type Props = {
 
 const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   const handleAddToCart = (product: Product) => {
-    const productCartItem: ProductCartItem = {
-      productId: product.productId,
-      product: product, // Assuming 'imageImage' is the correct field
-      price: product.price,
+    const productCartItem: CartItemResponseDto = {
+      cartId: cartItems.length, // Use a unique ID for the cart item
+      user: { id: 1, username: "Juan" }, // Replace with actual user data
+      product: {
+        productId: product.productId,
+        productName: product.productName,
+        price: product.price,
+        imageImage: product.imageImage,
+      },
+      cuantity: 1, // Default quantity
     };
     const updatedCart = [...cartItems, productCartItem];
     setCartItems(updatedCart);

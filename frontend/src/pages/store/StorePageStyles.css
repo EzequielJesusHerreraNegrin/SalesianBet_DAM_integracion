@@ -19,7 +19,7 @@
   top: 10vh;
   right: 2%;
   margin: 0 0 0 0;
-  height: 100vh;
+  height: 85%;
   width: 25%;
   background-color: #2f9e44;
   border: 1px solid #ddd;
@@ -30,7 +30,7 @@
 
 .cartItem-card {
   margin: 0 0 0 0;
-  width: 100%;
+  width: 90%;
   height: fit-content;
 }
 

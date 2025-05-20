@@ -1,29 +1,6 @@
-import axios from "axios"; // Ajusta la ruta si es diferente
-import { ProductResponse } from "../types/Product";
-
-export interface UserEntityResponseDto {
-  id: number; // Asumiendo que Long se mapea a number
-  username: string;
-}
-
-export interface CartItemRequestDto {
-  productId: number; // Long se mapea a number en TS
-  cuantity: number;
-}
-
-export interface CartItemResponseDto {
-  cartId: number; // Long se mapea a number
-  user: UserEntityResponseDto;
-  product: ProductResponse;
-  cuantity: number;
-}
-
-export interface ApiResponseDto<T> {
-  timestamp: Date;
-  message: string;
-  code: number; // HttpStatus.OK.value() es un int
-  data: T;
-}
+import axios from "axios";
+import { ApiResponseDto } from "../types/api";
+import { CartItemRequestDto, CartItemResponseDto } from "../types/cartItem";
 
 const CART_ITEMS_RESOURCE = "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
 

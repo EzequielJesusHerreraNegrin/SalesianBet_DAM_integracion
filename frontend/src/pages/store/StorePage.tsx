@@ -5,15 +5,47 @@ import { Product } from "../../types/Product";
 import CartItem from "../../components/Card/cardItemCard/CartItem";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
-import {
-  CartItemResponseDto,
-  cartItemService,
-} from "../../service/CartItem.service";
+import { CartItemResponseDto } from "../../types/cartItem";
+import { cartItemService } from "../../service/CartItem.service";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([]);
+  const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([
+    /*     {
+      cartId: 1,
+      user: { id: 1, username: "Juan" },
+      product: {
+        productId: 101,
+        productName: "Producto A",
+        price: 10.5,
+        imageImage: "imageA.jpg",
+      },
+      cuantity: 2,
+    },
+    {
+      cartId: 2,
+      user: { id: 2, username: "Ana" },
+      product: {
+        productId: 102,
+        productName: "Producto B",
+        price: 20.0,
+        imageImage: "imageB.jpg",
+      },
+      cuantity: 1,
+    },
+    {
+      cartId: 3,
+      user: { id: 1, username: "Juan" },
+      product: {
+        productId: 103,
+        productName: "Producto C",
+        price: 15.75,
+        imageImage: "imageC.jpg",
+      },
+      cuantity: 3,
+    }, */
+  ]);
 
   useEffect(() => {
     ProductService.getAllProducts()
@@ -76,7 +108,11 @@ const StorePage = () => {
           <div className="cartItem-list">
             {cartItems.map((cartItem, index) => (
               <div key={index} className="cartItem-card">
-                {CartItem(cartItem)}
+                <CartItem
+                  cartItem={cartItem}
+                  setCartItems={setCartItems}
+                  cartItems={cartItems}
+                />
               </div>
             ))}
           </div>

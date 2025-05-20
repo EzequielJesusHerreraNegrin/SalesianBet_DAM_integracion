@@ -1,5 +1,5 @@
 import { Bet } from "./Bet";
-    
+
 export type User = {
   userId: number;
   userName: string;
@@ -10,4 +10,7 @@ export type User = {
   // roles:
 };
 
-
+export interface UserEntityResponseDto {
+  id: number; // Asumiendo que Long se mapea a number
+  username: string;
+}
