@@ -35,6 +35,8 @@ public class CartItemServiceImpl implements CartItemService{
 	
 	private static final String PRODUCT_NOT_FOUND = "User with id %d was not found.";
 	
+	
+	
 	@Override
 	public List<CartItemResponseDto> getAllCartItems() {
 		List<CartItem> cart = cartItemRepository.findAll();
@@ -42,8 +44,9 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
-	public Boolean addproductToCart(Long userId, CartItemRequestDto dto) {
+	public CartItemResponseDto addproductToCart(Long userId, CartItemRequestDto dto) {
 	    UserEntity user = userServiceImpl.validateAndGetUser(userId);
+	    CartItem newItem = new CartItem();
 
 	    Optional<CartItem> optionalItem = user.getBasket().stream()
 	            .filter(cartItem -> cartItem.getProduct().getProductId().equals(dto.getProductId()))
@@ -55,7 +58,7 @@ public class CartItemServiceImpl implements CartItemService{
 	    	
 	    	Product product = productServiceImpl.validateAndGetProduct(dto.getProductId());
 
-	        CartItem newItem = new CartItem();
+	        newItem = new CartItem();
 	        newItem.setProduct(product);
 	        newItem.setCuantity(dto.getCuantity());
 	        newItem.setUser(user);
@@ -64,7 +67,7 @@ public class CartItemServiceImpl implements CartItemService{
 
 	    userEntityRepository.save(user);
 
-	    return true;
+	    return cartItemMapper.toCartItemResponseDto(newItem);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
-	public Boolean updateCartItem(Long userId, CartItemRequestDto dto) {
+	public CartItemResponseDto updateCartItem(Long userId, CartItemRequestDto dto) {
 		UserEntity user = userServiceImpl.validateAndGetUser(userId);
 	    CartItem itemToUpdate = user.getBasket().stream()
 	            .filter(cartItem -> cartItem.getProduct().getProductId().equals(dto.getProductId()))
@@ -86,7 +89,7 @@ public class CartItemServiceImpl implements CartItemService{
 	    itemToUpdate.setCuantity(dto.getCuantity());
 		user.getBasket().stream().map( cartItem -> cartItem.getProduct().getProductId() == dto.getProductId());
 		userEntityRepository.save(user);
-		return true;
+		return cartItemMapper.toCartItemResponseDto(itemToUpdate);
 	}
 
 }

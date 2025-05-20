@@ -1,15 +1,29 @@
 import axios from "axios";
-import { ApiResponseDto } from "../types/api";
+import { ApiResponseDto, baseURL } from "../types/api";
 import { CartItemRequestDto, CartItemResponseDto } from "../types/cartItem";
 
-const CART_ITEMS_RESOURCE = "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
+const CART_ITEMS_RESOURCE = baseURL + "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
 
-export const getAllCartItems = async (): Promise<CartItemResponseDto[]> => {
+export const getAllCartItems = async (): Promise<
+  ApiResponseDto<CartItemResponseDto[]>
+> => {
   try {
-    const response = await axios.get<ApiResponseDto<CartItemResponseDto[]>>(
-      CART_ITEMS_RESOURCE
+    const token = localStorage.getItem(
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ3NzY0NTE5LCJleHAiOjE3NDgxMjQ1MTksInJvbGUiOlsiUk9MRV9VU0VSIl19._c5al76lnQJZm5-Jm4PyL-Q64JzwmsJj_rG9y1hCKTo"
     );
-    return response.data.data; // Devolvemos directamente el array de ítems
+    const response = await axios.get<ApiResponseDto<CartItemResponseDto[]>>(
+      CART_ITEMS_RESOURCE,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      }
+    );
+    console.log("Response from getAllCartItems:", response.data.code);
+
+    return response.data; // Devolvemos directamente el array de ítems
   } catch (error) {
     console.error("Error fetching all cart items:", error);
     throw error; // Relanzar para que el componente que llama pueda manejarlo
@@ -25,13 +39,13 @@ export const getAllCartItems = async (): Promise<CartItemResponseDto[]> => {
 export const addProductToCart = async (
   userId: number, // Long se mapea a number
   data: CartItemRequestDto
-): Promise<boolean> => {
+): Promise<ApiResponseDto<CartItemResponseDto>> => {
   try {
-    const response = await axios.post<ApiResponseDto<boolean>>(
+    const response = await axios.post<ApiResponseDto<CartItemResponseDto>>(
       `${CART_ITEMS_RESOURCE}/product/${userId}`,
       data
     );
-    return response.data.data; // Devuelve true si la operación fue exitosa
+    return response.data;
   } catch (error) {
     console.error(`Error adding product to cart for user ${userId}:`, error);
     throw error;

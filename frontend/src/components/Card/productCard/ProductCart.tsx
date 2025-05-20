@@ -1,7 +1,11 @@
 import { Button } from "@mui/material";
-import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
+import { addProductToCart } from "../../../service/cartItem.service";
 import { Product } from "../../../types/Product";
-import { CartItemResponseDto } from "../../../types/cartItem";
+import {
+  CartItemRequestDto,
+  CartItemResponseDto,
+} from "../../../types/cartItem";
+import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
 
 type Props = {
   product: Product;
@@ -9,22 +13,32 @@ type Props = {
   setCartItems: React.Dispatch<React.SetStateAction<CartItemResponseDto[]>>;
 };
 
-const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
-  const handleAddToCart = (product: Product) => {
-    const productCartItem: CartItemResponseDto = {
-      cartId: cartItems.length, // Use a unique ID for the cart item
-      user: { id: 1, username: "Juan" }, // Replace with actual user data
-      product: {
+const ProductCart = ({ product, cartItems }: Props) => {
+  const handleAddToCart = async (product: Product) => {
+    try {
+      cartItems.forEach((item) => {
+        if (item.product.productId === product.productId) {
+          console.error("El producto ya está en el carrito");
+          return;
+        }
+      });
+
+      const productCartItem: CartItemRequestDto = {
         productId: product.productId,
-        productName: product.productName,
-        price: product.price,
-        imageImage: product.imageImage,
-      },
-      cuantity: 1, // Default quantity
-    };
-    const updatedCart = [...cartItems, productCartItem];
-    setCartItems(updatedCart);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+        cuantity: 1,
+      };
+
+      const response = await addProductToCart(1, productCartItem);
+
+      if (response) {
+        const updatedCart = [...cartItems, productCartItem];
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      } else {
+        console.error("Error al agregar el producto al carrito");
+      }
+    } catch (error) {
+      console.error("Error en handleAddToCart:", error);
+    }
   };
   return (
     <div className="product-cart-container">

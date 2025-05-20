@@ -44,12 +44,12 @@ public class CartItemController {
 	@PostMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> addProductToCart(
+	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> addProductToCart(
 			@RequestBody CartItemRequestDto dto,@PathVariable Long userId) {
 		
-		Boolean items = cartItemServiceImpl.addproductToCart(userId, dto);
+		CartItemResponseDto items = cartItemServiceImpl.addproductToCart(userId, dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), items);
+		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), items);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -57,10 +57,10 @@ public class CartItemController {
 	@PutMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> updateCartItem(@PathVariable Long userId, @RequestBody CartItemRequestDto dto) {
-		Boolean updated = cartItemServiceImpl.updateCartItem(userId, dto);
+	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> updateCartItem(@PathVariable Long userId, @RequestBody CartItemRequestDto dto) {
+		CartItemResponseDto updated = cartItemServiceImpl.updateCartItem(userId, dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), updated);
+		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), updated);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

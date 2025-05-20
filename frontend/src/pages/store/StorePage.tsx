@@ -6,7 +6,7 @@ import CartItem from "../../components/Card/cardItemCard/CartItem";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
 import { CartItemResponseDto } from "../../types/cartItem";
-import { cartItemService } from "../../service/CartItem.service";
+import { cartItemService } from "../../service/cartItem.service";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -50,10 +50,7 @@ const StorePage = () => {
   useEffect(() => {
     ProductService.getAllProducts()
       .then((product) => {
-        // Renombrado para claridad
-        console.log("API Response:", product);
         if (product && Array.isArray(product)) {
-          // Verifica apiResponse y apiResponse.data
           setProducts(product);
         } else {
           setProducts([]);
@@ -64,25 +61,29 @@ const StorePage = () => {
         }
       })
       .catch((error) => {
-        // Buena práctica: manejar errores de la promesa
         console.error("Error fetching products:", error);
         setProducts([]);
       });
 
-    cartItemService.getAllCartItems().then((apiResponse) => {
-      // Renombrado para claridad
-      console.log("API Response:", apiResponse);
-      if (apiResponse && Array.isArray(apiResponse)) {
-        // Verifica apiResponse y apiResponse.data
-        setCartItems(apiResponse);
-      } else {
+    cartItemService
+      .getAllCartItems()
+      .then((response) => {
+        if (response && Array.isArray(response)) {
+          setCartItems(response);
+        } else if (response && Array.isArray(response.data)) {
+          setCartItems(response.data);
+        } else {
+          setCartItems([]);
+          console.error(
+            "cartItemService.getAllCartItems() did not return an array or array in response.data:",
+            response
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching cart items:", error);
         setCartItems([]);
-        console.error(
-          "cartItemService.getAllCartItems() did not return an array in response.data:",
-          apiResponse
-        );
-      }
-    });
+      });
   }, []);
 
   return (
