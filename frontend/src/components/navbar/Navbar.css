@@ -8,7 +8,9 @@
 
 .navbar-screens {
     display: flex;
-    gap: 300px;
+    padding: 0 30px;
+    width: 90%;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -26,6 +28,14 @@
 
 }
 
+.navbar-auth {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
+
 p {
     margin: 0;
     margin-left: 30px;
@@ -35,4 +45,14 @@ a {
     text-decoration: none;
     color: black;
     font-weight: 600;
+}
+
+.navbar-button {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f08c00;
+    border: 2px solid black;
+    color: #2f9e44;
+    font-weight: 600;
+    cursor: pointer;
 }

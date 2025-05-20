@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import com.accesodatos.service.impl.UserEntityServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserEntityController {
 
 	private static final String USER_RESOURCE = "/users";
@@ -35,7 +38,6 @@ public class UserEntityController {
 	@Autowired PurchaseServiceImpl purchaseServiceImpl;
 	
 	@GetMapping( value = USER_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
-
 	public ResponseEntity<ApiResponseDto<List<UserEntityResponseDto>>> getAllUsers() {
 		List<UserEntityResponseDto> users = userEntityServiceImpl.getAllUsers();
 
@@ -43,6 +45,16 @@ public class UserEntityController {
 				"All users fetched successfuly.", HttpStatus.OK.value(), users);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@GetMapping( value = USER_RESOURCE + "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getCurrentUser(Authentication authentication) {
+		String email = authentication.getName();
+		UserEntityResponseDto user = userEntityServiceImpl.getUserByEmail(email);
+		
+		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<UserEntityResponseDto>(
+				"CurrentUser fetched successfuly.", HttpStatus.OK.value(), user);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}	
 
 	@GetMapping(value = USER_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String value) {

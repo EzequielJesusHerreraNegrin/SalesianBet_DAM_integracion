@@ -1,9 +1,9 @@
-import axios from "axios";
 import { BetRequest } from "../types/Bet";
 import { API_URL } from "./match.service";
+import api from "./api";
 
 const createBet = async (betRquest: BetRequest) => {
-  const response = await axios.post(`${API_URL}/bets`, betRquest);
+  const response = await api.post(`${API_URL}/bets`, betRquest);
   return response.data;
 };
 

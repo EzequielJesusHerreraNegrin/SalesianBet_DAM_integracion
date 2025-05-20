@@ -1,16 +1,31 @@
 import { Bet } from "./Bet";
+import { Role } from "./Role";
 
-export type User = {
+export type AuthenticatedUser = {
   userId: number;
   userName: string;
-  password: string;
   email: string;
   dni: string;
   bets: Bet[];
-  // roles:
+  token: string;
+  points: number;
+  roles: Role[];
 };
 
-export interface UserEntityResponseDto {
-  id: number; // Asumiendo que Long se mapea a number
-  username: string;
-}
+export const initialUserRequest: UserRequest = {
+  userName: "",
+  password: "",
+  dni: "",
+  country: "",
+  email: "",
+  token: "",
+};
+
+export type UserRequest = {
+  userName?: string;
+  password: string;
+  dni?: string;
+  country?: string;
+  email: string;
+  token: string;
+};

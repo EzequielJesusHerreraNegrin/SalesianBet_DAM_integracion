@@ -15,5 +15,5 @@ public interface BetMapper {
 	@Mapping(target = "betId", ignore = true)
 	@Mapping(target = "match", ignore = true)
 	@Mapping(target = "user", ignore = true)
-	Bet toBet (BetRequestDto dto);
+	Bet toBet(BetRequestDto dto);
 }

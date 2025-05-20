@@ -1,12 +1,12 @@
 import { Match } from "./Match";
-import { User } from "./User";
+import { AuthenticatedUser } from "./User";
 
 export type Bet = {
   betId: number;
   points: number;
   prediction: string;
   match: Match;
-  user: User;
+  user: AuthenticatedUser;
 };
 
 export type BetRequest = {
