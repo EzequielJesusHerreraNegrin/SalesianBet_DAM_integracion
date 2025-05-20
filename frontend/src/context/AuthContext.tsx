@@ -7,8 +7,9 @@ import {
 } from "react";
 import { AuthenticatedUser, UserRequest } from "../type/User";
 import { LocalStorageService } from "../service/localstorage.service";
-import api from "../service/api";
 import { Role } from "../type/Role";
+import axios from "axios";
+import { API_URL } from "../service/api";
 
 interface AuthContextType {
   user: AuthenticatedUser | null;
@@ -65,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const loginUser = async (userRequest: UserRequest) => {
     try {
-      const response = await api.post(`/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email: userRequest.email,
         password: userRequest.password,
       });
@@ -95,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const registerUser = async (userRequest: UserRequest) => {
-    const response = await api.post(`/auth/register`, {
+    const response = await axios.post(`${API_URL}/auth/register`, {
       email: userRequest.email,
       userName: userRequest.userName,
       dni: userRequest.dni,
@@ -117,7 +118,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const token = await LocalStorageService.get(
         LocalStorageService.KEY.userToken
       );
-      const response = await api.get(`/users/me`, {
+      const response = await axios.get(`${API_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

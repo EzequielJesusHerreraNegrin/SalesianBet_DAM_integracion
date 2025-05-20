@@ -1,0 +1,27 @@
+.prediction-row {
+  display: flex;
+  padding: 10px;
+  border: 1px solid black;
+  border-top: none;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  color: black;
+  background-color: white;
+}
+
+.header {
+    
+  font-weight: bold;
+  background-color: #4caf50;;
+  border-radius: 10px 10px 0px 0px;
+  border: 1px solid black;
+}
+
+.prediction-col {
+  flex: 1;
+  padding: 5px;
+}
+
+.prediction-container {
+    margin: 5%;
+}

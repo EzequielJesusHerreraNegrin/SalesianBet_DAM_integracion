@@ -131,9 +131,15 @@ public class BetServiceImpl implements BetService {
 
 	@Override
 	public void deleteBet(Long betId) {
-		Bet bet = betRepository.findById(betId).orElseThrow(() -> new ResourceNotFoundException(
-				String.format("The bet with the id %d was not found.", betId)));
+		Bet bet = validateAndGetBet(betId);
+		UserEntity user = validateAndGetUser(bet.getUser().getUserId());
+		if (bet.getMatch().getDate().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("No puedes borrar la apuesta de este partido");
+		}
+		
 		bet.getUser().removeBet(bet);
+		user.setPoints(user.getPoints() + bet.getPoints());
+		userEntityRepository.save(user);
 		betRepository.delete(bet);
 	}
 

@@ -1,14 +1,19 @@
 import { BetRequest } from "../type/Bet";
-import { API_URL } from "./match.service";
 import api from "./api";
 
 const createBet = async (betRquest: BetRequest) => {
-  const response = await api.post(`${API_URL}/bets`, betRquest);
+  const response = await api.post(`/bets`, betRquest);
+  return response.data;
+};
+
+const deleteBet = async (betId: number) => {
+  const response = await api.post(`/bets/${betId}`);
   return response.data;
 };
 
 const BetService = {
   createBet,
+  deleteBet,
 };
 
 export default BetService;

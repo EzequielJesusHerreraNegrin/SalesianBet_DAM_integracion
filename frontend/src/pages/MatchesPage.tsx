@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Schedulebar from "../components/Schedulebar/Schedulebar";
-import Table from "../components/table/Table";
+import MatchTable from "../components/table/match/MatchTable";
 import { Match } from "../type/Match";
 import BetForm from "../components/form/bet/BetForm";
 
@@ -80,7 +80,7 @@ const MatchesPage = ({
         setSelectedDate={setSelectedDate}
         formatDate={formatDate}
       />
-      <Table
+      <MatchTable
         setSelectedDate={setSelectedDate}
         setMatchesReady={setMatchesReady}
         matchesReady={matchesReady}

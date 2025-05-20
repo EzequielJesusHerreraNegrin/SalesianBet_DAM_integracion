@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import initialMatch, { Match } from "../../type/Match";
-import MatchService from "../../service/match.service";
-import Loader from "../loader/Loader";
-import "./Table.css";
+import initialMatch, { Match } from "../../../type/Match";
+import MatchService from "../../../service/match.service";
+import Loader from "../../loader/Loader";
+import "./MatchTable.css";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import DateCalendar from "../calendar/DateCalendar";
-import { useAuthContext } from "../../context/AuthContext";
+import DateCalendar from "../../calendar/DateCalendar";
+import { useAuthContext } from "../../../context/AuthContext";
 
 interface TableProps {
   selectedDate: string;
@@ -20,7 +20,7 @@ interface TableProps {
   setIsBetting: (value: boolean) => void;
 }
 
-const Table = ({
+const MatchTable = ({
   setIsCreating,
   selectedDate,
   formatDate,
@@ -129,22 +129,24 @@ const Table = ({
               >
                 <EditIcon sx={{ width: "30px", height: "30px" }} />
               </button>
-            ) : (user &&
-              <button
-                className="table-button-bet"
-                onClick={() => handleBetMatch(match)}
-              >
-                <MonetizationOnIcon
-                  color="warning"
-                  sx={{
-                    backgroundColor: "green",
-                    borderRadius: "50%",
-                    border: "3px solid",
-                    width: "30px",
-                    height: "30px",
-                  }}
-                />
-              </button>
+            ) : (
+              user && (
+                <button
+                  className="table-button-bet"
+                  onClick={() => handleBetMatch(match)}
+                >
+                  <MonetizationOnIcon
+                    color="warning"
+                    sx={{
+                      backgroundColor: "green",
+                      borderRadius: "50%",
+                      border: "3px solid",
+                      width: "30px",
+                      height: "30px",
+                    }}
+                  />
+                </button>
+              )
             )}
           </div>
         </div>
@@ -152,12 +154,12 @@ const Table = ({
     });
   };
 
-  if (loading) return <Loader />;
+  if (loading) return ( <div style={{display: "flex", justifyContent: "center"}}><Loader /></div>);
 
   return (
     <>
       <div className="table-container">
-        <div className="table-button-container">
+        <div className="table-button-container">  
           {isAdmin && (
             <>
               <button onClick={handleAddMatch} className="table-button">
@@ -185,4 +187,4 @@ const Table = ({
   );
 };
 
-export default Table;
+export default MatchTable;

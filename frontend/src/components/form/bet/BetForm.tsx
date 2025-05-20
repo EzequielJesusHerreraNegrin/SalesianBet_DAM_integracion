@@ -5,6 +5,7 @@ import { BetRequest } from "../../../type/Bet";
 import BetService from "../../../service/bet.service";
 import "./BetForm.css";
 import { useAuthContext } from "../../../context/AuthContext";
+import { formatDate } from "../../../utils/uitls";
 
 interface BetProps {
   currentMatch: Match;
@@ -32,12 +33,6 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
 
   const handleClickOption = (option: string) => {
     setSelected(option);
-  };
-
-  const formatDate = (isoDate: string) => {
-    const [year, month, day] = isoDate.split("T")[0].split("-");
-    const dateFormatted = `${day}/${month}/${year}`;
-    return dateFormatted;
   };
 
   const matchDate = formatDate(currentMatch.date);

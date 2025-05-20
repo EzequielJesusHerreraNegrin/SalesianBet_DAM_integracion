@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleRegister = () => {
     setIsLogin(false);
-    navigate("/");
+    navigate("/register");
   };
 
   return (
@@ -28,7 +28,7 @@ const Navbar = () => {
             <NavLink to="/store" className="navbar-link">
               Tienda
             </NavLink>
-            <NavLink to="/predictions" className="navbar-link">
+            <NavLink to="/myPredictions" className="navbar-link">
               Mis predicciones
             </NavLink>
             <div className="navbar-auth">

@@ -57,8 +57,8 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(auth -> 
-					auth.requestMatchers(HttpMethod.GET, 
-													GENERAL_PATHS).permitAll()
+					auth.requestMatchers(HttpMethod.DELETE, "/api/v1/bets/**").permitAll()
+						.requestMatchers(HttpMethod.GET, GENERAL_PATHS).permitAll()
 						.requestMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/matches").hasRole("ADMIN")
 						.requestMatchers(USER_PATHS).hasRole("USER")

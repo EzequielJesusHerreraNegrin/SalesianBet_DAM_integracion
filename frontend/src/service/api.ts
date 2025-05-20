@@ -1,6 +1,6 @@
 import axios from "axios";
-import { API_URL } from "./match.service";
 import { LocalStorageService } from "./localstorage.service";
+export const API_URL = "http://localhost:8081/api/v1";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -25,4 +25,4 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default api
+export default api;

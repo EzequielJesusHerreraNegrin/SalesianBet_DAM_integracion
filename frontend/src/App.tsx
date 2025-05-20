@@ -11,6 +11,8 @@ import initialMatch, { Match } from "./type/Match";
 import AuthPage from "./pages/AuthPage";
 import { useAuthContext } from "./context/AuthContext";
 import MatchModal from "./components/form/create/MatchForm";
+import PredictionsPage from "./pages/PredictionsPage";
+import PrivateRoute from "./components/protection/PrivateRoute";
 
 function App() {
   const { isLogin } = useAuthContext();
@@ -51,6 +53,15 @@ function App() {
           }
         />
         <Route path={isLogin ? "/login" : "/register"} element={<AuthPage />} />
+
+        <Route
+          path={"/myPredictions"}
+          element={
+            <PrivateRoute>
+              <PredictionsPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
