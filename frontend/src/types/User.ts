@@ -1,4 +1,6 @@
 import { Bet } from "./Bet";
+import { CartItemUserResponseDto } from "./cartItem";
+import { Purchase } from "./Purchase";
 import { Role } from "./Role";
 
 export type AuthenticatedUser = {
@@ -29,3 +31,16 @@ export type UserRequest = {
   email: string;
   token: string;
 };
+
+export interface UserResponseDto {
+  userId: number;
+  userName: string;
+  email: string;
+  dni: string;
+  points: number;
+  country: string;
+  roles: Role[];
+  basket: CartItemUserResponseDto[];
+  purchases: Purchase[];
+  bets: Bet[];
+}

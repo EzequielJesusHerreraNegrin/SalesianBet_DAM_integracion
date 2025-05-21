@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ProductResponse, ProductRequest } from "../types/Product";
-import { API_URL } from "./match.service";
-import { ApiResponseDto } from "./CartItem.service";
+import { API_URL } from "../service/api";
+import { ApiResponseDto } from "../types/api";
 
 const createProduct = async (productRequest: ProductRequest) => {
   const response = await axios.post(`${API_URL}/products`, productRequest);

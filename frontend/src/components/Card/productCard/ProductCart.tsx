@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { addProductToCart } from "../../../service/cartItem.service";
+import { cartItemService } from "../../../service/cartItem.service";
 import { Product } from "../../../types/Product";
 import {
   CartItemRequestDto,
@@ -28,7 +28,10 @@ const ProductCart = ({ product, cartItems }: Props) => {
         cuantity: 1,
       };
 
-      const response = await addProductToCart(1, productCartItem);
+      const response = await cartItemService.addProductToCart(
+        1,
+        productCartItem
+      );
 
       if (response) {
         const updatedCart = [...cartItems, productCartItem];

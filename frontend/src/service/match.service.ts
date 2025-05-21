@@ -1,6 +1,5 @@
 import { MatchRequest } from "../types/Match";
 import api from "./api";
-export const API_URL = "http://localhost:8081/api/v1";
 
 const getMatchesByDate = async (date: string) => {
   const response = await api.get(`/matches/by-date`, {

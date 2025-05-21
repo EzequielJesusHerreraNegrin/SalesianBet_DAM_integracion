@@ -1,27 +1,15 @@
 import { useEffect, useState } from "react";
-import ProductCart from "../../components/Card/productCard/ProductCart";
-import "./StorePageStyles.css";
-import { Product } from "../../types/Product";
 import CartItem from "../../components/Card/cardItemCard/CartItem";
+import ProductCart from "../../components/Card/productCard/ProductCart";
+import { cartItemService } from "../../service/cartItem.service";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
 import { CartItemResponseDto } from "../../types/cartItem";
-import { cartItemService } from "../../service/cartItem.service";
-import { LocalStorageService } from "../../service/localstorage.service";
-import { jwtDecode } from "jwt-decode";
+import { Product } from "../../types/Product";
+import "./StorePageStyles.css";
+import UserService from "../../service/user.service";
 
 const StorePage = () => {
-  const decodedToken = LocalStorageService.get(
-    LocalStorageService.KEY.userToken
-  ).then((token) => {
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      console.log("Decoded token:", decodedToken);
-    } else {
-      console.log("No token found");
-    }
-  });
-
   const [products, setProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([
     /*     {
@@ -77,25 +65,30 @@ const StorePage = () => {
         setProducts([]);
       });
 
-    cartItemService
-      .getAllCartItems()
-      .then((response) => {
-        if (response && Array.isArray(response)) {
-          setCartItems(response);
-        } else if (response && Array.isArray(response.data)) {
-          setCartItems(response.data);
-        } else {
+    const handleCarIterms = async () => {
+      const userToken = await UserService.manageUserToken();
+      cartItemService
+        .getAllCartItemsByUserId(userToken!.userId)
+        .then((response) => {
+          if (response && Array.isArray(response)) {
+            setCartItems(response);
+          } else if (response && Array.isArray(response.data)) {
+            setCartItems(response.data);
+          } else {
+            setCartItems([]);
+            console.error(
+              "cartItemService.getAllCartItems() did not return an array or array in response.data:",
+              response
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching cart items:", error);
           setCartItems([]);
-          console.error(
-            "cartItemService.getAllCartItems() did not return an array or array in response.data:",
-            response
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching cart items:", error);
-        setCartItems([]);
-      });
+        });
+    };
+
+    handleCarIterms();
   }, []);
 
   return (
@@ -111,7 +104,7 @@ const StorePage = () => {
           </div>
         ))}
       </div>
-      {decodedToken.role === "ADMIN" && (
+      {/*       { manageUserRole === "ADMIN" ? (
         <div className="admin-section">
           <h2 className="admin-section-title">Administración</h2>
           <button
@@ -124,7 +117,7 @@ const StorePage = () => {
             Administrar productos
           </button>
         </div>
-      )}
+      ): (null)} */}
       <div className="cartItems-section-container">
         <h2 className="cartItems-section-title">Carrito de compras</h2>
         {cartItems.length === 0 ? (

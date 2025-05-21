@@ -15,6 +15,13 @@ type ProductRequest = {
   price: number;
 };
 
+interface ProductCartItemResponseDto {
+  productId: number;
+  productName: string;
+  productImage: string;
+  price: number;
+}
+
 type ProductResponse = {
   productId: number;
   productName: string;
@@ -36,4 +43,5 @@ export type {
   ProductPurchaseResponseDto,
   ProductRequest,
   ProductResponse,
+  ProductCartItemResponseDto,
 };

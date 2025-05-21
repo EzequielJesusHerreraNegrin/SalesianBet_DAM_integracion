@@ -5,4 +5,10 @@ export interface ApiResponseDto<T> {
   data: T;
 }
 
-export const baseURL = "http://localhost:8081/api/v1";
+export type JwtPayload = {
+  sub: string;
+  exp: number;
+  iat: number;
+  userId: number;
+  role: string[];
+};

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "./match.service";
+import { API_URL } from "./api";
 
 const getAllCompetitions = async () => {
   const response = await axios.get(`${API_URL}/competitions`);
