@@ -27,5 +27,4 @@ public class MatchResponseDto {
 	private CompetitionResponseDto competition;
 	private TeamResponseDto homeTeam;
 	private TeamResponseDto awayTeam;
-//	private Set<Bet> bets;
 }

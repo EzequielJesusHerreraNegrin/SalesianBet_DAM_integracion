@@ -92,4 +92,11 @@ public class CartItemServiceImpl implements CartItemService{
 		return cartItemMapper.toCartItemResponseDto(itemToUpdate);
 	}
 
+	
+	@Override
+	public List<CartItemResponseDto> getAllCartItemsByUserId(Long userId) {
+		List<CartItem> cart = cartItemRepository.findByUserUserId(userId);
+		return cart.stream().map(cartItemMapper::toCartItemResponseDto).toList();
+	}
+
 }

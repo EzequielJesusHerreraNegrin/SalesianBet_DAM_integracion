@@ -8,6 +8,7 @@ import com.accesodatos.dto.cartitem.CartItemResponseDto;
 public interface CartItemService {
 
 	List<CartItemResponseDto> getAllCartItems();
+	List<CartItemResponseDto> getAllCartItemsByUserId(Long userId);
 	CartItemResponseDto addproductToCart (Long userId, CartItemRequestDto dto);
 	Boolean deleteCartItem (Long userId, Long itemId);
 	CartItemResponseDto updateCartItem (Long userId, CartItemRequestDto dto);

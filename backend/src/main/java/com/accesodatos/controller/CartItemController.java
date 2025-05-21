@@ -27,6 +27,7 @@ import com.accesodatos.service.impl.CartItemServiceImpl;
 public class CartItemController {
 
 	private static final String CARTITEM_RESOURCE = "/cartItems";
+	private static final String CARTITEM_USER_ID= CARTITEM_RESOURCE +"/{userId}";
 	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product/{userId}";
 	private static final String CARTITEM_USER_ID_PRODUCT_ID = CARTITEM_RESOURCE + "/{userId}/product/{productId}";
 	
@@ -40,6 +41,17 @@ public class CartItemController {
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = CARTITEM_USER_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<CartItemResponseDto>>> getAllCartItemsByUserId(@PathVariable Long userId) {
+		List<CartItemResponseDto> items = cartItemServiceImpl.getAllCartItemsByUserId(userId);
+		
+		ApiResponseDto<List<CartItemResponseDto>> response = new ApiResponseDto<List<CartItemResponseDto>>("All user items were fetched successfuly", HttpStatus.OK.value(), items);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	
 	
 	@PostMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 

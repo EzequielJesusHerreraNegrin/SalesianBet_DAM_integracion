@@ -1,20 +1,24 @@
 package com.accesodatos.jwt;
 
-
-
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 import javax.management.RuntimeErrorException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.accesodatos.entity.UserEntity;
+import com.accesodatos.exception.ResourceNotFoundException;
 import com.accesodatos.exception.TokenExpiredException;
+import com.accesodatos.repository.UserEntityRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,22 +31,29 @@ public class JwtTokenProvider {
 	@Value("${security.jwt.key.private}")
 	private String privateKey;
 	
+	@Autowired UserEntityRepository entityRepository;
 	
 	private static final long JWT_EXPIRATION_DATE = 3600000;
 	
+	
 	public String generateToken(Authentication authentication) {
+		UserEntity user = entityRepository.findByEmail(authentication.getName())
+			    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 		String username = authentication.getName();
 		List<String> role = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 		Date currentDate = new Date();
 		Date expirate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
-	
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("roles", role);
+		claims.put("userId", user.getUserId());
+		
 		return Jwts.builder()
 				.subject(username)
 				.issuedAt(currentDate)
 				.expiration(expirate)
-				.claim("role", role)
+				.claims(claims)
 				.signWith(getSignInKey(), Jwts.SIG.HS256)
 				.compact();
 	}
