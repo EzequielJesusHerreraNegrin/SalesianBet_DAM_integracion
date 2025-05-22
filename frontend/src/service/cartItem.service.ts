@@ -51,7 +51,7 @@ const getAllCartItemsByUserId = async (
         },
       }
     );
-    console.log("Response from getAllCartItemsByUserId: ", response.data.code);
+    console.log("Response from getAllCartItemsByUserId: ", response.data);
 
     return response.data;
   } catch (error) {
@@ -61,7 +61,6 @@ const getAllCartItemsByUserId = async (
 };
 
 export const addProductToCart = async (
-  userId: number,
   data: CartItemRequestDto
 ): Promise<ApiResponseDto<CartItemResponseDto>> => {
   try {
@@ -70,7 +69,7 @@ export const addProductToCart = async (
     );
 
     const response = await axios.post<ApiResponseDto<CartItemResponseDto>>(
-      `${CART_ITEMS_RESOURCE}/product/${userId}`,
+      `${CART_ITEMS_RESOURCE}/product`,
       data,
       {
         headers: {
@@ -82,7 +81,10 @@ export const addProductToCart = async (
     );
     return response.data;
   } catch (error) {
-    console.error(`Error adding product to cart for user ${userId}:`, error);
+    console.error(
+      `Error adding product to cart for user ${data.userId}:`,
+      error
+    );
     throw error;
   }
 };
@@ -133,6 +135,8 @@ const deleteCartItem = async (
         },
       }
     );
+    console.log(response);
+
     return response.data.data;
   } catch (error) {
     console.error(

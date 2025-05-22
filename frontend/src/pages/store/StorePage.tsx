@@ -4,10 +4,11 @@ import ProductCart from "../../components/Card/productCard/ProductCart";
 import { cartItemService } from "../../service/cartItem.service";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
-import { CartItemResponseDto } from "../../types/cartItem";
+import { CartItemRequestDto, CartItemResponseDto } from "../../types/cartItem";
 import { Product } from "../../types/Product";
 import "./StorePageStyles.css";
 import UserService from "../../service/user.service";
+import { useAuthContext } from "../../context/AuthContext";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -47,6 +48,13 @@ const StorePage = () => {
     }, */
   ]);
 
+  /*   const cartItem: CartItemRequestDto = {
+    productId: 0,
+    cuantity: 0,
+  }; */
+
+  //const {isAdmin} = useAuthContext()
+
   useEffect(() => {
     ProductService.getAllProducts()
       .then((product) => {
@@ -65,7 +73,7 @@ const StorePage = () => {
         setProducts([]);
       });
 
-    const handleCarIterms = async () => {
+    const handleGetCarIterms = async () => {
       const userToken = await UserService.manageUserToken();
       cartItemService
         .getAllCartItemsByUserId(userToken!.userId)
@@ -88,8 +96,8 @@ const StorePage = () => {
         });
     };
 
-    handleCarIterms();
-  }, []);
+    handleGetCarIterms();
+  }, [cartItems.length, products.length]);
 
   return (
     <div className="main-contaier">
@@ -126,15 +134,17 @@ const StorePage = () => {
           </div>
         ) : (
           <div className="cartItem-list">
-            {cartItems.map((cartItem, index) => (
-              <div key={index} className="cartItem-card">
-                <CartItem
-                  cartItem={cartItem}
-                  setCartItems={setCartItems}
-                  cartItems={cartItems}
-                />
-              </div>
-            ))}
+            {cartItems
+              .filter((item) => item?.product)
+              .map((cartItem, index) => (
+                <div key={index} className="cartItem-card">
+                  <CartItem
+                    cartItem={cartItem}
+                    setCartItems={setCartItems}
+                    cartItems={cartItems}
+                  />
+                </div>
+              ))}
           </div>
         )}
         <div className="cartItems-section-action-container">

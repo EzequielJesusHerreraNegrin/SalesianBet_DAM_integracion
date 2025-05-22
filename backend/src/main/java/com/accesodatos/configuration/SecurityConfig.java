@@ -47,7 +47,7 @@ public class SecurityConfig {
 			"/api/v1/bets/{email}",
 			"/api/v1/bets/email",
 			"/api/v1/cartItems/{userId}",
-			"/api/v1/cartItems/product/{post}",
+			"/api/v1/cartItems/product",
 			"/api/v1/cartItems/{userId}/product/{productId}",
 
 	};

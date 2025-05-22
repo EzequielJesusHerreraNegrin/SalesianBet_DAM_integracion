@@ -2,6 +2,7 @@ import { ProductCartItemResponseDto, ProductResponse } from "./Product";
 import { UserResponseDto } from "../types/User";
 
 export interface CartItemRequestDto {
+  userId: number;
   productId: number; // Long se mapea a number en TS
   cuantity: number;
 }

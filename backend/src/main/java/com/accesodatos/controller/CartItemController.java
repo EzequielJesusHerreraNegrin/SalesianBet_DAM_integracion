@@ -28,7 +28,7 @@ public class CartItemController {
 
 	private static final String CARTITEM_RESOURCE = "/cartItems";
 	private static final String CARTITEM_USER_ID= CARTITEM_RESOURCE +"/{userId}";
-	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product/{userId}";
+	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product";
 	private static final String CARTITEM_USER_ID_PRODUCT_ID = CARTITEM_RESOURCE + "/{userId}/product/{productId}";
 	
 	@Autowired CartItemServiceImpl cartItemServiceImpl;
@@ -57,9 +57,9 @@ public class CartItemController {
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> addProductToCart(
-			@RequestBody CartItemRequestDto dto,@PathVariable Long userId) {
+			@RequestBody CartItemRequestDto dto) {
 		
-		CartItemResponseDto items = cartItemServiceImpl.addproductToCart(userId, dto);
+		CartItemResponseDto items = cartItemServiceImpl.addproductToCart(dto);
 		
 		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), items);
 		
@@ -69,8 +69,8 @@ public class CartItemController {
 	@PutMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> updateCartItem(@PathVariable Long userId, @RequestBody CartItemRequestDto dto) {
-		CartItemResponseDto updated = cartItemServiceImpl.updateCartItem(userId, dto);
+	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> updateCartItem(@RequestBody CartItemRequestDto dto) {
+		CartItemResponseDto updated = cartItemServiceImpl.updateCartItem(dto);
 		
 		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), updated);
 		
@@ -81,7 +81,7 @@ public class CartItemController {
 	public ResponseEntity<ApiResponseDto<Boolean>> deleteCartItem(@PathVariable Long userId, @PathVariable Long productId) {
 		Boolean updated = cartItemServiceImpl.deleteCartItem(userId, productId);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), updated);
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s deleted successfuly", HttpStatus.OK.value(), updated);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

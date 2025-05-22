@@ -2,6 +2,8 @@ import { IconButton } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { CartItemResponseDto } from "../../../types/cartItem";
 import "../cardItemCard/CartItemStyles.css"; // Assuming you have a CSS file for styles
+import { cartItemService } from "../../../service/cartItem.service";
+import UserService from "../../../service/user.service";
 
 type CartItemProps = {
   cartItem: CartItemResponseDto;
@@ -10,11 +12,21 @@ type CartItemProps = {
 };
 
 const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
-  const handleDelete = (cartItemId: number) => {
+  const handleDelete = async (productId: number) => {
     const updatedCartItems = cartItems.filter(
-      (item) => item.cartId !== cartItemId
+      (item) => item.product.productId !== productId
     );
-    setCartItems(updatedCartItems);
+    const token = await UserService.manageUserToken();
+    await cartItemService
+      .deleteCartItem(token!.userId, productId)
+      .then(() => {
+        console.log("eleminado");
+
+        setCartItems(updatedCartItems);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   };
 
   const handleQuantityChange = (cartItemId: number, newQuantity: number) => {
@@ -47,7 +59,7 @@ const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
           className="cartItem-actions-delete-button"
           children={<DeleteOutlineIcon color="error" />}
           onClick={() => {
-            handleDelete(cartItem.cartId);
+            handleDelete(cartItem.product.productId);
           }}
           aria-label="delete"
         />

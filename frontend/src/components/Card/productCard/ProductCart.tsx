@@ -6,6 +6,7 @@ import {
   CartItemResponseDto,
 } from "../../../types/cartItem";
 import "../productCard/ProuctCartStyles.css"; // Assuming you have a CSS file for styles
+import UserService from "../../../service/user.service";
 
 type Props = {
   product: Product;
@@ -13,36 +14,32 @@ type Props = {
   setCartItems: React.Dispatch<React.SetStateAction<CartItemResponseDto[]>>;
 };
 
-const ProductCart = ({ product, cartItems }: Props) => {
+const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   const handleAddToCart = async (product: Product) => {
-    try {
-      cartItems.forEach((item) => {
-        if (item.product.productId === product.productId) {
-          console.error("El producto ya está en el carrito");
-          return;
-        }
-      });
-
-      const productCartItem: CartItemRequestDto = {
-        productId: product.productId,
-        cuantity: 1,
-      };
-
-      const response = await cartItemService.addProductToCart(
-        1,
-        productCartItem
-      );
-
-      if (response) {
-        const updatedCart = [...cartItems, productCartItem];
-        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-      } else {
-        console.error("Error al agregar el producto al carrito");
+    cartItems.forEach((item) => {
+      if (item.product!.productId == product.productId) {
+        console.error("El producto ya está en el carrito");
+        return;
       }
-    } catch (error) {
-      console.error("Error en handleAddToCart:", error);
-    }
+    });
+
+    const token = await UserService.manageUserToken();
+    const productCartItem: CartItemRequestDto = {
+      userId: token!.userId,
+      productId: product.productId,
+      cuantity: 1,
+    };
+
+    await cartItemService
+      .addProductToCart(productCartItem)
+      .then((response) => {
+        setCartItems([...cartItems, response.data]);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   };
+
   return (
     <div className="product-cart-container">
       <div className="product-image-container">
@@ -68,7 +65,6 @@ const ProductCart = ({ product, cartItems }: Props) => {
           }}
           onClick={() => {
             handleAddToCart(product);
-            console.log(cartItems.length);
           }}
         >
           Añadir al carrito
