@@ -69,7 +69,7 @@ const MatchTable = ({
 
   const handleBetMatch = (match: Match) => {
     setIsBetting(true);
-    setCurrentMatch(match);
+    setCurrentMatch(match);  
   };
 
   useEffect(() => {

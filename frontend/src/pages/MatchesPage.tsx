@@ -91,7 +91,11 @@ const MatchesPage = ({
         setIsBetting={setIsBetting}
       />
       {isBetting && (
-        <BetForm currentMatch={currentMatch} setIsBetting={setIsBetting} />
+        <BetForm
+          key={currentMatch.matchId}
+          currentMatch={currentMatch}
+          setIsBetting={setIsBetting}
+        />
       )}
     </>
   );

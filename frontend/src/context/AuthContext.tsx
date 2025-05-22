@@ -37,23 +37,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         LocalStorageService.KEY.userToken
       );
       if (token) {
-        try {
-          const userLogged = await getUserLogged();
-          if (userLogged) {
-            setUser(userLogged.data);
+        const userLogged = await getUserLogged();
+        if (userLogged) {
+          setUser(userLogged.data);
 
-            const isAdminUser = userLogged.data.roles.some(
-              (role: Role) => role.roleName == "ADMIN"
-            );
-            setIsAdmin(isAdminUser);
-            setIsLogin(true);
-          }
-        } catch (error) {
-          console.error("Error initializing user:", error);
-          // Token inválido o expirado → lo borro para limpiar la sesión
-          await LocalStorageService.remove(LocalStorageService.KEY.userToken);
-          setUser(null);
+          const isAdminUser = userLogged.data.roles.some(
+            (role: Role) => role.roleName == "ADMIN"
+          );
+          setIsAdmin(isAdminUser);
+          setIsLogin(true);
+        } else {
           setIsLogin(false);
+          setUser(null);
           setIsAdmin(false);
         }
       } else {
@@ -124,9 +119,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         },
       });
       return response.data;
-    } catch (error) {
-      console.error("Error to get current user: ", error);
-      return null;
+    } catch (error: any) {
+      if (error.response && error.response.status == 401) {
+        throw new Error("UNAUTHORIZED");
+      }
+      throw error;
     }
   };
 
