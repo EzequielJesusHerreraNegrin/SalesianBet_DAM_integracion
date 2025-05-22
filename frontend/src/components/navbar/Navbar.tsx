@@ -51,6 +51,7 @@ const Navbar = () => {
                 onClick={() => {
                   logout();
                   navigate("/");
+                  window.location.reload();
                 }}
               >
                 Cerrar sesión
@@ -69,14 +70,14 @@ const Navbar = () => {
               Tienda
             </NavLink>
           </div>
-            <div className="navbar-auth">
-              <button className="navbar-button" onClick={handleLogin}>
-                Iniciar sesión
-              </button>
-              <button className="navbar-button" onClick={handleRegister}>
-                Registrarse
-              </button>
-            </div>
+          <div className="navbar-auth">
+            <button className="navbar-button" onClick={handleLogin}>
+              Iniciar sesión
+            </button>
+            <button className="navbar-button" onClick={handleRegister}>
+              Registrarse
+            </button>
+          </div>
         </div>
       )}
     </>
