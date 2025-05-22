@@ -11,7 +11,7 @@ import com.accesodatos.entity.Match;
 public interface MatchMapper {
 
 	@Mapping(target = "matchId", ignore = true)
-	@Mapping(target = "is_playing", ignore = true)
+	@Mapping(target = "playing", ignore = true)
 	@Mapping(target = "competition", ignore = true)
 	@Mapping(target = "homeTeam", ignore = true)
 	@Mapping(target = "awayTeam", ignore = true)

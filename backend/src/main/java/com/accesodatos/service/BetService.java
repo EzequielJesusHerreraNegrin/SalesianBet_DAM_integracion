@@ -7,7 +7,7 @@ import com.accesodatos.dto.bet.BetResponseDto;
 
 public interface BetService {
 	List<BetResponseDto> getAllBets();
-	List<BetResponseDto> getBetByUserEmail(String email);
+	List<BetResponseDto> getBetsByUserId(Long userId);
 	BetResponseDto createBet(BetRequestDto dto);
 	BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto);
 	void deleteBet(Long betId);	

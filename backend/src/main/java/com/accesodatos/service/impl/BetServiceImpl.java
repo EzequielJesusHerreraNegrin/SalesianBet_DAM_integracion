@@ -68,11 +68,10 @@ public class BetServiceImpl implements BetService {
 	}
 
 	@Override
-	public List<BetResponseDto> getBetByUserEmail(String email) {
-		List<Bet> bets = betRepository.findByUserEmail(email).orElseThrow(
-				() -> new ResourceNotFoundException(String.format("The email: %s, was not found.", email)));
-		return bets.stream().map(betMapper::toBetResponseDto)
+	public List<BetResponseDto> getBetsByUserId(Long userId) {
+		List<BetResponseDto> bets = betRepository.findBetsByUserUserId(userId).stream().map(betMapper::toBetResponseDto)
 				.collect(Collectors.toList());
+		return bets;
 	}
 
 	@Override
@@ -148,14 +147,11 @@ public class BetServiceImpl implements BetService {
 	@Override
 	public void deleteBet(Long betId) {
 		Bet bet = validateAndGetBet(betId);
-		UserEntity user = validateAndGetUser(bet.getUser().getUserId());
 		if (bet.getMatch().getDate().isBefore(LocalDateTime.now())) {
-			throw new IllegalArgumentException("No puedes borrar la apuesta de este partido");
+			throw new IllegalArgumentException("No puedes borrar la apuesta de este partido porque ya empezó");
 		}
 		
 		bet.getUser().removeBet(bet);
-		user.setPoints(user.getPoints() + bet.getPoints());
-		userEntityRepository.save(user);
 		betRepository.delete(bet);
 	}
 

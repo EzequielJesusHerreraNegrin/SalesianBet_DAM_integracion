@@ -13,7 +13,7 @@ import com.accesodatos.entity.UserEntity;
 @Repository
 public interface BetRepository extends JpaRepository<Bet, Long> {
 
-	Optional<List<Bet>> findByUserEmail(String email);
+	List<Bet> findBetsByUserUserId(Long userId);
 	
 	boolean existsByUserAndMatch(UserEntity user, Match match);
 	

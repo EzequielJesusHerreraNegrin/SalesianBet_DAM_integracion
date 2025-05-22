@@ -110,8 +110,8 @@ public class MatchServiceImpl implements MatchService {
 		createdMatch.setHomeTeam(homeTeam);
 		createdMatch.setAwayTeam(awayTeam);
 
-		if (createdMatch.getIs_playing() == null && createdMatch.getResult() == null) {
-			createdMatch.setIs_playing(false);
+		if (createdMatch.getPlaying() == null && createdMatch.getResult() == null) {
+			createdMatch.setPlaying(false);
 			createdMatch.setResult("");
 		}
 
@@ -129,6 +129,11 @@ public class MatchServiceImpl implements MatchService {
 		Team awayTeam = validateAndGetTeam(matchRequestDto.getAwayTeamId());
 
 		Match updatedMatch = validateAndGetMatch(matchId);
+		
+		if (updatedMatch.getDate().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("No puedes editar un partido ya comenzado");
+		}
+		
 		updatedMatch.setDate(matchRequestDto.getDate());
 		updatedMatch.setCompetition(competition);
 		updatedMatch.setHomeTeam(homeTeam);
@@ -168,12 +173,12 @@ public class MatchServiceImpl implements MatchService {
 			LocalDateTime start = match.getDate();
 			LocalDateTime end = start.plusMinutes(90);
 
-			if (!match.getIs_playing() && now.isAfter(start) && now.isBefore(end)) {
-				match.setIs_playing(true);
+			if (!match.getPlaying() && now.isAfter(start) && now.isBefore(end)) {
+				match.setPlaying(true);
 			}
 
-			if (match.getIs_playing() && now.isAfter(end)) {
-				match.setIs_playing(false);
+			if (match.getPlaying() && now.isAfter(end)) {
+				match.setPlaying(false);
 			}
 		}
 		matchRepository.saveAll(matches);
@@ -191,7 +196,7 @@ public class MatchServiceImpl implements MatchService {
 
 		Match match = validateAndGetMatch(matchId);
 
-		if (match.getIs_playing()) {
+		if (match.getPlaying()) {
 			throw new IllegalStateException("Cannot set result while match is still playing!");
 		}
 

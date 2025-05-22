@@ -6,8 +6,13 @@ const createBet = async (betRquest: BetRequest) => {
   return response.data;
 };
 
+const getBetsByUserId = async (userId: number) => {
+  const response = await api.get(`/bets/users/${userId}`);
+  return response.data.data;
+};
+
 const deleteBet = async (betId: number) => {
-  const response = await api.post(`/bets/${betId}`);
+  const response = await api.delete(`/bets/${betId}`);
   return response.data;
 };
 
@@ -26,6 +31,7 @@ const BetService = {
   deleteBet,
   getBetByUserAndMatch,
   updateBet,
+  getBetsByUserId,
 };
 
 export default BetService;

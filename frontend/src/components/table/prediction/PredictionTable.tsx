@@ -4,18 +4,24 @@ import BetService from "../../../service/bet.service";
 import { formatDate } from "../../../utils/uitls";
 import "./PredictionTable.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { Bet } from "../../../type/Bet";
 const PredictionTable = () => {
-  const { user } = useAuthContext();
+  const { user, refreshUser} = useAuthContext();
+  const [bets, setBets] = useState<Bet[]>([]);
+
+  useEffect(() => {
+    const fetchUserBets = async () => {
+      const data = await BetService.getBetsByUserId(user!.userId);
+      setBets(data);
+    };
+    fetchUserBets();
+  }, []);
 
   const onDeleteBet = async (betId: number) => {
-    const data = await BetService.deleteBet(betId);
-    if (!data) {
-      toast.error("No se puede borrar esta predicción");
-    } else {
-      setTimeout(() => {
-        toast.success("Se borró correctamente");
-      });
-    }
+    await BetService.deleteBet(betId);
+    setBets(bets.filter((bet) => bet.betId != betId));
+    refreshUser()
   };
 
   const renderHeader = () => {
@@ -44,7 +50,7 @@ const PredictionTable = () => {
   const renderBody = () => {
     return (
       <div style={{ borderBottom: "1px solid black" }}>
-        {user?.bets.map((bet) => (
+        {bets.map((bet) => (
           <div className="prediction-row" key={bet.betId}>
             <div className="prediction-col">{formatDate(bet.match.date)}</div>
             <div className="prediction-col">
