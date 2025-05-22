@@ -95,10 +95,9 @@ const MatchTable = ({
         .toLowerCase()
         .replace(/\s+/g, "")}.png`;
       console.log(match);
+      const matchDate = new Date(match.date);
       const now = new Date();
-      const date = formatDate(match.date).date;
-      const matchDate = new Date(date);
-      const canBet = now < matchDate && match.result == "";
+      const canBet = now < matchDate && match.result === "";
       const time = formatDate(match.date).time;
       const showCompetitionTitle = currentCompetition !== lastCompetition;
       if (showCompetitionTitle) lastCompetition = currentCompetition;

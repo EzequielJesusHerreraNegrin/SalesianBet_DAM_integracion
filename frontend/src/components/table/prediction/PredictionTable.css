@@ -24,4 +24,11 @@
 
 .prediction-container {
     margin: 5%;
+    margin-top: 10%;
+}
+
+.icon {
+  background-color: transparent;
+  border: none;
+  color: red ;
 }
