@@ -61,6 +61,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.GET, GENERAL_PATHS).permitAll()
 						.requestMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/matches").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/api/v1/bets/**").hasRole("USER")
 						.requestMatchers(USER_PATHS).hasRole("USER")
 						.requestMatchers(HttpMethod.POST, "/api/v1/bets").hasRole("USER")
 						.requestMatchers("/**").hasRole("ADMIN")

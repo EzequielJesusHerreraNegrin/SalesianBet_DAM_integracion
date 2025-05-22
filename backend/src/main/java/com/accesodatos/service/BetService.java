@@ -11,5 +11,6 @@ public interface BetService {
 	BetResponseDto createBet(BetRequestDto dto);
 	BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto);
 	void deleteBet(Long betId);	
+	BetResponseDto getBetByUserIdAndByMatchId(Long userId, Long matchId);
 	
 }

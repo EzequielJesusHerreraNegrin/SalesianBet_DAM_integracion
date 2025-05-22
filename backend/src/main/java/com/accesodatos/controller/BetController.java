@@ -76,5 +76,15 @@ public class BetController {
 		betServiceImpl.deleteBet(betId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@GetMapping(value = BET_RESOURCE + "/users/{userId}/matches/{matchId}")
+	public ResponseEntity<ApiResponseDto<BetResponseDto>> getBetByUserAndMatch(@PathVariable Long userId, @PathVariable Long matchId) {
+		BetResponseDto bet = betServiceImpl.getBetByUserIdAndByMatchId(userId, matchId);
+		
+		ApiResponseDto<BetResponseDto> response = new ApiResponseDto<>("The bet by user and match fetched successfully",
+				HttpStatus.OK.value(), bet);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 
 }

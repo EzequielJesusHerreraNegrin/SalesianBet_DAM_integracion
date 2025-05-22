@@ -18,4 +18,6 @@ public interface BetRepository extends JpaRepository<Bet, Long> {
 	boolean existsByUserAndMatch(UserEntity user, Match match);
 	
 	List<Bet> findByMatch(Match match);
+	
+	Bet findByUserAndMatch(UserEntity user, Match match);
 }

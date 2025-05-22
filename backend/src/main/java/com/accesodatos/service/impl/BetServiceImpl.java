@@ -118,12 +118,28 @@ public class BetServiceImpl implements BetService {
 
 		Match match = validateAndGetMatch(betRequestDto.getMatchId());
 
+		UserEntity user = bet.getUser();
+		
 		if (match.getDate().isBefore(LocalDateTime.now())) {
 			new IllegalArgumentException("You cant edit this bet, because match has already begin");
 		}
 
+		int originalPoints = bet.getPoints();
+		int newPoints = betRequestDto.getPoints();
+		int difference = newPoints - originalPoints; 
+		
+		if (difference > 0) {
+			if (user.getPoints() < difference) {
+				throw new IllegalArgumentException("No tienes suficientes puntos para aumentar esta apuesta.");
+			}
+			user.setPoints(user.getPoints() - difference);
+		} else if (difference < 0) {
+			user.setPoints(user.getPoints() + difference);
+		}
+		
 		bet.setPrediction(betRequestDto.getPrediction());
 		bet.setPoints(betRequestDto.getPoints());
+		userEntityRepository.save(user);
 		bet = betRepository.save(bet);
 
 		return betMapper.toBetResponseDto(bet);
@@ -141,6 +157,15 @@ public class BetServiceImpl implements BetService {
 		user.setPoints(user.getPoints() + bet.getPoints());
 		userEntityRepository.save(user);
 		betRepository.delete(bet);
+	}
+
+	@Override
+	public BetResponseDto getBetByUserIdAndByMatchId(Long userId, Long matchId) {
+		UserEntity user = validateAndGetUser(userId);
+		Match match = validateAndGetMatch(matchId);
+		
+		Bet bet = betRepository.findByUserAndMatch(user, match);
+		return betMapper.toBetResponseDto(bet);
 	}
 
 }
