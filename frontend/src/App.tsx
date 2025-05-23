@@ -13,6 +13,8 @@ import { useAuthContext } from "./context/AuthContext";
 import MatchModal from "./components/form/create/MatchForm";
 import PredictionsPage from "./pages/PredictionsPage";
 import PrivateRoute from "./components/protection/PrivateRoute";
+import HistoryPage from "./pages/HistoryPage";
+import PrivateAdminRoute from "./components/protection/PrivateAdminRoute";
 import StorePage from "./pages/store/StorePage";
 
 function App() {
@@ -57,11 +59,19 @@ function App() {
         <Route path={isLogin ? "/login" : "/register"} element={<AuthPage />} />
 
         <Route
-          path={"/myPredictions"}
+          path="/myPredictions"
           element={
             <PrivateRoute>
               <PredictionsPage />
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <PrivateAdminRoute>
+              <HistoryPage />
+            </PrivateAdminRoute>
           }
         />
       </Routes>

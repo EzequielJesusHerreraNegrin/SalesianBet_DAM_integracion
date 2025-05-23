@@ -8,6 +8,7 @@ export type AuthenticatedUser = {
   userName: string;
   email: string;
   dni: string;
+  country: string;
   bets: Bet[];
   token: string;
   points: number;

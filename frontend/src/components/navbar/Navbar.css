@@ -63,3 +63,10 @@ a {
     cursor: pointer;
     min-width: 7rem;
 }
+
+.navbar-points {
+    display: flex;
+    align-items: center;
+    color: #f08c00;
+    font-weight: 600;
+}

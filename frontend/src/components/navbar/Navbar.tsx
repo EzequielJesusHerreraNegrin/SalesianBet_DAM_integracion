@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "../navbar/Navbar.css";
 import { useAuthContext } from "../../context/AuthContext";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
 const Navbar = () => {
   const { user, setIsLogin, logout, isAdmin } = useAuthContext();
@@ -34,16 +35,25 @@ const Navbar = () => {
             <NavLink to="/store" className="navbar-link">
               Tienda
             </NavLink>
-            {!isAdmin && (
+            {!isAdmin ? (
               <NavLink to="/myPredictions" className="navbar-link">
                 Mis predicciones
+              </NavLink>
+            ) : (
+              <NavLink to="/history" className="navbar-link">
+                Historial
               </NavLink>
             )}
           </div>
           <div className="navbar-auth">
             <div className="navbar-user">
               <p> {user.userName} </p>
-              <p> {user.points} </p>
+              {!isAdmin && (
+                <p className="navbar-points">
+                  {user.points}
+                    
+                </p>
+              )}
             </div>
             <div>
               <button

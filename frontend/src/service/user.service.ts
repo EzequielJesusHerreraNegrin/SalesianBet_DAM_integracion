@@ -1,16 +1,25 @@
 import axios from "axios";
 
-import { UserRequest, UserResponseDto } from "../types/User";
 import { jwtDecode } from "jwt-decode";
-import { LocalStorageService } from "./localstorage.service";
 import { ApiResponseDto, JwtPayload } from "../types/api";
-import { API_URL } from "./api";
+import { UserResponseDto } from "../types/User";
+import api, { API_URL } from "./api";
+import { LocalStorageService } from "./localstorage.service";
 
 const token = localStorage.getItem("token");
 
-const createUser = async (user: UserRequest) => {
-  const response = await axios.post(`${API_URL}/users`, user);
-  return response.data;
+const getAllUsers = async () => {
+  const response = await api.get(`/users`);
+  return response.data.data;
+};
+
+const getUserByEmail = async (email: string) => {
+  const response = await api.get(`/users/email`, {
+    params: {
+      email,
+    },
+  });
+  return response.data.data;
 };
 
 const getCurrentUser = async (): Promise<ApiResponseDto<UserResponseDto>> => {
@@ -72,10 +81,11 @@ const manageUserToken = async () => {
   return decodedToken;
 };
 const UserService = {
-  createUser,
   getCurrentUser,
   manageUserToken,
   buyCartItems,
+  getAllUsers,
+  getUserByEmail,
 };
 
 export default UserService;
