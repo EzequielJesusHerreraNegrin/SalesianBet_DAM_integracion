@@ -74,6 +74,15 @@ public class BetServiceImpl implements BetService {
 		return bets;
 	}
 
+	/**
+	 * The `createBet` function validates user input and creates a new bet for a match if all conditions
+	 * are met.
+	 * 
+	 * @param dto The code snippet you provided is a method that creates a bet based on the input
+	 * BetRequestDto. The method performs several validations before creating the bet. Here's a breakdown
+	 * of the validations:
+	 * @return The method `createBet` is returning a `BetResponseDto` object.
+	 */
 	@Override
 	public BetResponseDto createBet(BetRequestDto dto) {
 		Match match = validateAndGetMatch(dto.getMatchId());
@@ -111,6 +120,16 @@ public class BetServiceImpl implements BetService {
 
 	}
 
+	/**
+	 * The function updates a bet by validating and modifying the bet details based on the provided input.
+	 * 
+	 * @param betId The `betId` parameter is the identifier of the bet that you want to update. It is used
+	 * to retrieve the specific bet from the database that you wish to modify.
+	 * @param betRequestDto The `betRequestDto` parameter in the `updateBetById` method is an object of
+	 * type `BetRequestDto`. It contains information about the updated bet, such as the match ID,
+	 * prediction, and points. This object is used to update an existing bet with the specified `betId`.
+	 * @return The method `updateBetById` returns a `BetResponseDto` object.
+	 */
 	@Override
 	public BetResponseDto updateBetById(Long betId, BetRequestDto betRequestDto) {
 		Bet bet = validateAndGetBet(betId);
@@ -144,6 +163,14 @@ public class BetServiceImpl implements BetService {
 		return betMapper.toBetResponseDto(bet);
 	}
 
+	/**
+	 * The `deleteBet` function deletes a bet if the match associated with it has not started yet.
+	 * 
+	 * @param betId The `betId` parameter is the unique identifier of the bet that needs to be deleted
+	 * from the system. This method first validates the bet with the given `betId`, checks if the match
+	 * associated with the bet has already started (based on the match date), and then proceeds to delete
+	 * the bet
+	 */
 	@Override
 	public void deleteBet(Long betId) {
 		Bet bet = validateAndGetBet(betId);
@@ -155,6 +182,15 @@ public class BetServiceImpl implements BetService {
 		betRepository.delete(bet);
 	}
 
+	/**
+	 * This function retrieves a bet by user ID and match ID and returns it as a BetResponseDto.
+	 * 
+	 * @param userId The `userId` parameter is the unique identifier of the user for whom you want to
+	 * retrieve the bet information.
+	 * @param matchId The `matchId` parameter is the unique identifier of a specific match for which you
+	 * want to retrieve the bet information.
+	 * @return The method `getBetByUserIdAndByMatchId` returns a `BetResponseDto` object.
+	 */
 	@Override
 	public BetResponseDto getBetByUserIdAndByMatchId(Long userId, Long matchId) {
 		UserEntity user = validateAndGetUser(userId);

@@ -11,6 +11,10 @@ import com.accesodatos.entity.Role;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.repository.UserEntityRepository;
 
+/**
+ * The `LoadDatabase` class in Java configures and initializes the database with an admin user and
+ * role.
+ */
 //@Configuration 
 public class LoadDatabase {
 

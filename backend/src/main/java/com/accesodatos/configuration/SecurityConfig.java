@@ -18,6 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.accesodatos.jwt.JwtAuthenticationFilter;
 import com.accesodatos.service.impl.UserDetailsServiceImpl;
+/**
+ * The `SecurityConfig` class in Java configures security settings for different paths and HTTP
+ * methods, including authentication and authorization rules.
+ */
 
 @Configuration
 @EnableMethodSecurity

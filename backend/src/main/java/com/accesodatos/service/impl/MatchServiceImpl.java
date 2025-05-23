@@ -67,6 +67,18 @@ public class MatchServiceImpl implements MatchService {
 				.orElseThrow(() -> new ResourceNotFoundException(String.format(TEAM_NOT_FOUND, id)));
 	}
 
+	/**
+	 * The function `calculatePrediction` determines the outcome of a match based on the number of goals
+	 * scored by the home and away teams.
+	 * 
+	 * @param result The `calculatePrediction` method takes a string `result` as input, which represents
+	 * the result of a football match in the format "homeGoals-awayGoals". For example, if the result is
+	 * "2-1", it means the home team scored 2 goals and the away team scored 1
+	 * @return The method `calculatePrediction` returns a String indicating the prediction based on the
+	 * result of a match. The possible return values are "LOCAL" if the home team scored more goals,
+	 * "VISITANTE" if the away team scored more goals, and "EMPATE" if both teams scored an equal number
+	 * of goals.
+	 */
 	private String calculatePrediction(String result) {
 		String[] goals = result.trim().split("-");
 		int homeGoals = Integer.parseInt(goals[0]);
@@ -94,6 +106,14 @@ public class MatchServiceImpl implements MatchService {
 		return matchMapper.toMatchResponseDto(match);
 	}
 
+	/**
+	 * The `createMatch` function in Java creates a new match based on the provided request data and saves
+	 * it to the repository.
+	 * 
+	 * @param matchRequestDto The `matchRequestDto` parameter contains information needed to create a new
+	 * match. It includes the following data:
+	 * @return The method `createMatch` returns a `MatchResponseDto` object.
+	 */
 	@Override
 	public MatchResponseDto createMatch(MatchRequestDto matchRequestDto) {
 		System.out.println("Entro" + matchRequestDto);
@@ -120,6 +140,16 @@ public class MatchServiceImpl implements MatchService {
 		return matchMapper.toMatchResponseDto(savedMatch);
 	}
 
+	/**
+	 * This Java function updates a match entity with new details and saves it to the repository.
+	 * 
+	 * @param matchId The `matchId` parameter is the unique identifier of the match that you want to
+	 * update. It is used to retrieve the specific match from the database that you want to modify.
+	 * @param matchRequestDto The `matchRequestDto` parameter contains information about the match that
+	 * needs to be updated. This information includes the competition ID, home team ID, away team ID,
+	 * date, and result of the match.
+	 * @return The method is returning a `MatchResponseDto` object.
+	 */
 	@Override
 	public MatchResponseDto updateMatch(Long matchId, MatchRequestDto matchRequestDto) {
 		Competition competition = validateAndGetCompetition(matchRequestDto.getCompetitionId());
@@ -151,6 +181,16 @@ public class MatchServiceImpl implements MatchService {
 		matchRepository.delete(match);
 	}
 
+	/**
+	 * This Java function retrieves matches by date and orders them by competition name and date.
+	 * 
+	 * @param date The `date` parameter is a `LocalDate` object representing a specific date for which you
+	 * want to retrieve matches.
+	 * @return This method returns a list of `MatchResponseDto` objects, which are obtained by querying
+	 * the `matchRepository` for matches that fall within the specified `date` range. The matches are then
+	 * sorted by competition name in ascending order and date in ascending order before being mapped to
+	 * `MatchResponseDto` objects.
+	 */
 	@Override
 	public List<MatchResponseDto> getMatchesByDateOrderByCompetition(LocalDate date) {
 		LocalDateTime start = date.atStartOfDay();
@@ -162,6 +202,10 @@ public class MatchServiceImpl implements MatchService {
 		return matches;
 	}
 
+	/**
+	 * This function updates the `isPlaying` status of matches based on their start and end times,
+	 * toggling the status if the current time falls within the match duration.
+	 */
 	@Override
 	@Scheduled(fixedRate = 60000) // cada minuto
 	public void updateIsPlayingMatch() {
@@ -185,11 +229,30 @@ public class MatchServiceImpl implements MatchService {
 
 	}
 
+	/**
+	 * This function retrieves a list of MatchResponseDto objects for matches that are ready to be
+	 * validated.
+	 * 
+	 * @return A list of MatchResponseDto objects is being returned.
+	 */
 	@Override
 	public List<MatchResponseDto> getMatchesReadyToValidate() {
 		return matchRepository.findReadyToValidate(LocalDateTime.now().minusMinutes(90)).stream()
 				.map(matchMapper::toMatchResponseDto).collect(Collectors.toList());
 	}
+/**
+ * The function validates and sets the result of a match, updates user points based on correct
+ * predictions, and returns a MatchResponseDto.
+ * 
+ * @param matchId The `matchId` parameter is the unique identifier of the match for which the result is
+ * being validated. It is used to retrieve the match details from the database and perform validation
+ * checks before setting the match result.
+ * @param matchResult The `matchResult` parameter is of type `MatchResultRequestDto`, which likely
+ * contains information about the result of a match. In the provided code snippet, this parameter is
+ * used to update the result of a match entity and then calculate earnings for users who made correct
+ * predictions on the match outcome.
+ * @return The method `validateMatch` is returning a `MatchResponseDto` object.
+ */
 
 	@Override
 	public MatchResponseDto validateMatch(Long matchId, MatchResultRequestDto matchResult) {

@@ -33,6 +33,14 @@ public class CartItemController {
 	
 	@Autowired CartItemServiceImpl cartItemServiceImpl;
 	
+	/**
+	 * This Java function retrieves all cart items and returns them in a ResponseEntity with an
+	 * ApiResponseDto.
+	 * 
+	 * @return The method `getAllCartItems()` is returning a ResponseEntity containing an `ApiResponseDto`
+	 * with a message indicating that all items were fetched successfully, an HTTP status code of 200
+	 * (OK), and a list of `CartItemResponseDto` objects.
+	 */
 	@GetMapping(value = CARTITEM_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<CartItemResponseDto>>> getAllCartItems() {
 		List<CartItemResponseDto> items = cartItemServiceImpl.getAllCartItems();
@@ -42,6 +50,18 @@ public class CartItemController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+	/**
+	 * This Java function retrieves all cart items for a specific user ID and returns them in a JSON
+	 * response.
+	 * 
+	 * @param userId The `userId` parameter in the `getAllCartItemsByUserId` method represents the unique
+	 * identifier of the user for whom you want to retrieve all cart items. This method fetches all cart
+	 * items associated with the specified user ID and returns them in the response.
+	 * @return This method returns a ResponseEntity object containing an ApiResponseDto with a list of
+	 * CartItemResponseDto objects. The ApiResponseDto includes a message indicating that all user items
+	 * were fetched successfully, an HTTP status code of 200 (OK), and the list of cart items retrieved
+	 * for the specified user ID.
+	 */
 	@GetMapping(value = CARTITEM_USER_ID, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<CartItemResponseDto>>> getAllCartItemsByUserId(@PathVariable Long userId) {
 		List<CartItemResponseDto> items = cartItemServiceImpl.getAllCartItemsByUserId(userId);
@@ -53,6 +73,17 @@ public class CartItemController {
 	
 	
 	
+	/**
+	 * This Java function adds a product to a cart and returns a response with the added item details.
+	 * 
+	 * @param dto The `dto` parameter in the `addProductToCart` method is of type `CartItemRequestDto`. It
+	 * is annotated with `@RequestBody`, indicating that the method expects the request body to be
+	 * converted to this object. This object likely contains information about the product that is being
+	 * added to the cart
+	 * @return The method is returning a `ResponseEntity` object containing an `ApiResponseDto` with a
+	 * message indicating that the item was added successfully, an HTTP status code of 200 (OK), and the
+	 * `CartItemResponseDto` object representing the added item.
+	 */
 	@PostMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +97,16 @@ public class CartItemController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+	/**
+	 * This Java function updates a cart item and returns a response with the updated item details.
+	 * 
+	 * @param dto The `dto` parameter in the `updateCartItem` method is of type `CartItemRequestDto`. It
+	 * is used to pass the data of the cart item that needs to be updated. This data is consumed in JSON
+	 * format and contains information such as the product ID, quantity, and any other details related
+	 * @return The method `updateCartItem` is returning a `ResponseEntity` object containing an
+	 * `ApiResponseDto` with a message "Item added successfully", an HTTP status code of 200 (OK), and the
+	 * updated `CartItemResponseDto` object.
+	 */
 	@PutMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,6 +118,17 @@ public class CartItemController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+/**
+ * This Java function handles the deletion of a cart item for a specific user and product.
+ * 
+ * @param userId The `userId` parameter in the `deleteCartItem` method represents the unique identifier
+ * of the user whose cart item is being deleted.
+ * @param productId The `productId` parameter in the `deleteCartItem` method represents the unique
+ * identifier of the product that is associated with the cart item to be deleted.
+ * @return The method is returning a ResponseEntity object containing an ApiResponseDto<Boolean> object
+ * with a message indicating that the item/s were deleted successfully, along with an HTTP status code
+ * of 200 (OK) and a boolean value indicating whether the deletion was successful or not.
+ */
 	@DeleteMapping(value = CARTITEM_USER_ID_PRODUCT_ID, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Boolean>> deleteCartItem(@PathVariable Long userId, @PathVariable Long productId) {
 		Boolean updated = cartItemServiceImpl.deleteCartItem(userId, productId);

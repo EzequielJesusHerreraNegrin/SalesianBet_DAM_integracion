@@ -8,6 +8,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * The CorsConfig class in Java configures CORS (Cross-Origin Resource Sharing) settings to allow
+ * requests from specified origins, methods, and headers.
+ */
 @Configuration
 public class CorsConfig {
 	@Bean
