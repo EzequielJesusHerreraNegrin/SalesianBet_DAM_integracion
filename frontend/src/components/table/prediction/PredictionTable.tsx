@@ -1,7 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import { useAuthContext } from "../../../context/AuthContext";
 import BetService from "../../../service/bet.service";
-import { Bet } from "../../../types/Bet";
 import { formatDate } from "../../../utils/uitls";
 import "../Table.css";
 import DeleteIcon from "@mui/icons-material/Delete";
