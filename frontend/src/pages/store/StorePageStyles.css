@@ -6,6 +6,14 @@
   padding: 20px;
 }
 
+.section-lines {
+  border: none;
+  background-color: black;
+  height: 2px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
 .store-section-action {
   width: 70%;
   margin-bottom: 1.5rem;
@@ -54,6 +62,9 @@
 }
 .cartItems-section-title {
   position: sticky;
+  top: 0; /* Para que el título se pegue correctamente al hacer scroll dentro de .cartItem-list */
+  background-color: #2f9e44; /* Para que el texto no se solape con items al hacer scroll */
+  z-index: 1; /* Para asegurar que esté por encima de los items al hacer scroll */
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 5px;
@@ -71,12 +82,15 @@
 }
 
 .cartItems-section-footer {
-  display: inherit;
+  display: inherit; /* 'inherit' podría no ser lo que quieres; 'flex' es más explícito si eso es lo que se busca. */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 5%;
   gap: 1rem;
+  position: sticky;
+  bottom: 0;
+  background-color: #2f9e44;
 }
 
 .cartItems-section-footer-resume p {

@@ -6,11 +6,11 @@ import "../../service/product.service";
 import ProductService from "../../service/product.service";
 import UserService from "../../service/user.service";
 import { CartItemResponseDto } from "../../types/cartItem";
-import { Product } from "../../types/Product";
+import { Product, ProductRequest } from "../../types/Product";
 import "./StorePageStyles.css";
 import { useAuthContext } from "../../context/AuthContext";
 import { Button } from "@mui/material";
-
+import ProductModal from "../../components/form/product/ProductModal";
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([
@@ -49,20 +49,22 @@ const StorePage = () => {
     }, */
   ]);
   const [searchFilter, setSearchFilter] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const { isAdmin } = useAuthContext();
   const { refreshUser } = useAuthContext();
 
   useEffect(() => {
     ProductService.getAllProducts()
-      .then((product) => {
-        if (product && Array.isArray(product)) {
-          setProducts(product);
+      .then((productData) => {
+        if (productData && Array.isArray(productData)) {
+          setProducts(productData);
         } else {
           setProducts([]);
           console.error(
             "ProductService.getAllProducts() did not return an array in response.data:",
-            product
+            productData
           );
         }
       })
@@ -73,6 +75,10 @@ const StorePage = () => {
 
     const handleGetCarIterms = async () => {
       const userToken = await UserService.manageUserToken();
+      if (!userToken) {
+        setCartItems([]); // Si no hay token, no hay carrito para este usuario
+        return;
+      }
       cartItemService
         .getAllCartItemsByUserId(userToken!.userId)
         .then((response) => {
@@ -127,6 +133,50 @@ const StorePage = () => {
     item.productName.toLowerCase().includes(searchFilter.toLowerCase())
   );
 
+  const handleOpenCreateModal = () => {
+    setEditingProduct(null);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (product: Product) => {
+    setEditingProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  };
+
+  const handleProductSubmit = async (
+    productData: ProductRequest,
+    productId?: number
+  ) => {
+    try {
+      if (productId) {
+        // Editar producto
+        await ProductService.updateProduct(productId, productData);
+        console.log("Product updated successfully");
+      } else {
+        // Crear producto
+        await ProductService.createProduct(productData);
+        console.log("Product created successfully");
+      }
+      // Recargar la lista de productos
+      const updatedProducts = await ProductService.getAllProducts();
+      if (updatedProducts && Array.isArray(updatedProducts)) {
+        setProducts(updatedProducts);
+      } else {
+        setProducts([]);
+      }
+      handleCloseModal(); // Cerrar el modal
+    } catch (error) {
+      console.error("Error saving product:", error);
+      // Aquí podrías mostrar un error en el modal o como notificación
+      throw error; // Re-throw para que el modal sepa que hubo un error
+    }
+  };
+
   return (
     <div className="main-contaier">
       <div className="store-section-action">
@@ -145,15 +195,26 @@ const StorePage = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
           />
         </div>
-        {isAdmin ? <Button>AÑADIR</Button> : null}
+        {isAdmin ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenCreateModal} // Abre el modal para crear
+          >
+            AÑADIR PRODUCTO
+          </Button>
+        ) : null}
+        <hr className="section-lines" />
       </div>
       <div className="products-grid">
-        {filteredProducts.map((product, index) => (
-          <div key={index} className="product-card">
+        {filteredProducts.map((product) => (
+          <div key={product.productId} className="product-card">
             <ProductCart
               product={product}
               cartItems={cartItems}
               setCartItems={setCartItems}
+              onEdit={() => handleOpenEditModal(product)}
+              // onDelete={() => handleDeleteProduct(product.productId)}
             />
           </div>
         ))}
@@ -169,8 +230,8 @@ const StorePage = () => {
             <div className="cartItem-list">
               {cartItems
                 .filter((item) => item?.product)
-                .map((cartItem, index) => (
-                  <div key={index} className="cartItem-card">
+                .map((cartItem) => (
+                  <div key={cartItem.cartId} className="cartItem-card">
                     <CartItem
                       cartItem={cartItem}
                       setCartItems={setCartItems}
@@ -197,6 +258,14 @@ const StorePage = () => {
             </div>
           </div>
         </div>
+      )}
+      {isAdmin && (
+        <ProductModal
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmit={handleProductSubmit}
+          initialData={editingProduct}
+        />
       )}
     </div>
   );

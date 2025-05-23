@@ -1,24 +1,22 @@
 import axios from "axios";
 import { ProductResponse, ProductRequest } from "../types/Product";
-import { API_URL } from "../service/api";
+import api, { API_URL } from "../service/api";
 import { ApiResponseDto } from "../types/api";
 
 const createProduct = async (productRequest: ProductRequest) => {
-  const response = await axios.post(`${API_URL}/products`, productRequest);
+  const response = await api.post(`/products`, productRequest);
   return response.data;
 };
 
 const getAllProducts = async () => {
-  const response = await axios.get<ApiResponseDto<ProductResponse[]>>(
-    `${API_URL}/products`
+  const response = await api.get<ApiResponseDto<ProductResponse[]>>(
+    `/products`
   );
-  return response.data.data; // Asegúrate de que la respuesta tenga la estructura correcta
+  return response.data.data;
 };
 
 const getProductById = async (productId: number) => {
-  const response = await axios.get<ProductResponse>(
-    `${API_URL}/products/${productId}`
-  );
+  const response = await api.get<ProductResponse>(`/products/${productId}`);
   return response.data;
 };
 
@@ -26,8 +24,8 @@ const updateProduct = async (
   productId: number,
   productRequest: ProductRequest
 ) => {
-  const response = await axios.put<ProductResponse>(
-    `${API_URL}/products/${productId}`,
+  const response = await api.put<ProductResponse>(
+    `/products/${productId}`,
     productRequest
   );
   return response.data;
