@@ -48,11 +48,6 @@ const StorePage = () => {
     }, */
   ]);
 
-  /*   const cartItem: CartItemRequestDto = {
-    productId: 0,
-    cuantity: 0,
-  }; */
-
   //const {isAdmin} = useAuthContext()
 
   useEffect(() => {

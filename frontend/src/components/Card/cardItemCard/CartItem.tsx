@@ -1,9 +1,12 @@
-import { IconButton } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { CartItemResponseDto } from "../../../types/cartItem";
-import "../cardItemCard/CartItemStyles.css"; // Assuming you have a CSS file for styles
+import { IconButton } from "@mui/material";
 import { cartItemService } from "../../../service/cartItem.service";
 import UserService from "../../../service/user.service";
+import {
+  CartItemRequestDto,
+  CartItemResponseDto,
+} from "../../../types/cartItem";
+import "../cardItemCard/CartItemStyles.css"; // Assuming you have a CSS file for styles
 
 type CartItemProps = {
   cartItem: CartItemResponseDto;
@@ -29,11 +32,30 @@ const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
       });
   };
 
-  const handleQuantityChange = (cartItemId: number, newQuantity: number) => {
+  const handleQuantityChange = async (
+    cartItemId: number,
+    newQuantity: number
+  ) => {
     const updatedCartItems = cartItems.map((item) =>
       item.cartId === cartItemId ? { ...item, cuantity: newQuantity } : item
     );
-    setCartItems(updatedCartItems);
+
+    const token = await UserService.manageUserToken();
+
+    const productCartItem: CartItemRequestDto = {
+      userId: token!.userId,
+      productId: cartItem.product.productId,
+      cuantity: newQuantity,
+    };
+
+    setTimeout(() => {
+      cartItemService
+        .updateCartItem(productCartItem)
+        .then(() => setCartItems(updatedCartItems))
+        .catch((error) => {
+          throw new Error(error);
+        });
+    }, 3);
   };
 
   return (
@@ -66,10 +88,9 @@ const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
         <input
           className="cartItem-actions-quantity"
           value={cartItem.cuantity}
-          onChange={(e) => {
-            const newQuantity = parseInt((e.target as HTMLInputElement).value);
-            handleQuantityChange(cartItem.cartId, newQuantity);
-          }}
+          onChange={(e) =>
+            handleQuantityChange(cartItem.cartId, parseInt(e.target.value, 10))
+          }
           min="1"
           max="99"
           step="1"

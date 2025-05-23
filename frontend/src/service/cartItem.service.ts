@@ -89,17 +89,14 @@ export const addProductToCart = async (
   }
 };
 
-const updateCartItem = async (
-  userId: number,
-  data: CartItemRequestDto
-): Promise<boolean> => {
+const updateCartItem = async (data: CartItemRequestDto): Promise<boolean> => {
   try {
     const token = await LocalStorageService.get(
       LocalStorageService.KEY.userToken
     );
 
     const response = await axios.put<ApiResponseDto<boolean>>(
-      `${CART_ITEMS_RESOURCE}/product/${userId}`,
+      `${CART_ITEMS_RESOURCE}/product`,
       data,
       {
         headers: {
@@ -111,7 +108,7 @@ const updateCartItem = async (
     );
     return response.data.data;
   } catch (error) {
-    console.error(`Error updating cart item for user ${userId}:`, error);
+    console.error(`Error updating cart item for user ${data.userId}:`, error);
     throw error;
   }
 };
