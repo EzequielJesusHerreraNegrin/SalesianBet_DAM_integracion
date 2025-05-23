@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartItemRequestDto {
 
+	private Long userId;
+	
 	private Long productId;
 	
 	private int cuantity;

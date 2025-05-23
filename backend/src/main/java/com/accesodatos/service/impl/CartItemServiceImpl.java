@@ -1,5 +1,6 @@
 package com.accesodatos.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,10 +31,7 @@ public class CartItemServiceImpl implements CartItemService{
 	@Autowired private UserEntityServiceImpl userServiceImpl;
 	@Autowired private CartItemMapper cartItemMapper;
 	@Autowired private UserEntityRepository userEntityRepository;
-	@Autowired private ProductRepository productRepository;
-	@Autowired private ProductServiceImpl productServiceImpl;
-	
-	private static final String PRODUCT_NOT_FOUND = "User with id %d was not found.";
+	@Autowired private ProductServiceImpl productServiceImpl;	
 	
 	@Override
 	public List<CartItemResponseDto> getAllCartItems() {
@@ -42,8 +40,9 @@ public class CartItemServiceImpl implements CartItemService{
 	}
 	
 	@Override
-	public Boolean addproductToCart(Long userId, CartItemRequestDto dto) {
-	    UserEntity user = userServiceImpl.validateAndGetUser(userId);
+	public CartItemResponseDto addproductToCart(CartItemRequestDto dto) {
+	    UserEntity user = userServiceImpl.validateAndGetUser(dto.getUserId());
+	    CartItem newItem = new CartItem();
 
 	    Optional<CartItem> optionalItem = user.getBasket().stream()
 	            .filter(cartItem -> cartItem.getProduct().getProductId().equals(dto.getProductId()))
@@ -55,7 +54,7 @@ public class CartItemServiceImpl implements CartItemService{
 	    	
 	    	Product product = productServiceImpl.validateAndGetProduct(dto.getProductId());
 
-	        CartItem newItem = new CartItem();
+	        newItem = new CartItem();
 	        newItem.setProduct(product);
 	        newItem.setCuantity(dto.getCuantity());
 	        newItem.setUser(user);
@@ -64,29 +63,45 @@ public class CartItemServiceImpl implements CartItemService{
 
 	    userEntityRepository.save(user);
 
-	    return true;
+	    return cartItemMapper.toCartItemResponseDto(newItem);
 	}
 
 	@Override
 	public Boolean deleteCartItem(Long userId, Long itemId) {
 		UserEntity user = userServiceImpl.validateAndGetUser(userId);
-		user.getBasket().removeIf( item -> item.getProduct().getProductId().equals(itemId));
-		userEntityRepository.save(user);
-		return true;
+		
+		for (CartItem item : user.getBasket()) {
+			System.out.println("ELIMINADO " + itemId);
+			if (item.getProduct().getProductId() == itemId) {
+				user.getBasket().remove(item);
+				userEntityRepository.save(user);
+				return true;
+			}
+		}
+		
+		throw new ResourceNotFoundException(String.format("Error: Product with id %d not found in users basket.", itemId));
+		
 	}
 	
 	@Override
-	public Boolean updateCartItem(Long userId, CartItemRequestDto dto) {
-		UserEntity user = userServiceImpl.validateAndGetUser(userId);
+	public CartItemResponseDto updateCartItem(CartItemRequestDto dto) {
+		UserEntity user = userServiceImpl.validateAndGetUser(dto.getUserId());
 	    CartItem itemToUpdate = user.getBasket().stream()
 	            .filter(cartItem -> cartItem.getProduct().getProductId().equals(dto.getProductId()))
 	            .findFirst()
 	            .orElseThrow(() -> new ResourceNotFoundException(
-	                    String.format("Producto con ID %d no encontrado en el carrito del usuario ID %d", dto.getProductId(), userId)));
+	                    String.format("Producto con ID %d no encontrado en el carrito del usuario ID %d", dto.getProductId(), dto.getUserId())));
 	    itemToUpdate.setCuantity(dto.getCuantity());
 		user.getBasket().stream().map( cartItem -> cartItem.getProduct().getProductId() == dto.getProductId());
 		userEntityRepository.save(user);
-		return true;
+		return cartItemMapper.toCartItemResponseDto(itemToUpdate);
+	}
+
+	
+	@Override
+	public List<CartItemResponseDto> getAllCartItemsByUserId(Long userId) {
+		List<CartItem> cart = cartItemRepository.findByUserUserId(userId);
+		return cart.stream().map(cartItemMapper::toCartItemResponseDto).toList();
 	}
 
 }

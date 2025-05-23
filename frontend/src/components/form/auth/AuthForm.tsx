@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { initialUserRequest, UserRequest } from "../../../type/User";
+import { initialUserRequest, UserRequest } from "../../../types/User";
 import "./AuthForm.css";
 
 const AuthForm = () => {
@@ -30,15 +30,11 @@ const AuthForm = () => {
         toast.error("Error al iniciar sesión");
       }
     } else {
-      const response = await registerUser(formData);
-      if (response) {
-        setTimeout(() => {
-          toast.success("Registro exitoso");
-          navigate("/login");
-        });
-      } else {
-        toast.error("Error al registrarse")
-      }
+      await registerUser(formData);
+      setTimeout(() => {
+        toast.success("Registro exitoso");
+        navigate("/login");
+      });
     }
   };
 

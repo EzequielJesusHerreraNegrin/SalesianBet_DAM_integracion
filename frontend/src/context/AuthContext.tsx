@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -5,16 +6,15 @@ import {
   useEffect,
   useState,
 } from "react";
-import { AuthenticatedUser, UserRequest } from "../type/User";
-import { LocalStorageService } from "../service/localstorage.service";
-import { Role } from "../type/Role";
-import axios from "axios";
 import { API_URL } from "../service/api";
+import { LocalStorageService } from "../service/localstorage.service";
+import { Role } from "../types/Role";
+import { AuthenticatedUser, UserRequest } from "../types/User";
 
 interface AuthContextType {
   user: AuthenticatedUser | null;
   loginUser: (user: UserRequest) => Promise<string | undefined>;
-  registerUser: (user: UserRequest) => Promise<any>;
+  registerUser: (user: UserRequest) => Promise<void>;
   logout: () => void;
   isLogin: boolean;
   setIsLogin: (value: boolean) => void;
@@ -61,10 +61,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const loginUser = async (userRequest: UserRequest) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
-        email: userRequest.email,
-        password: userRequest.password,
-      });
+      const response = await axios.post(
+        `${API_URL}/auth/login`,
+        {
+          email: userRequest.email,
+          password: userRequest.password,
+        },
+        {}
+      );
 
       const jsonValue = response.data.data.accessToken;
 

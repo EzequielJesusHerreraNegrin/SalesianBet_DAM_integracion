@@ -5,8 +5,8 @@ import { formatDate } from "../../../utils/uitls";
 import "../Table.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import { Bet } from "../../../type/Bet";
-import { AuthenticatedUser } from "../../../type/User";
+import { Bet } from "../../../types/Bet";
+import { AuthenticatedUser } from "../../../types/User";
 import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
 
 interface PredictionProps {

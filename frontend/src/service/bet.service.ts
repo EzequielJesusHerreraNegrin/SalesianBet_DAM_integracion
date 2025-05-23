@@ -1,4 +1,4 @@
-import { BetRequest } from "../type/Bet";
+import { BetRequest } from "../types/Bet";
 import api from "./api";
 
 const createBet = async (betRquest: BetRequest) => {

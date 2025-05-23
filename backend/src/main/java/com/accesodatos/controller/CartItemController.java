@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +23,12 @@ import com.accesodatos.service.impl.CartItemServiceImpl;
 
 @RestController
 @RequestMapping("api/v1")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CartItemController {
 
 	private static final String CARTITEM_RESOURCE = "/cartItems";
-	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product/{userId}";
+	private static final String CARTITEM_USER_ID= CARTITEM_RESOURCE +"/{userId}";
+	private static final String CARTITEM_PRODUCT_ID = CARTITEM_RESOURCE + "/product";
 	private static final String CARTITEM_USER_ID_PRODUCT_ID = CARTITEM_RESOURCE + "/{userId}/product/{productId}";
 	
 	@Autowired CartItemServiceImpl cartItemServiceImpl;
@@ -39,15 +42,26 @@ public class CartItemController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = CARTITEM_USER_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<CartItemResponseDto>>> getAllCartItemsByUserId(@PathVariable Long userId) {
+		List<CartItemResponseDto> items = cartItemServiceImpl.getAllCartItemsByUserId(userId);
+		
+		ApiResponseDto<List<CartItemResponseDto>> response = new ApiResponseDto<List<CartItemResponseDto>>("All user items were fetched successfuly", HttpStatus.OK.value(), items);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	
+	
 	@PostMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> addProductToCart(
-			@RequestBody CartItemRequestDto dto,@PathVariable Long userId) {
+	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> addProductToCart(
+			@RequestBody CartItemRequestDto dto) {
 		
-		Boolean items = cartItemServiceImpl.addproductToCart(userId, dto);
+		CartItemResponseDto items = cartItemServiceImpl.addproductToCart(dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), items);
+		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), items);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -55,10 +69,10 @@ public class CartItemController {
 	@PutMapping(value = CARTITEM_PRODUCT_ID, 
 			consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Boolean>> updateCartItem(@PathVariable Long userId, @RequestBody CartItemRequestDto dto) {
-		Boolean updated = cartItemServiceImpl.updateCartItem(userId, dto);
+	public ResponseEntity<ApiResponseDto<CartItemResponseDto>> updateCartItem(@RequestBody CartItemRequestDto dto) {
+		CartItemResponseDto updated = cartItemServiceImpl.updateCartItem(dto);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), updated);
+		ApiResponseDto<CartItemResponseDto> response = new ApiResponseDto<CartItemResponseDto>("Item added successfuly", HttpStatus.OK.value(), updated);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -67,7 +81,7 @@ public class CartItemController {
 	public ResponseEntity<ApiResponseDto<Boolean>> deleteCartItem(@PathVariable Long userId, @PathVariable Long productId) {
 		Boolean updated = cartItemServiceImpl.deleteCartItem(userId, productId);
 		
-		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s added successfuly", HttpStatus.OK.value(), updated);
+		ApiResponseDto<Boolean> response = new ApiResponseDto<Boolean>("Item/s deleted successfuly", HttpStatus.OK.value(), updated);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

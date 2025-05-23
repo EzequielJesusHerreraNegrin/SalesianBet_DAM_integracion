@@ -1,0 +1,120 @@
+.main-contaier {
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.section-lines {
+  border: none;
+  background-color: black;
+  height: 2px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.store-section-action {
+  width: 70%;
+  margin-bottom: 1.5rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 1.5rem;
+  width: 70%;
+}
+
+/******* CARTITEM SECTION ******/
+
+.cartItems-section-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 10vh;
+  right: 2%;
+  margin: 0 0 0 0;
+  height: 85%;
+  width: 25%;
+  background-color: #2f9e44;
+  border: 1px solid #ddd;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cartItem-card {
+  margin: 0 0 0 0;
+  width: 90%;
+  height: fit-content;
+}
+
+.cartItem-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 10px;
+  height: calc(100vh - 20vh);
+  scrollbar-width: none;
+  gap: 10px;
+}
+.cartItems-section-title {
+  position: sticky;
+  top: 0; /* Para que el título se pegue correctamente al hacer scroll dentro de .cartItem-list */
+  background-color: #2f9e44; /* Para que el texto no se solape con items al hacer scroll */
+  z-index: 1; /* Para asegurar que esté por encima de los items al hacer scroll */
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+  padding: 10px;
+}
+
+.empty-cart-message {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.cartItems-section-footer {
+  display: inherit; /* 'inherit' podría no ser lo que quieres; 'flex' es más explícito si eso es lo que se busca. */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  gap: 1rem;
+  position: sticky;
+  bottom: 0;
+  background-color: #2f9e44;
+}
+
+.cartItems-section-footer-resume p {
+  text-align: center;
+  margin: auto;
+  font-size: large;
+  font-weight: 600;
+}
+
+.cartItems-section-action-button {
+  background-color: #f08c00;
+  color: #2f9e44;
+  font-weight: 600;
+  border-style: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.cartItems-section-action-button:disabled {
+  background-color: transparent;
+  color: lightgray;
+  box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  padding: 10px 20px;
+  font-size: 16px;
+}

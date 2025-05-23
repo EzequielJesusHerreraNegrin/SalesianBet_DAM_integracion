@@ -126,7 +126,7 @@ INSERT INTO teams (team_name, sport) VALUES
 ('Slovan Bratislava', 'Fútbol'); -- 110
 
 -- matches --
-INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, away_team_id) VALUES  
+INSERT INTO matches (date, playing, result, competition_id, home_team_id, away_team_id) VALUES  
 -- Cuartos de Champions
 ('2025-04-08 20:00:00', FALSE, '3 - 0', 6, 21, 3),  -- Arsenal vs. Real Madrid
 ('2025-04-08 20:00:00', FALSE, '1 - 2', 6, 63, 49), -- Bayern Múnich vs Inter
@@ -139,24 +139,28 @@ INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, awa
 
 
 INSERT INTO users ( user_name, password, email, dni, points, country) VALUES
-( 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
-( 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
-( 'lucasfernandez', 'pass123', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
-( 'analopez', 'qwerty', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
-( 'carlossanchez', 'admin123', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
+( 'juanperez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'juan.perez@example.com', '12345678A', 1500, 'España'),
+( 'mariagarcia', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
+( 'lucasfernandez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
+( 'analopez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
+( 'carlossanchez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
 
 
 -- Inserta productos en la tabla 'products'
 INSERT INTO products (product_name, product_image, price, state) VALUES
-('Teclado Mecánico', 'keyboard.jpg', 59, 'PUBLICO'),
-('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
-('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
-('Silla Ergonómica', 'chair.jpg', 149, 'DESCATALOGADO'),
-('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');
+('Camiseta oficial Madrid', 'camiseta-oficial-Madrid.jpg', 59, 'PUBLICO'),
+('Botas Nike', 'botas-Nike.png', 199, 'PUBLICO'),
+('Bufanda Madrid oficial', 'bufanda-Madrid-oficial.png', 29, 'PUBLICO'),
+('Short deportivo Addidas', 'short-deportivo-Addidas.png', 29, 'PUBLICO'),
+('Medias Addidas', 'medias-Addidas.png', 29, 'PUBLICO'),
+('Pelota Nike', 'pelota-nike.png', 49, 'PUBLICO'),
+('Camiseta de portero Addidas', 'camiseta-de-portero-Addidas.png', 49, 'PUBLICO'),
+('Camiseta oficial FCB', 'camiseta-oficial-FCB.png', 49, 'PUBLICO'),
+('Camiseta de portero Addidas', 'camiseta-de-portero-Addidas.png', 89, 'DESCATALOGADO'),
+('Replica balon de oro', 'replica-balon-de-oro.png', 289, 'DESCATALOGADO');
 
 -- 1. Roles
 INSERT INTO roles (role_name) VALUES ('USER'); -- Supongamos ID 1
-INSERT INTO roles (role_name) VALUES ('ADMIN'); -- Supongamos ID 2
 
 
 -- 6. User_Roles (Tabla de unión para la relación ManyToMany entre Users y Roles)
@@ -164,9 +168,8 @@ INSERT INTO roles (role_name) VALUES ('ADMIN'); -- Supongamos ID 2
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (1, 1);
 -- Jane Smith es USER
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (2, 1);
--- Admin User es USER y ADMIN
+-- Admin User es USER 
 INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 1);
-INSERT INTO user_roles (fk_user_id, fk_role_id) VALUES (3, 2);
 
 -- 9. Cart_Items (Cesta de la compra)
 -- John Doe tiene una camiseta en su cesta

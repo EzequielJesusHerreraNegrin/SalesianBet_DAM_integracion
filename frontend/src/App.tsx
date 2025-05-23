@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Navbar from "./components/navbar/Navbar";
 import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
   Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
 } from "react-router-dom";
+import Navbar from "./components/navbar/Navbar";
 import MatchesPage from "./pages/MatchesPage";
-import initialMatch, { Match } from "./type/Match";
+import initialMatch, { Match } from "./types/Match";
 import AuthPage from "./pages/AuthPage";
 import { useAuthContext } from "./context/AuthContext";
 import MatchModal from "./components/form/create/MatchForm";
@@ -15,6 +15,7 @@ import PredictionsPage from "./pages/PredictionsPage";
 import PrivateRoute from "./components/protection/PrivateRoute";
 import HistoryPage from "./pages/HistoryPage";
 import PrivateAdminRoute from "./components/protection/PrivateAdminRoute";
+import StorePage from "./pages/store/StorePage";
 
 function App() {
   const { isLogin } = useAuthContext();
@@ -54,6 +55,7 @@ function App() {
             />
           }
         />
+        <Route path="/store" element={<StorePage />} />
         <Route path={isLogin ? "/login" : "/register"} element={<AuthPage />} />
 
         <Route

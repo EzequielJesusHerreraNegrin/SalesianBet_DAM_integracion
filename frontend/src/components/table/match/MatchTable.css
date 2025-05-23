@@ -1,13 +1,12 @@
-.table-container{
-    width: 80%;
-    margin: auto;
-    
+.table-container {
+  width: 80%;
+  margin: auto;
 }
-  
+
 .competition-separator {
-    margin-top: 2rem; /* espacio entre competiciones */
+  margin-top: 2rem; /* espacio entre competiciones */
 }
-  
+
 .table-button-container {
   display: flex;
   margin-top: 30px;
@@ -16,7 +15,7 @@
 
 .table-button {
   padding: 12px 16px;
-  font-size: 1rem; 
+  font-size: 1rem;
   color: black;
   background-color: #2f9e44;
   border: 2px solid black;
@@ -44,7 +43,7 @@
   font-size: 25px;
   font-weight: bold;
 }
-  
+
 .table-row {
   display: flex;
   align-items: center;
@@ -62,9 +61,9 @@
 }
 
 .match-cell-table {
-    flex: 1;
-  }
-  
+  flex: 1;
+}
+
 .match-cell-table.home {
   display: flex;
   align-items: center;
@@ -78,7 +77,7 @@
   text-align: left;
 }
 
-.match-cell-table.center{
+.match-cell-table.center {
   max-width: 90px;
 }
 
