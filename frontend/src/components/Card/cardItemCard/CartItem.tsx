@@ -62,7 +62,7 @@ const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
     <div className="cartItem-container">
       <div className="cartItem-image-container">
         <img
-          src={cartItem.product.productImage}
+          src={`https://res.cloudinary.com/dtbgfrolh/image/upload/v1748032228/store/${cartItem.product.productImage}`}
           alt="Product"
           className="cartItem-image"
         />
