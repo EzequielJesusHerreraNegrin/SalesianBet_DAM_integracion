@@ -1,8 +1,13 @@
 .main-contaier {
+  margin-top: 10vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   padding: 20px;
+}
+
+.main-contaier .store-section-action {
+  flex-direction: column;
 }
 
 .products-grid {

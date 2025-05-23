@@ -47,8 +47,10 @@ const StorePage = () => {
       cuantity: 3,
     }, */
   ]);
+  const [searchFilter, setSearchFilter] = useState("");
 
   const { isAdmin } = useAuthContext();
+  const { refreshUser } = useAuthContext();
 
   useEffect(() => {
     ProductService.getAllProducts()
@@ -97,7 +99,10 @@ const StorePage = () => {
   const handleBuyCartItemList = async () => {
     const token = await UserService.manageUserToken();
     await UserService.buyCartItems(token!.userId)
-      .then(() => setCartItems([]))
+      .then(() => {
+        setCartItems([]);
+        refreshUser();
+      })
       .catch((error) => {
         throw new Error(error);
       });
@@ -113,8 +118,31 @@ const StorePage = () => {
     return finalvalue;
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchFilter(event.target.value);
+  };
+
+  const filteredProducts = products.filter((item) =>
+    item.productName.toLowerCase().includes(searchFilter.toLowerCase())
+  );
   return (
     <div className="main-contaier">
+      <div className="store-section-action">
+        <label
+          htmlFor="search"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Buscar por nombre:
+        </label>
+        <input
+          id="search"
+          type="text"
+          value={searchFilter}
+          onChange={handleSearchChange}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+          placeholder="Escribí un nombre..."
+        />
+      </div>
       <div className="products-grid">
         {products.map((product, index) => (
           <div key={index} className="product-card">
@@ -126,20 +154,7 @@ const StorePage = () => {
           </div>
         ))}
       </div>
-      {isAdmin ? (
-        <div className="admin-section">
-          <h2 className="admin-section-title">Administración</h2>
-          <button
-            className="admin-section-button"
-            onClick={() => {
-              // Aquí puedes agregar la lógica para la administración
-              console.log("Administrar productos");
-            }}
-          >
-            Administrar productos
-          </button>
-        </div>
-      ) : (
+      {isAdmin ? null : (
         <div className="cartItems-section-container">
           <h2 className="cartItems-section-title">Carrito de compras</h2>
           {cartItems.length === 0 ? (
