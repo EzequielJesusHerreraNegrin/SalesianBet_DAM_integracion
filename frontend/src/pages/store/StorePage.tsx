@@ -9,6 +9,7 @@ import { CartItemResponseDto } from "../../types/cartItem";
 import { Product } from "../../types/Product";
 import "./StorePageStyles.css";
 import { useAuthContext } from "../../context/AuthContext";
+import { Button } from "@mui/material";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -125,26 +126,29 @@ const StorePage = () => {
   const filteredProducts = products.filter((item) =>
     item.productName.toLowerCase().includes(searchFilter.toLowerCase())
   );
+
   return (
     <div className="main-contaier">
       <div className="store-section-action">
-        <label
-          htmlFor="search"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Buscar por nombre:
-        </label>
-        <input
-          id="search"
-          type="text"
-          value={searchFilter}
-          onChange={handleSearchChange}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-          placeholder="Escribí un nombre..."
-        />
+        <div className="store-section-action-filter">
+          <label
+            htmlFor="search"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Buscar por producto:
+          </label>
+          <input
+            id="search"
+            type="text"
+            value={searchFilter}
+            onChange={handleSearchChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+          />
+        </div>
+        {isAdmin ? <Button>AÑADIR</Button> : null}
       </div>
       <div className="products-grid">
-        {products.map((product, index) => (
+        {filteredProducts.map((product, index) => (
           <div key={index} className="product-card">
             <ProductCart
               product={product}
