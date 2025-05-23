@@ -11,7 +11,7 @@ import com.accesodatos.entity.Role;
 import com.accesodatos.entity.UserEntity;
 import com.accesodatos.repository.UserEntityRepository;
 
-@Configuration
+//@Configuration 
 public class LoadDatabase {
 
 	@Bean
@@ -30,7 +30,7 @@ public class LoadDatabase {
 					.roles(Set.of(roleAdmin))
 					.build();
 
-			// userRepository.saveAll(List.of(userAdmin));
+			 userRepository.saveAll(List.of(userAdmin));
 
 		};
 	}

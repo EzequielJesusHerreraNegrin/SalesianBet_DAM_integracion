@@ -30,15 +30,11 @@ const AuthForm = () => {
         toast.error("Error al iniciar sesión");
       }
     } else {
-      const response = await registerUser(formData);
-      if (response) {
-        setTimeout(() => {
-          toast.success("Registro exitoso");
-          navigate("/login");
-        });
-      } else {
-        toast.error("Error al registrarse")
-      }
+      await registerUser(formData);
+      setTimeout(() => {
+        toast.success("Registro exitoso");
+        navigate("/login");
+      });
     }
   };
 

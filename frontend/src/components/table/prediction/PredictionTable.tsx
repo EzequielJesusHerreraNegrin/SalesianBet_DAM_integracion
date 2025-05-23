@@ -1,13 +1,12 @@
-import toast from "react-hot-toast";
-import { useAuthContext } from "../../../context/AuthContext";
-import BetService from "../../../service/bet.service";
-import { formatDate } from "../../../utils/uitls";
-import "./PredictionTable.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import { Bet } from "../../../type/Bet";
+import { useAuthContext } from "../../../context/AuthContext";
+import BetService from "../../../service/bet.service";
+import { Bet } from "../../../types/Bet";
+import { formatDate } from "../../../utils/uitls";
+import "./PredictionTable.css";
 const PredictionTable = () => {
-  const { user, refreshUser} = useAuthContext();
+  const { user, refreshUser } = useAuthContext();
   const [bets, setBets] = useState<Bet[]>([]);
 
   useEffect(() => {
@@ -21,7 +20,7 @@ const PredictionTable = () => {
   const onDeleteBet = async (betId: number) => {
     await BetService.deleteBet(betId);
     setBets(bets.filter((bet) => bet.betId != betId));
-    refreshUser()
+    refreshUser();
   };
 
   const renderHeader = () => {

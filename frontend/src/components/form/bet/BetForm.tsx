@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Match } from "../../../type/Match";
+import { Match } from "../../../types/Match";
 import toast, { Toaster } from "react-hot-toast";
 import { BetRequest } from "../../../types/Bet";
 import BetService from "../../../service/bet.service";

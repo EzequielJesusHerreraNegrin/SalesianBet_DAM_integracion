@@ -5,6 +5,13 @@ export interface ApiResponseDto<T> {
   data: T;
 }
 
+export type ApiError = {
+  timestamp: Date;
+  status: number;
+  message: string;
+  errors: string[];
+};
+
 export type JwtPayload = {
   sub: string;
   exp: number;

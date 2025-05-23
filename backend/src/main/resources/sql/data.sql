@@ -126,7 +126,7 @@ INSERT INTO teams (team_name, sport) VALUES
 ('Slovan Bratislava', 'Fútbol'); -- 110
 
 -- matches --
-INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, away_team_id) VALUES  
+INSERT INTO matches (date, playing, result, competition_id, home_team_id, away_team_id) VALUES  
 -- Cuartos de Champions
 ('2025-04-08 20:00:00', FALSE, '3 - 0', 6, 21, 3),  -- Arsenal vs. Real Madrid
 ('2025-04-08 20:00:00', FALSE, '1 - 2', 6, 63, 49), -- Bayern Múnich vs Inter
@@ -139,11 +139,11 @@ INSERT INTO matches (date, is_playing, result, competition_id, home_team_id, awa
 
 
 INSERT INTO users ( user_name, password, email, dni, points, country) VALUES
-( 'juanperez', '1234', 'juan.perez@example.com', '12345678A', 1500, 'España'),
-( 'mariagarcia', 'abcd', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
-( 'lucasfernandez', 'pass123', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
-( 'analopez', 'qwerty', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
-( 'carlossanchez', 'admin123', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
+( 'juanperez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'juan.perez@example.com', '12345678A', 1500, 'España'),
+( 'mariagarcia', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'maria.garcia@example.com', '87654321B', 2200, 'México'),
+( 'lucasfernandez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'lucas.fernandez@example.com', '11223344C', 500, 'Argentina'),
+( 'analopez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'ana.lopez@example.com', '44332211D', 3200, 'Colombia'),
+( 'carlossanchez', '$2a$12$fOmKz2JnCxaDxULqWp1oCuGD1YZC1ySHGSWuabIh1cZVxaKgyjcq6', 'carlos.sanchez@example.com', '55667788E', 10000, 'Chile');
 
 
 -- Inserta productos en la tabla 'products'
@@ -156,7 +156,6 @@ INSERT INTO products (product_name, product_image, price, state) VALUES
 
 -- 1. Roles
 INSERT INTO roles (role_name) VALUES ('USER'); -- Supongamos ID 1
-INSERT INTO roles (role_name) VALUES ('ADMIN'); -- Supongamos ID 2
 
 
 -- 6. User_Roles (Tabla de unión para la relación ManyToMany entre Users y Roles)
