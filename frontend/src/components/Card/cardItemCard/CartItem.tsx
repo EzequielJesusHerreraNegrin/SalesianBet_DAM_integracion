@@ -62,7 +62,7 @@ const CartItem = ({ cartItem, cartItems, setCartItems }: CartItemProps) => {
     <div className="cartItem-container">
       <div className="cartItem-image-container">
         <img
-          src={cartItem.product.imageImage}
+          src={cartItem.product.productImage}
           alt="Product"
           className="cartItem-image"
         />

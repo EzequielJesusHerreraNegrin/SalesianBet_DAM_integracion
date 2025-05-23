@@ -3,14 +3,14 @@ import productState from "./enums/ProductState";
 type Product = {
   productId: number;
   productName: string;
-  imageImage: string;
+  productImage: string;
   state?: productState;
   price: number;
 };
 
 type ProductRequest = {
   productName: string;
-  imageImage: string;
+  productImage: string;
   state: productState;
   price: number;
 };
@@ -25,7 +25,7 @@ interface ProductCartItemResponseDto {
 type ProductResponse = {
   productId: number;
   productName: string;
-  imageImage: string;
+  productImage: string;
   state?: productState;
   buys?: number;
   price: number;

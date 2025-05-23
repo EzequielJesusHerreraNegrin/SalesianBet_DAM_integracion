@@ -46,12 +46,9 @@ const ProductCart = ({ product, cartItems, setCartItems, onEdit }: Props) => {
 
     try {
       const response = await cartItemService.addProductToCart(productCartItem);
-      // Asumiendo que response.data es CartItemResponseDto
-      // Si el servicio ya devuelve el objeto directamente, usa 'response'
       if (response && response.data) {
         setCartItems((prevCartItems) => [...prevCartItems, response.data]);
       } else if (response) {
-        // If response is not null but doesn't have a data property, handle gracefully or log an error
         console.error(
           "Unexpected response format when adding product to cart:",
           response
@@ -61,6 +58,8 @@ const ProductCart = ({ product, cartItems, setCartItems, onEdit }: Props) => {
       console.error("Error adding product to cart:", error);
     }
   };
+
+  console.log(product.productImage);
 
   return (
     <div className="product-cart-container">
@@ -83,9 +82,7 @@ const ProductCart = ({ product, cartItems, setCartItems, onEdit }: Props) => {
       )}
       <div className="product-image-container">
         <img
-          src={
-            "https://res.cloudinary.com/dtbgfrolh/image/upload/v1747970900/store/camiseta-oficial-FCB.png"
-          }
+          src={`https://res.cloudinary.com/dtbgfrolh/image/upload/v1748032228/store/${product.productImage}`}
           alt="Product"
           className="product-image"
         />

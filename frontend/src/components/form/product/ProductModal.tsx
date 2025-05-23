@@ -44,7 +44,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 }) => {
   const [formData, setFormData] = useState<ProductRequest>({
     productName: "",
-    imageImage: "",
+    productImage: "",
     price: 0,
     state: productState.PUBLIC, // Default state
   });
@@ -54,7 +54,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     if (initialData) {
       setFormData({
         productName: initialData.productName ?? "",
-        imageImage: initialData.imageImage ?? "",
+        productImage: initialData.productImage ?? "",
         price: initialData.price ?? 0,
         state: initialData.state ?? productState.PUBLIC,
       });
@@ -62,7 +62,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
       // Reset for new product
       setFormData({
         productName: "",
-        imageImage: "",
+        productImage: "",
         price: 0,
         state: productState.PUBLIC,
       });
@@ -122,7 +122,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         <TextField
           label="URL de la Imagen"
           name="imageImage"
-          value={formData.imageImage}
+          value={formData.productImage}
           onChange={handleChange}
           required
           fullWidth
