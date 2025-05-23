@@ -4,10 +4,10 @@ import ProductCart from "../../components/Card/productCard/ProductCart";
 import { cartItemService } from "../../service/cartItem.service";
 import "../../service/product.service";
 import ProductService from "../../service/product.service";
-import { CartItemRequestDto, CartItemResponseDto } from "../../types/cartItem";
+import UserService from "../../service/user.service";
+import { CartItemResponseDto } from "../../types/cartItem";
 import { Product } from "../../types/Product";
 import "./StorePageStyles.css";
-import UserService from "../../service/user.service";
 import { useAuthContext } from "../../context/AuthContext";
 
 const StorePage = () => {
@@ -48,7 +48,7 @@ const StorePage = () => {
     }, */
   ]);
 
-  //const {isAdmin} = useAuthContext()
+  const { isAdmin } = useAuthContext();
 
   useEffect(() => {
     ProductService.getAllProducts()
@@ -94,6 +94,25 @@ const StorePage = () => {
     handleGetCarIterms();
   }, [cartItems.length, products.length]);
 
+  const handleBuyCartItemList = async () => {
+    const token = await UserService.manageUserToken();
+    await UserService.buyCartItems(token!.userId)
+      .then(() => setCartItems([]))
+      .catch((error) => {
+        throw new Error(error);
+      });
+  };
+
+  const basketValue = () => {
+    let finalvalue = 0;
+    cartItems.forEach((item) => {
+      if (item.product != null) {
+        finalvalue += item.product.price * item.cuantity;
+      }
+    });
+    return finalvalue;
+  };
+
   return (
     <div className="main-contaier">
       <div className="products-grid">
@@ -107,7 +126,7 @@ const StorePage = () => {
           </div>
         ))}
       </div>
-      {/*       { manageUserRole === "ADMIN" ? (
+      {isAdmin ? (
         <div className="admin-section">
           <h2 className="admin-section-title">Administración</h2>
           <button
@@ -120,43 +139,50 @@ const StorePage = () => {
             Administrar productos
           </button>
         </div>
-      ): (null)} */}
-      <div className="cartItems-section-container">
-        <h2 className="cartItems-section-title">Carrito de compras</h2>
-        {cartItems.length === 0 ? (
-          <div className="empty-cart-message">
-            No hay productos en el carrito
+      ) : (
+        <div className="cartItems-section-container">
+          <h2 className="cartItems-section-title">Carrito de compras</h2>
+          {cartItems.length === 0 ? (
+            <div className="empty-cart-message">
+              No hay productos en el carrito
+            </div>
+          ) : (
+            <div className="cartItem-list">
+              {cartItems
+                .filter((item) => item?.product)
+                .map((cartItem, index) => (
+                  <div key={index} className="cartItem-card">
+                    <CartItem
+                      cartItem={cartItem}
+                      setCartItems={setCartItems}
+                      cartItems={cartItems}
+                    />
+                  </div>
+                ))}
+            </div>
+          )}
+          <div className="cartItems-section-footer">
+            <div className="cartItems-section-footer-resume">
+              <p>Importe total : {basketValue()} pts.</p>
+            </div>
+            <div className="cartItems-section-action-container">
+              <button
+                className="cartItems-section-action-button"
+                onClick={() => handleBuyCartItemList()}
+                style={{
+                  backgroundColor: "#2f9e44",
+                  color: "white",
+                  borderRadius: 18,
+                  padding: "10px 20px",
+                  fontSize: "16px",
+                }}
+              >
+                Comprar
+              </button>
+            </div>
           </div>
-        ) : (
-          <div className="cartItem-list">
-            {cartItems
-              .filter((item) => item?.product)
-              .map((cartItem, index) => (
-                <div key={index} className="cartItem-card">
-                  <CartItem
-                    cartItem={cartItem}
-                    setCartItems={setCartItems}
-                    cartItems={cartItems}
-                  />
-                </div>
-              ))}
-          </div>
-        )}
-        <div className="cartItems-section-action-container">
-          <button
-            className="cartItems-section-action-button"
-            style={{
-              backgroundColor: "#2f9e44",
-              color: "white",
-              borderRadius: 18,
-              padding: "10px 20px",
-              fontSize: "16px",
-            }}
-          >
-            Comprar
-          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };

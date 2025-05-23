@@ -12,6 +12,8 @@
   width: 70%;
 }
 
+/******* CARTITEM SECTION ******/
+
 .cartItems-section-container {
   display: flex;
   flex-direction: column;
@@ -60,4 +62,18 @@
   justify-content: center;
   text-align: center;
   padding: 10px;
+}
+
+.cartItems-section-footer {
+  display: inherit;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  gap: 1rem;
+}
+
+.cartItems-section-footer-resume {
+  text-align: center;
+  margin: auto;
 }

@@ -6,33 +6,6 @@ import { LocalStorageService } from "./localstorage.service";
 
 const CART_ITEMS_RESOURCE = API_URL + "/cartItems"; // Ya incluye /api/v1 desde axios.baseURL
 
-const getAllCartItems = async (): Promise<
-  ApiResponseDto<CartItemResponseDto[]>
-> => {
-  try {
-    const token = await LocalStorageService.get(
-      LocalStorageService.KEY.userToken
-    );
-
-    const response = await axios.get<ApiResponseDto<CartItemResponseDto[]>>(
-      CART_ITEMS_RESOURCE,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log("Response from getAllCartItems:", response.data.code);
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all cart items:", error);
-    throw error;
-  }
-};
-
 const getAllCartItemsByUserId = async (
   userId: number
 ): Promise<ApiResponseDto<CartItemResponseDto[]>> => {
@@ -51,7 +24,6 @@ const getAllCartItemsByUserId = async (
         },
       }
     );
-    console.log("Response from getAllCartItemsByUserId: ", response.data);
 
     return response.data;
   } catch (error) {
@@ -145,7 +117,6 @@ const deleteCartItem = async (
 };
 
 export const cartItemService = {
-  getAllCartItems,
   getAllCartItemsByUserId,
   addProductToCart,
   updateCartItem,

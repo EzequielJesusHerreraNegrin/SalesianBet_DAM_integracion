@@ -34,13 +34,40 @@ const getCurrentUser = async (): Promise<ApiResponseDto<UserResponseDto>> => {
   }
 };
 
+const buyCartItems = async (
+  userId: number
+): Promise<ApiResponseDto<boolean>> => {
+  try {
+    const token = await LocalStorageService.get(
+      LocalStorageService.KEY.userToken
+    );
+
+    const response = await axios.post<ApiResponseDto<boolean>>(
+      `${API_URL}/users/purchase/${userId}`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Response from buyCartItems: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error processing purchase for user ${userId}:`, error);
+    throw error;
+  }
+};
+
 const manageUserToken = async () => {
   const token = await LocalStorageService.get(
     LocalStorageService.KEY.userToken
   );
   if (!token) return null;
   const decodedToken = jwtDecode<JwtPayload>(token);
-  console.log(decodedToken.userId);
 
   return decodedToken;
 };
@@ -48,6 +75,7 @@ const UserService = {
   createUser,
   getCurrentUser,
   manageUserToken,
+  buyCartItems,
 };
 
 export default UserService;
