@@ -91,7 +91,9 @@ const StorePage = () => {
         });
     };
 
-    handleGetCarIterms();
+    if (isAdmin) {
+      handleGetCarIterms();
+    }
   }, [cartItems.length, products.length]);
 
   const handleBuyCartItemList = async () => {
@@ -163,21 +165,17 @@ const StorePage = () => {
           )}
           <div className="cartItems-section-footer">
             <div className="cartItems-section-footer-resume">
-              <p>Importe total : {basketValue()} pts.</p>
+              {cartItems.length > 0 ? (
+                <p>Importe total : {basketValue()} pts.</p>
+              ) : null}
             </div>
             <div className="cartItems-section-action-container">
               <button
                 className="cartItems-section-action-button"
+                disabled={cartItems.length == 0}
                 onClick={() => handleBuyCartItemList()}
-                style={{
-                  backgroundColor: "#2f9e44",
-                  color: "white",
-                  borderRadius: 18,
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                }}
               >
-                Comprar
+                COMPRAR
               </button>
             </div>
           </div>

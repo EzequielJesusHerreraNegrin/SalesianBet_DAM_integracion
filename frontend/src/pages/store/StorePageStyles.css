@@ -73,7 +73,28 @@
   gap: 1rem;
 }
 
-.cartItems-section-footer-resume {
+.cartItems-section-footer-resume p {
   text-align: center;
   margin: auto;
+  font-size: large;
+  font-weight: 600;
+}
+
+.cartItems-section-action-button {
+  background-color: #f08c00;
+  color: #2f9e44;
+  font-weight: 600;
+  border-style: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+.cartItems-section-action-button:disabled {
+  background-color: transparent;
+  color: lightgray;
+  box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  padding: 10px 20px;
+  font-size: 16px;
 }
