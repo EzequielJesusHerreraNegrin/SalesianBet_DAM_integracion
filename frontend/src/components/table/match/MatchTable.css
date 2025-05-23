@@ -10,7 +10,8 @@
 .table-button-container {
   display: flex;
   margin-top: 30px;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 16px; 
 }
 
 .table-button {

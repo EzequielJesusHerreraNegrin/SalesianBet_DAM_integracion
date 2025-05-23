@@ -175,7 +175,12 @@ const MatchTable = ({
   return (
     <>
       <div className="table-container">
-        <div className="table-button-container">
+        <div
+          className="table-button-container"
+          style={{
+            justifyContent: isAdmin ? "space-around" : "center",
+          }}
+        >
           {isAdmin && (
             <>
               <button onClick={handleAddMatch} className="table-button">

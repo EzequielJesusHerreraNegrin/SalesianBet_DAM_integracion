@@ -13,41 +13,7 @@ import { Button } from "@mui/material";
 import ProductModal from "../../components/form/product/ProductModal";
 const StorePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([
-    /*     {
-      cartId: 1,
-      user: { id: 1, username: "Juan" },
-      product: {
-        productId: 101,
-        productName: "Producto A",
-        price: 10.5,
-        imageImage: "imageA.jpg",
-      },
-      cuantity: 2,
-    },
-    {
-      cartId: 2,
-      user: { id: 2, username: "Ana" },
-      product: {
-        productId: 102,
-        productName: "Producto B",
-        price: 20.0,
-        imageImage: "imageB.jpg",
-      },
-      cuantity: 1,
-    },
-    {
-      cartId: 3,
-      user: { id: 1, username: "Juan" },
-      product: {
-        productId: 103,
-        productName: "Producto C",
-        price: 15.75,
-        imageImage: "imageC.jpg",
-      },
-      cuantity: 3,
-    }, */
-  ]);
+  const [cartItems, setCartItems] = useState<CartItemResponseDto[]>([]);
   const [searchFilter, setSearchFilter] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -181,10 +147,7 @@ const StorePage = () => {
     <div className="main-contaier">
       <div className="store-section-action">
         <div className="store-section-action-filter">
-          <label
-            htmlFor="search"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor="search" className="search-label">
             Buscar por producto:
           </label>
           <input
@@ -192,13 +155,13 @@ const StorePage = () => {
             type="text"
             value={searchFilter}
             onChange={handleSearchChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+            className="search-input"
           />
         </div>
         {isAdmin ? (
           <Button
             variant="contained"
-            color="primary"
+            color="success"
             onClick={handleOpenCreateModal} // Abre el modal para crear
           >
             AÑADIR PRODUCTO
@@ -206,7 +169,7 @@ const StorePage = () => {
         ) : null}
         <hr className="section-lines" />
       </div>
-      <div className="products-grid">
+      <div className={`products-grid ${isAdmin ? "admin-full-width" : ""}`}>
         {filteredProducts.map((product) => (
           <div key={product.productId} className="product-card">
             <ProductCart

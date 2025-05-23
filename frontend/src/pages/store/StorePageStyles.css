@@ -19,12 +19,42 @@
   margin-bottom: 1.5rem;
 }
 
+.admin-full-width {
+  width: 100% !important;
+}
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 1.5rem;
+  gap: 2.5rem; 
+  padding: 1rem; 
   width: 70%;
+  box-sizing: border-box;
 }
+
+.search-label {
+  display: block;
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  color: #374151; 
+  margin-bottom: 0.25rem; 
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem; 
+  border: 1px solid #d1d5db; 
+  border-radius: 0.5rem; 
+  border: 1px solid black;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.5);
+}
+
+
 
 /******* CARTITEM SECTION ******/
 
@@ -62,9 +92,9 @@
 }
 .cartItems-section-title {
   position: sticky;
-  top: 0; /* Para que el título se pegue correctamente al hacer scroll dentro de .cartItem-list */
-  background-color: #2f9e44; /* Para que el texto no se solape con items al hacer scroll */
-  z-index: 1; /* Para asegurar que esté por encima de los items al hacer scroll */
+  top: 0; 
+  background-color: #2f9e44; 
+  z-index: 1; 
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 5px;
@@ -82,7 +112,7 @@
 }
 
 .cartItems-section-footer {
-  display: inherit; /* 'inherit' podría no ser lo que quieres; 'flex' es más explícito si eso es lo que se busca. */
+  display: inherit; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -117,4 +147,59 @@
   border-radius: 18px;
   padding: 10px 20px;
   font-size: 16px;
+}
+@media (max-width: 1024px) {
+  .store-section-action,
+  .products-grid {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .cartItems-section-container {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+
+  .cartItem-list {
+    height: auto;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .cartItems-section-footer {
+    position: static;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-contaier {
+    padding: 10px;
+  }
+
+  .cartItems-section-title {
+    font-size: 1.25rem;
+    padding: 8px;
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .cartItems-section-action-button,
+  .cartItems-section-action-button:disabled {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }
