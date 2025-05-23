@@ -7,8 +7,7 @@ import {
 } from "react";
 import { AuthenticatedUser, UserRequest } from "../types/User";
 import { LocalStorageService } from "../service/localstorage.service";
-
-import { Role } from "../types/Role";
+import { Role } from "../type/Role";
 import axios from "axios";
 import { API_URL } from "../service/api";
 
@@ -38,23 +37,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         LocalStorageService.KEY.userToken
       );
       if (token) {
-        try {
-          const userLogged = await getUserLogged();
-          if (userLogged) {
-            setUser(userLogged.data);
+        const userLogged = await getUserLogged();
+        if (userLogged) {
+          setUser(userLogged.data);
 
-            const isAdminUser = userLogged.data.roles.some(
-              (role: Role) => role.roleName == "ADMIN"
-            );
-            setIsAdmin(isAdminUser);
-            setIsLogin(true);
-          }
-        } catch (error) {
-          console.error("Error initializing user:", error);
-          // Token inválido o expirado → lo borro para limpiar la sesión
-          await LocalStorageService.remove(LocalStorageService.KEY.userToken);
-          setUser(null);
+          const isAdminUser = userLogged.data.roles.some(
+            (role: Role) => role.roleName == "ADMIN"
+          );
+          setIsAdmin(isAdminUser);
+          setIsLogin(true);
+        } else {
           setIsLogin(false);
+          setUser(null);
           setIsAdmin(false);
         }
       } else {
@@ -97,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const registerUser = async (userRequest: UserRequest) => {
-    const response = await axios.post(`/auth/register`, {
+    const response = await axios.post(`${API_URL}/auth/register`, {
       email: userRequest.email,
       userName: userRequest.userName,
       dni: userRequest.dni,
@@ -125,9 +119,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         },
       });
       return response.data;
-    } catch (error) {
-      console.error("Error to get current user: ", error);
-      return null;
+    } catch (error: any) {
+      if (error.response && error.response.status == 401) {
+        throw new Error("UNAUTHORIZED");
+      }
+      throw error;
     }
   };
 

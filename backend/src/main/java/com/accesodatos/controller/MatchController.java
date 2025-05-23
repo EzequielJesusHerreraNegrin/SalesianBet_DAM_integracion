@@ -57,7 +57,7 @@ public class MatchController {
 	}
 
 	@PostMapping(value = MATCH_RESOURCE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<MatchResponseDto>> creteMatch(@RequestBody MatchRequestDto matchRequestDto) {
+	public ResponseEntity<ApiResponseDto<MatchResponseDto>> createMatch(@RequestBody MatchRequestDto matchRequestDto) {
 		MatchResponseDto createdMatch = matchService.createMatch(matchRequestDto);
 
 		ApiResponseDto<MatchResponseDto> response = new ApiResponseDto<>("Match created successfully",

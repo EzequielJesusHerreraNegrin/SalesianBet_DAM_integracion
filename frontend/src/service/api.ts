@@ -1,6 +1,5 @@
 import axios from "axios";
 import { LocalStorageService } from "./localstorage.service";
-
 export const API_URL = "http://localhost:8081/api/v1";
 
 const api = axios.create({
@@ -24,6 +23,17 @@ api.interceptors.request.use(
   },
 
   (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response.status == 401) {
+      await LocalStorageService.remove(LocalStorageService.KEY.userToken);
+      window.location.reload();
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default api;

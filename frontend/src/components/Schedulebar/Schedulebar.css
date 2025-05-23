@@ -1,0 +1,12 @@
+.schedulebar-container {
+    position: static;
+display: flex;
+justify-content: center;
+margin-top: 80px; /* Deja espacio para navbar fixed */
+}
+
+.schedulebar-box {
+max-width: 61%;
+display: flex;
+color: black;
+}

@@ -52,9 +52,9 @@ public class BetController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
-	@GetMapping(value = BET_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserEmail(@RequestParam String value) {
-		List<BetResponseDto> bets = betServiceImpl.getBetByUserEmail(value);
+	@GetMapping(value = BET_RESOURCE + "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<BetResponseDto>>> getBetsByUserId(@PathVariable Long userId) {
+		List<BetResponseDto> bets = betServiceImpl.getBetsByUserId(userId);
 
 		ApiResponseDto<List<BetResponseDto>> response = new ApiResponseDto<List<BetResponseDto>>(
 				"All bets fetched successfuly.", HttpStatus.OK.value(), bets);
@@ -72,9 +72,19 @@ public class BetController {
 	}
 
 	@DeleteMapping(value = BET_PATH_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Void>> deleteBet(@PathVariable Long betId) {
+	public ResponseEntity<Void> deleteBet(@PathVariable Long betId) {
 		betServiceImpl.deleteBet(betId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping(value = BET_RESOURCE + "/users/{userId}/matches/{matchId}")
+	public ResponseEntity<ApiResponseDto<BetResponseDto>> getBetByUserAndMatch(@PathVariable Long userId, @PathVariable Long matchId) {
+		BetResponseDto bet = betServiceImpl.getBetByUserIdAndByMatchId(userId, matchId);
+		
+		ApiResponseDto<BetResponseDto> response = new ApiResponseDto<>("The bet by user and match fetched successfully",
+				HttpStatus.OK.value(), bet);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 
 }

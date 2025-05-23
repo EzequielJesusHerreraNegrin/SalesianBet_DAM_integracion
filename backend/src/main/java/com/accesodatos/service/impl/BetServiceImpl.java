@@ -68,11 +68,10 @@ public class BetServiceImpl implements BetService {
 	}
 
 	@Override
-	public List<BetResponseDto> getBetByUserEmail(String email) {
-		List<Bet> bets = betRepository.findByUserEmail(email).orElseThrow(
-				() -> new ResourceNotFoundException(String.format("The email: %s, was not found.", email)));
-		return bets.stream().map(betMapper::toBetResponseDto)
+	public List<BetResponseDto> getBetsByUserId(Long userId) {
+		List<BetResponseDto> bets = betRepository.findBetsByUserUserId(userId).stream().map(betMapper::toBetResponseDto)
 				.collect(Collectors.toList());
+		return bets;
 	}
 
 	@Override
@@ -118,12 +117,28 @@ public class BetServiceImpl implements BetService {
 
 		Match match = validateAndGetMatch(betRequestDto.getMatchId());
 
+		UserEntity user = bet.getUser();
+		
 		if (match.getDate().isBefore(LocalDateTime.now())) {
 			new IllegalArgumentException("You cant edit this bet, because match has already begin");
 		}
 
+		int originalPoints = bet.getPoints();
+		int newPoints = betRequestDto.getPoints();
+		int difference = newPoints - originalPoints; 
+		
+		if (difference > 0) {
+			if (user.getPoints() < difference) {
+				throw new IllegalArgumentException("No tienes suficientes puntos para aumentar esta apuesta.");
+			}
+			user.setPoints(user.getPoints() - difference);
+		} else if (difference < 0) {
+			user.setPoints(user.getPoints() + difference);
+		}
+		
 		bet.setPrediction(betRequestDto.getPrediction());
 		bet.setPoints(betRequestDto.getPoints());
+		userEntityRepository.save(user);
 		bet = betRepository.save(bet);
 
 		return betMapper.toBetResponseDto(bet);
@@ -131,10 +146,22 @@ public class BetServiceImpl implements BetService {
 
 	@Override
 	public void deleteBet(Long betId) {
-		Bet bet = betRepository.findById(betId).orElseThrow(() -> new ResourceNotFoundException(
-				String.format("The bet with the id %d was not found.", betId)));
+		Bet bet = validateAndGetBet(betId);
+		if (bet.getMatch().getDate().isBefore(LocalDateTime.now())) {
+			throw new IllegalArgumentException("No puedes borrar la apuesta de este partido porque ya empezó");
+		}
+		
 		bet.getUser().removeBet(bet);
 		betRepository.delete(bet);
+	}
+
+	@Override
+	public BetResponseDto getBetByUserIdAndByMatchId(Long userId, Long matchId) {
+		UserEntity user = validateAndGetUser(userId);
+		Match match = validateAndGetMatch(matchId);
+		
+		Bet bet = betRepository.findByUserAndMatch(user, match);
+		return betMapper.toBetResponseDto(bet);
 	}
 
 }

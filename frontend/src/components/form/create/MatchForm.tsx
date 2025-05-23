@@ -116,11 +116,17 @@ const MatchModal = ({
       }
 
       setTimeout(() => {
-        navigate("/matchesPage")
+        navigate("/matchesPage");
         setIsCreating(false);
       }, 1000);
-    } catch (error) {
-      console.log("Error a la hora de crear el partido: ", error);
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.detail || // por si viene en otro campo
+        error.message ||
+        "Error al crear apuesta";
+
+      toast.error(message, { position: "top-right" });
     }
   };
 

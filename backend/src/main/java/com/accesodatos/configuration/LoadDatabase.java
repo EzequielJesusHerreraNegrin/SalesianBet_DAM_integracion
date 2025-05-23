@@ -21,7 +21,6 @@ public class LoadDatabase {
 			Role roleAdmin = Role.builder()
 					.roleName("ADMIN")
 					.build();
-		
 
 			UserEntity userAdmin = UserEntity.builder()
 					.userName("admin")
@@ -31,7 +30,7 @@ public class LoadDatabase {
 					.roles(Set.of(roleAdmin))
 					.build();
 
-			//userRepository.saveAll(List.of(userAdmin));
+			// userRepository.saveAll(List.of(userAdmin));
 
 		};
 	}

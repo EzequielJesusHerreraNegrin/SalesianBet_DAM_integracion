@@ -45,7 +45,7 @@ public class Match {
 	
 	private LocalDateTime date;
 	
-	private Boolean is_playing;
+	private Boolean playing;
 	
 	@Column(length = 40)
 	private String result;

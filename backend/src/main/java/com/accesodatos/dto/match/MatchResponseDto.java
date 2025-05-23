@@ -10,6 +10,7 @@ import com.accesodatos.entity.Bet;
 import com.accesodatos.entity.Competition;
 import com.accesodatos.entity.Team;
 
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,6 @@ public class MatchResponseDto {
 	private CompetitionResponseDto competition;
 	private TeamResponseDto homeTeam;
 	private TeamResponseDto awayTeam;
+	private boolean playing;
+	// private Set<Bet> bets;
 }

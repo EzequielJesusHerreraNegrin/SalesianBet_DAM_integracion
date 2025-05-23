@@ -36,6 +36,8 @@ const AuthForm = () => {
           toast.success("Registro exitoso");
           navigate("/login");
         });
+      } else {
+        toast.error("Error al registrarse")
       }
     }
   };

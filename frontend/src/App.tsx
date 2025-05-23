@@ -11,6 +11,8 @@ import initialMatch, { Match } from "./types/Match";
 import AuthPage from "./pages/AuthPage";
 import { useAuthContext } from "./context/AuthContext";
 import MatchModal from "./components/form/create/MatchForm";
+import PredictionsPage from "./pages/PredictionsPage";
+import PrivateRoute from "./components/protection/PrivateRoute";
 import StorePage from "./pages/store/StorePage";
 
 function App() {
@@ -53,6 +55,15 @@ function App() {
         />
         <Route path="/store" element={<StorePage />} />
         <Route path={isLogin ? "/login" : "/register"} element={<AuthPage />} />
+
+        <Route
+          path={"/myPredictions"}
+          element={
+            <PrivateRoute>
+              <PredictionsPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

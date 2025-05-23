@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import initialMatch, { Match } from "../../types/Match";
-import MatchService from "../../service/match.service";
-import Loader from "../loader/Loader";
-import "./Table.css";
+
+import initialMatch, { Match } from "../../../types/Match";
+import MatchService from "../../../service/match.service";
+import Loader from "../../loader/Loader";
+import "./MatchTable.css";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import DateCalendar from "../calendar/DateCalendar";
-import { useAuthContext } from "../../context/AuthContext";
+import DateCalendar from "../../calendar/DateCalendar";
+import { useAuthContext } from "../../../context/AuthContext";
 
 interface TableProps {
   selectedDate: string;
@@ -20,7 +21,7 @@ interface TableProps {
   setIsBetting: (value: boolean) => void;
 }
 
-const Table = ({
+const MatchTable = ({
   setIsCreating,
   selectedDate,
   formatDate,
@@ -51,6 +52,9 @@ const Table = ({
 
   const handleClickMatchesReady = () => {
     setMatchesReady(!matchesReady);
+    if (!isAdmin) {
+      setMatchesReady(false);
+    }
   };
 
   const fetchMatches = async (isoDate: string) => {
@@ -80,18 +84,22 @@ const Table = ({
     let lastCompetition = "";
 
     return matches.map((match) => {
-      const teamHomeLogo = `./src/assets/${match.competition.name
+      const currentCompetition = `${match.competition?.name}`;
+      const teamHomeLogo = `./src/assets/${currentCompetition
         .toLowerCase()
         .replace(/\s+/g, "")}/${match.homeTeam.teamName
         .toLowerCase()
         .replace(/\s+/g, "")}.png`;
-      const teamAwayLogo = `./src/assets/${match.competition.name
+      const teamAwayLogo = `./src/assets/${currentCompetition
         .toLowerCase()
         .replace(/\s+/g, "")}/${match.awayTeam.teamName
         .toLowerCase()
         .replace(/\s+/g, "")}.png`;
+      console.log(match);
+      const matchDate = new Date(match.date);
+      const now = new Date();
+      const canBet = now < matchDate && match.result === "";
       const time = formatDate(match.date).time;
-      const currentCompetition = `${match.competition?.name}`;
       const showCompetitionTitle = currentCompetition !== lastCompetition;
       if (showCompetitionTitle) lastCompetition = currentCompetition;
 
@@ -122,37 +130,47 @@ const Table = ({
               <img src={teamAwayLogo} alt="awayTeam" />
               {match.awayTeam.teamName}
             </div>
-            {isAdmin ? (
-              <button
-                className="table-button-edit"
-                onClick={() => handleEditMatch(match)}
-              >
-                <EditIcon sx={{ width: "30px", height: "30px" }} />
-              </button>
-            ) : (user &&
-              <button
-                className="table-button-bet"
-                onClick={() => handleBetMatch(match)}
-              >
-                <MonetizationOnIcon
-                  color="warning"
-                  sx={{
-                    backgroundColor: "green",
-                    borderRadius: "50%",
-                    border: "3px solid",
-                    width: "30px",
-                    height: "30px",
-                  }}
-                />
-              </button>
-            )}
+            <div className="table-action-cell">
+              {isAdmin ? (
+                <button
+                  className="table-button-edit"
+                  onClick={() => handleEditMatch(match)}
+                >
+                  <EditIcon sx={{ width: "30px", height: "30px" }} />
+                </button>
+              ) : (
+                user &&
+                canBet && (
+                  <button
+                    className="table-button-bet"
+                    onClick={() => handleBetMatch(match)}
+                  >
+                    <MonetizationOnIcon
+                      color="warning"
+                      sx={{
+                        backgroundColor: "green",
+                        borderRadius: "50%",
+                        border: "3px solid",
+                        width: "30px",
+                        height: "30px",
+                      }}
+                    />
+                  </button>
+                )
+              )}
+            </div>
           </div>
         </div>
       );
     });
   };
 
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Loader />
+      </div>
+    );
 
   return (
     <>
@@ -185,4 +203,4 @@ const Table = ({
   );
 };
 
-export default Table;
+export default MatchTable;

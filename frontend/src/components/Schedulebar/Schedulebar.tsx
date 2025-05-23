@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import "./Schedulebar.css";
 
 interface ScheduleProps {
   setSelectedDate: (date: string) => void;
@@ -66,18 +67,17 @@ const Schedulebar = ({
   }, [value]);
 
   return (
-    <div
-      style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}
-    >
-      <Box sx={{ maxWidth: "59%", display: "flex", color: "black" }}>
+    <div className="schedulebar-container">
+      <Box className="schedulebar-box">
         <Tabs value={value} onChange={handleChange} variant="scrollable">
           {filterDates.map((day, index) => (
             <Tab
               key={index}
               label={day.label}
-              sx={{
+              style={{
                 border: "1px solid black",
                 color: "black",
+                fontWeight: "600",
                 backgroundColor: "#f08c00",
               }}
               ref={(tab) => {

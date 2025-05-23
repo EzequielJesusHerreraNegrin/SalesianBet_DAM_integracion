@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Match } from "../../../types/Match";
+import { useEffect, useState } from "react";
+import { Match } from "../../../type/Match";
 import toast, { Toaster } from "react-hot-toast";
 import { BetRequest } from "../../../types/Bet";
 import BetService from "../../../service/bet.service";
 import "./BetForm.css";
 import { useAuthContext } from "../../../context/AuthContext";
+import { formatDate } from "../../../utils/uitls";
 
 interface BetProps {
   currentMatch: Match;
@@ -15,6 +16,35 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
   const [selected, setSelected] = useState<string>("");
   const [points, setPoints] = useState<number>(0);
   const { user, refreshUser } = useAuthContext();
+  const [existingBetId, setExistingBetId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchExistingBet = async () => {
+      try {
+        const bet = await BetService.getBetByUserAndMatch(
+          user!.userId,
+          currentMatch.matchId
+        );
+        console.log(bet);
+        if (bet) {
+          setSelected(bet.prediction);
+          setPoints(Number(bet.points) || 0);
+          setExistingBetId(bet.betId);
+        } else {
+          // Asegúrate de limpiar el estado si no hay apuesta
+          setSelected("");
+          setPoints(0);
+          setExistingBetId(null);
+        }
+      } catch (error) {
+        console.error("No existing bet found: ", error);
+        setSelected("");
+        setPoints(0);
+        setExistingBetId(null);
+      }
+    };
+    fetchExistingBet();
+  }, [currentMatch, user]);
 
   const teamHomeLogo = `./src/assets/${currentMatch.competition.name
     .toLowerCase()
@@ -32,12 +62,6 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
 
   const handleClickOption = (option: string) => {
     setSelected(option);
-  };
-
-  const formatDate = (isoDate: string) => {
-    const [year, month, day] = isoDate.split("T")[0].split("-");
-    const dateFormatted = `${day}/${month}/${year}`;
-    return dateFormatted;
   };
 
   const matchDate = formatDate(currentMatch.date);
@@ -59,9 +83,18 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
         matchId: currentMatch.matchId,
         userId: user!.userId,
       };
-      await BetService.createBet(requestBet);
-      refreshUser();
-      toast.success("Creation of bet successfully", { position: "top-right" });
+
+      if (existingBetId) {
+        await BetService.updateBet(existingBetId, requestBet);
+        refreshUser();
+        toast.success("Update of bet successfully", { position: "top-right" });
+      } else {
+        await BetService.createBet(requestBet);
+        refreshUser();
+        toast.success("Creation of bet successfully", {
+          position: "top-right",
+        });
+      }
 
       setTimeout(() => {
         setIsBetting(false);
@@ -78,7 +111,6 @@ const BetForm = ({ currentMatch, setIsBetting }: BetProps) => {
     }
   };
 
-  console.log(currentMatch.competition.country.toLowerCase());
   return (
     <div className="bet-modal">
       <Toaster />

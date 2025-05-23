@@ -1,16 +1,21 @@
 .navbar-container {
+    position: fixed;
+    z-index: 1;
+    top: 0;
     display: flex;
+    justify-content: space-between;
     background-color: #2f9e44;
     align-items: center;
     width: 100%;
     color: black;
+    box-shadow: 0 0 50px rgba(197, 211, 5, 0.816);
 }
 
 .navbar-screens {
     display: flex;
     padding: 0 30px;
     width: 90%;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -32,6 +37,7 @@
     display: flex;
     gap: 20px;
     align-items: center;
+    padding-right: 20px;
 }
 
 
@@ -55,4 +61,5 @@ a {
     color: #2f9e44;
     font-weight: 600;
     cursor: pointer;
+    min-width: 7rem;
 }

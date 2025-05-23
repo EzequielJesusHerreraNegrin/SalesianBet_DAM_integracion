@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Schedulebar from "../components/Schedulebar/Schedulebar";
-import Table from "../components/table/Table";
-import { Match } from "../types/Match";
+import MatchTable from "../components/table/match/MatchTable";
+import { Match } from "../type/Match";
 import BetForm from "../components/form/bet/BetForm";
 
 interface matchProp {
@@ -80,7 +80,7 @@ const MatchesPage = ({
         setSelectedDate={setSelectedDate}
         formatDate={formatDate}
       />
-      <Table
+      <MatchTable
         setSelectedDate={setSelectedDate}
         setMatchesReady={setMatchesReady}
         matchesReady={matchesReady}
@@ -91,7 +91,11 @@ const MatchesPage = ({
         setIsBetting={setIsBetting}
       />
       {isBetting && (
-        <BetForm currentMatch={currentMatch} setIsBetting={setIsBetting} />
+        <BetForm
+          key={currentMatch.matchId}
+          currentMatch={currentMatch}
+          setIsBetting={setIsBetting}
+        />
       )}
     </>
   );
