@@ -148,11 +148,16 @@ INSERT INTO users ( user_name, password, email, dni, points, country) VALUES
 
 -- Inserta productos en la tabla 'products'
 INSERT INTO products (product_name, product_image, price, state) VALUES
-('Teclado Mecánico', 'keyboard.jpg', 59, 'PUBLICO'),
-('Monitor 27 pulgadas', 'monitor.jpg', 199, 'PUBLICO'),
-('Ratón Gamer', 'mouse.jpg', 29, 'PUBLICO'),
-('Silla Ergonómica', 'chair.jpg', 149, 'DESCATALOGADO'),
-('Auriculares Inalámbricos', 'headphones.jpg', 89, 'DESCATALOGADO');
+('Camiseta oficial Madrid', 'camiseta-oficial-Madrid.jpg', 59, 'PUBLICO'),
+('Botas Nike', 'botas-Nike.png', 199, 'PUBLICO'),
+('Bufanda Madrid oficial', 'bufanda-Madrid-oficial.png', 29, 'PUBLICO'),
+('Short deportivo Addidas', 'short-deportivo-Addidas.png', 29, 'PUBLICO'),
+('Medias Addidas', 'medias-Addidas.png', 29, 'PUBLICO'),
+('Pelota Nike', 'pelota-nike.png', 49, 'PUBLICO'),
+('Camiseta de portero Addidas', 'camiseta-de-portero-Addidas.png', 49, 'PUBLICO'),
+('Camiseta oficial FCB', 'camiseta-oficial-FCB.png', 49, 'PUBLICO'),
+('Camiseta de portero Addidas', 'camiseta-de-portero-Addidas.png', 89, 'DESCATALOGADO'),
+('Replica balon de oro', 'replica-balon-de-oro.png', 289, 'DESCATALOGADO');
 
 -- 1. Roles
 INSERT INTO roles (role_name) VALUES ('USER'); -- Supongamos ID 1
