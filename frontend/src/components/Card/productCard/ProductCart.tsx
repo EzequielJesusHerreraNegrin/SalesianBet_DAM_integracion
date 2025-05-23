@@ -16,6 +16,8 @@ type Props = {
 
 const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   const handleAddToCart = async (product: Product) => {
+    console.log(cartItems[0]);
+
     cartItems.forEach((item) => {
       if (item.product!.productId == product.productId) {
         console.error("El producto ya está en el carrito");
@@ -43,7 +45,13 @@ const ProductCart = ({ product, cartItems, setCartItems }: Props) => {
   return (
     <div className="product-cart-container">
       <div className="product-image-container">
-        <img src={product.imageImage} alt="Product" className="product-image" />
+        <img
+          src={
+            "https://res.cloudinary.com/dtbgfrolh/image/upload/v1747970900/store/camiseta-oficial-FCB.png"
+          }
+          alt="Product"
+          className="product-image"
+        />
       </div>
       <div className="product-description-container">
         <h2 className="product-name">{product.productName}</h2>

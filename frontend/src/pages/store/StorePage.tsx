@@ -91,9 +91,7 @@ const StorePage = () => {
         });
     };
 
-    if (isAdmin) {
-      handleGetCarIterms();
-    }
+    handleGetCarIterms();
   }, [cartItems.length, products.length]);
 
   const handleBuyCartItemList = async () => {
