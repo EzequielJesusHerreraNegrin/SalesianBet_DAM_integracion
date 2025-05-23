@@ -1,12 +1,38 @@
 .schedulebar-container {
-    position: static;
-display: flex;
-justify-content: center;
-margin-top: 80px; /* Deja espacio para navbar fixed */
+      position: static;
+      display: flex;
+      justify-content: center;
+      margin-top: 80px; /* Deja espacio para navbar fixed */
+
 }
 
 .schedulebar-box {
-max-width: 61%;
-display: flex;
-color: black;
+    max-width: 61%;
+    display: flex;
+    color: black;
+}
+
+
+/* Mejoras para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .MuiTab-root {
+    
+    font-size: 0.75rem;
+  }
+
+  .schedulebar-container {
+    margin-top: 60px;
+  }
+
+  .schedulebar-box{
+    max-width: 80%;
+    width: 100%;    
+  }
+}
+
+/* Tablets */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .MuiTab-root {
+    font-size: 0.8rem;
+  }
 }

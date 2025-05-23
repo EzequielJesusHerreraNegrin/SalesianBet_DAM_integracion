@@ -1,4 +1,4 @@
-import UserTable from "../components/table/user/userTable";
+import UserTable from "../components/table/user/UserTable";
 
 const HistoryPage = () => {
   return (

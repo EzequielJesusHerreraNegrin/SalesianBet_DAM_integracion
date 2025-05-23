@@ -1,72 +1,99 @@
+/* 🟢 GENERAL */
 .navbar-container {
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    background-color: #2f9e44;
-    align-items: center;
-    width: 100%;
-    color: black;
-    box-shadow: 0 0 50px rgba(197, 211, 5, 0.816);
-}
-
-.navbar-screens {
-    display: flex;
-    padding: 0 30px;
-    width: 90%;
-    justify-content: space-around;
-    align-items: center;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: #2f9e44;
+  align-items: center;
+  width: 100%;
+  color: black;
+  box-shadow: 0 0 50px rgba(197, 211, 5, 0.816);
+  padding: 0 1rem;
 }
 
 .navbar-logo {
-    width: 40px;
-    height: 40px;
-    padding: 10px;
-    margin-right: 100px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  margin-right: 16px;
 }
 
-.navbar-user {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+.navbar-screens,
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-auth {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    padding-right: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-right: 20px;
 }
 
-
-
-p {
-    margin: 0;
-    margin-left: 30px;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-    font-weight: 600;
+.navbar-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .navbar-button {
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f08c00;
-    border: 2px solid black;
-    color: #2f9e44;
-    font-weight: 600;
-    cursor: pointer;
-    min-width: 7rem;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f08c00;
+  border: 2px solid black;
+  color: #2f9e44;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 7rem;
+}
+
+.navbar-links-desktop{
+    margin-right: 30%;
+    display: flex;
+    gap: 100%;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  margin: 0 10px;
 }
 
 .navbar-points {
-    display: flex;
-    align-items: center;
-    color: #f08c00;
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  color: #f08c00;
+  font-weight: 600;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .navbar-links-desktop {
+    display: none;
+  }
+
+  .navbar-menu-button {
+    display: block !important;
+    color: black;
+  }
+
+  .navbar-auth {
+    gap: 10px;
+  }
+}
+
+/* 🖥️ Desktop (por si algún framework overridea display) */
+@media (min-width: 769px) {
+  .navbar-menu-button {
+    display: none !important;
+  }
+
+  .navbar-links-desktop {
+    display: flex !important;
+  }
 }
