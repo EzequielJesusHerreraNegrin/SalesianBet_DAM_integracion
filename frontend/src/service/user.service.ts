@@ -1,15 +1,22 @@
-/* import axios from "axios";
-import { API_URL } from "./match.service";
-import { UserRequest } from "../type/User";
+import api from "./api";
 
-const createUser = async (user: UserRequest) => {
-  const response = await axios.post(`${API_URL}/users`, user);
-  return response.data;
+const getAllUsers = async () => {
+  const response = await api.get(`/users`);
+  return response.data.data;
+};
+
+const getUserByEmail = async (email: string) => {
+  const response = await api.get(`/users/email`, {
+    params: {
+      email,
+    },
+  });
+  return response.data.data;
 };
 
 const UserService = {
-  createUser,
+  getAllUsers,
+  getUserByEmail,
 };
 
 export default UserService;
- */

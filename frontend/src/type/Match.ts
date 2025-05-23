@@ -29,12 +29,12 @@ export type MatchRequest = {
   awayTeamId: number;
 };
 
-export const initialMatchRequest: MatchRequest = {
+/* export const initialMatchRequest: MatchRequest = {
   date: "",
   result: "",
   competitionId: 0,
   homeTeamId: 0,
   awayTeamId: 0,
-};
+}; */
 
 export default initialMatch;

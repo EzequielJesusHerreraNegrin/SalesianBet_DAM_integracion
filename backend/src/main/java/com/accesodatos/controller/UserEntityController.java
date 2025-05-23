@@ -57,8 +57,8 @@ public class UserEntityController {
 	}	
 
 	@GetMapping(value = USER_PATH_EMAIL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String value) {
-		UserEntityResponseDto users = userEntityServiceImpl.getUserByEmail(value);
+	public ResponseEntity<ApiResponseDto<UserEntityResponseDto>> getUserByEmail(@RequestParam String email) {
+		UserEntityResponseDto users = userEntityServiceImpl.getUserByEmail(email);
 
 		ApiResponseDto<UserEntityResponseDto> response = new ApiResponseDto<UserEntityResponseDto>(
 				"All users fetched successfuly.", HttpStatus.OK.value(), users);
